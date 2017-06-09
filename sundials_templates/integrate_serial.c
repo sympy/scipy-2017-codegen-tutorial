@@ -65,6 +65,7 @@ int integrate(const realtype * const restrict tout,
               int ml, // number of lower diagonals (when banded)
               long int * const restrict info)
 {
+    int i;
     int status = 0;
     N_Vector nv_y = NULL;
     N_Vector nv_abstol = NULL;
@@ -132,7 +133,7 @@ int integrate(const realtype * const restrict tout,
     /* Store output before first step */
     memcpy(yout, y0, sizeof(realtype)*ny);
     /* Run integration */
-    for (int i = 1; i < nt; ++i){
+    for (i = 1; i < nt; ++i){
         status = CVode(cvode_mem, tout[i], nv_y, &cur_t, CV_NORMAL);
         if (status != CV_SUCCESS)
             break;
