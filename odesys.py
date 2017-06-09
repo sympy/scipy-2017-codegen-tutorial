@@ -35,4 +35,10 @@ class ODEsys(object):
         ax.set_xlabel('$\mathrm{time\ /\ s}$')
         ax.legend(loc='best')
         if info:
-            print("The jacobian was evaluated %d times" % sum(info['nje']))
+            nrhs = info.get('num_rhs')
+            if not nrhs:
+                nrhs = sum(info['nfe'])
+            njac = info.get('num_dls_jac_evals')
+            if not njac:
+                njac = sum(info['nje'])
+            print("The rhs was evaluated %d times and the jacobian %d times" % (nrhs, njac))

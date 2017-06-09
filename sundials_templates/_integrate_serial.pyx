@@ -20,7 +20,7 @@ def _integrate(cnp.ndarray[cnp.float64_t, ndim=1] tout,
         int status = 0
         int nt = tout.size
         int ny = y0.size
-        long int * info = <long int *>malloc(sizeof(long int))
+        long int * info = <long int *>malloc(8*sizeof(long int))
         cnp.ndarray[cnp.float64_t, ndim=2] yout = np.empty((nt, ny))
     if abstol.size == 1:
         abstol = np.tile(abstol, y0.size)

@@ -12,5 +12,5 @@ def test_ODEcvode():
     c0 = {'H2O': 55.4e3, 'H+': 1e-4, 'OH-': 1e-4}
     y0 = [c0.get(symb.name, 0) for symb in cvode_sys.y]
     yout, info = cvode_sys.integrate(tout, y0)
-    assert 10 < info['num_steps'] < 501
+    assert 10 < info['num_steps'] < 5000
     assert info['status'] == 0

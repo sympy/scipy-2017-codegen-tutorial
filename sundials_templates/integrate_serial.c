@@ -42,6 +42,7 @@ enum {
   STATUS_ABSTOL,
   STATUS_STEP_TYPE,
   STATUS_CVODE_MEM,
+  STATUS_MODE
 };
 
 int integrate(const realtype * const restrict tout,
@@ -100,17 +101,19 @@ int integrate(const realtype * const restrict tout,
 
     /* Call CVDense/CVLapackDense to specify the dense linear solver */
     switch(mode){
-    case(SUNDIALS_DENSE):
+    case(1): // SUNDIALS_DENSE
         status = OUR_DENSE(cvode_mem, ny);
         if (status != 0) goto exit_runtime;
         /* Set the Jacobian routine to Jac (user-supplied) */
         status = CVDlsSetDenseJacFn(cvode_mem, dense_jac); 
         break;
-    case(SUNDIALS_BAND):
+    case(2):  // SUNDIALS_BAND
         status = OUR_BAND(cvode_mem, ny, mu, ml);
         if (status != 0) goto exit_runtime;
         status = CVDlsSetBandJacFn(cvode_mem, band_jac); 
         break;
+    default:
+        status = STATUS_MODE;
     }
     if (status != 0) goto exit_runtime;
 

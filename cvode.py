@@ -10,7 +10,7 @@ lapack_libs = ['openblas']
 pyximport.install()
 setup_args={
     'include_dirs': [os.getcwd()],
-    'libraries': lapack_libs + ['sundials_cvodes', 'sundials_nvecserial', 'm']
+    'libraries': lapack_libs + ['sundials_cvode', 'sundials_nvecserial', 'm']
 }
 
 pyxbld_template = """
