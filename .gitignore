@@ -3,3 +3,4 @@ __pycache__/
 ode_cython_*.pyx
 integrate_serial_*.c
 ode_c_*.pyx*
+.cache/

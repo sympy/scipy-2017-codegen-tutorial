@@ -32,7 +32,7 @@ int dense_jac (DIM_T N, realtype t, N_Vector nv_y, N_Vector fy, DlsMat J, void *
     %(dense_jac)s
 }
 
-int band_jac (DIM_T N, realtype t, N_Vector y, N_Vector fy, DlsMat J, void *params, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
+int band_jac (DIM_T N, long int mu, long int ml, realtype t, N_Vector y, N_Vector fy, DlsMat J, void *params, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
     %(band_jac)s
 }
 
@@ -64,13 +64,13 @@ int integrate(const realtype * const restrict tout,
     void *cvode_mem = NULL;
     realtype cur_t = tout[0];
 
-    nv_y = N_VMake_Serial(ny, y0);
+    nv_y = N_VMake_Serial(ny, (realtype *)y0);
     if (nv_y == NULL){
         status = STATUS_Y;
         goto exit_y;
     }
 
-    nv_abstol = N_VMake_Serial(ny, abstol);
+    nv_abstol = N_VMake_Serial(ny, (realtype *)abstol);
     if (nv_abstol == NULL){
         status = STATUS_ABSTOL;
         goto exit_abstol;

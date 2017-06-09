@@ -2,7 +2,9 @@ import os
 import uuid
 import sympy as sp
 import setuptools
+import numpy as np
 import pyximport
+from odesys import ODEsys
 
 lapack_libs = ['openblas']
 pyximport.install()
@@ -36,8 +38,8 @@ class ODEcvode(ODEsys):
         j_exprs = ['col_%d[%d] = %s;' % (ci, ri, self.j[ri, ci].xreplace(subs))
                    for ci in idxs for ri in idxs if self.j[ri, ci] != 0]
         ctx = dict(
-            func = '\n    '.join(f_exprs),
-            dense_jac = '\n    '.join(j_col_defs + j_exprs),
+            func = '\n    '.join(f_exprs + ['return 0;']),
+            dense_jac = '\n    '.join(j_col_defs + j_exprs + ['return 0;']),
             band_jac = 'return -1;'
         )
         cvode_template = open(os.path.join('sundials_templates', 'integrate_serial.c')).read()
