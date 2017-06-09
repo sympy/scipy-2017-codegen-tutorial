@@ -6,11 +6,20 @@ import numpy as np
 import pyximport
 from odesys import ODEsys
 
-lapack_libs = ['openblas']
+lapack_libs = []
 pyximport.install()
+
+if 'CONDA_PREFIX' in os.environ:
+    sundials_inc = [os.path.join(os.environ['CONDA_PREFIX'], 'Library', 'include')]
+    sundials_lib = [os.path.join(os.environ['CONDA_PREFIX'], 'Library', 'lib')]
+else:
+    sundials_inc = []
+    sundials_lib = []
+
 setup_args={
-    'include_dirs': [os.getcwd()],
-    'libraries': lapack_libs + ['sundials_cvode', 'sundials_nvecserial', 'm']
+    'include_dirs': [os.getcwd(), np.get_include()] + sundials_inc,
+    'library_dirs': sundials_lib,
+    'libraries': lapack_libs + ['sundials_cvode', 'sundials_nvecserial'] + ([] if os.name == 'nt' else ['m'])
 }
 
 pyxbld_template = """
@@ -20,6 +29,7 @@ def make_ext(modname, pyxfilename):
         name=modname,
         sources=[pyxfilename],
         include_dirs=%(include_dirs)s,
+        library_dirs=%(library_dirs)s,
         libraries=%(libraries)s
     )
 """

@@ -20,6 +20,12 @@
   #define DIM_T long int
 #endif
 
+#ifdef _MSC_VER
+# ifndef restrict
+#  define restrict __restrict
+# endif
+#endif
+
 
 int func (realtype t, N_Vector nv_y, N_Vector f, void * params) {
     const realtype * const restrict y = &NV_Ith_S(nv_y, 0);

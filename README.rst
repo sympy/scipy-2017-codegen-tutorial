@@ -1,16 +1,17 @@
-# scipy-2017-codegen-tutorial
-SymPy code generation tutorial at SciPy 2017
+scipy-2017-codegen-tutorial
+===========================
+SymPy code generation tutorial at SciPy 2017.
 
-## Creating a conda environment from ``environment.yml``
+
+Creating a conda environment from ``environment.yml``
+-----------------------------------------------------
 We have provided a file (called ``environment.yml``) describing the
-environment (named ``codegen17``). If you have [conda](https://www.continuum.io/downloads)
+environment (named ``codegen17``). If you have `conda <https://www.continuum.io/downloads>`_
 installed you can create this environment by executing::
 
    > conda env create -f environment.yml
 
-when installation is complete you may acivate the environment by writing:
-
-::
+when installation is complete you may acivate the environment by writing::
 
    > activate codegen17
 

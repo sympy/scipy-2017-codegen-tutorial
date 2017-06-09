@@ -1,3 +1,4 @@
+from itertools import chain  # Py 2.7 does not support func(*args1, *args2)
 import sympy as sp
 from scipy.integrate import odeint
 
@@ -17,10 +18,10 @@ class ODEsys(object):
         self.lambdified_j = sp.lambdify(self.y + self.p, self.j)
 
     def f_eval(self, y, t, *params):
-        return self.lambdified_f(*y, *params)
+        return self.lambdified_f(*chain(y, params))
 
     def j_eval(self, y, t, *params):
-        return self.lambdified_j(*y, *params)
+        return self.lambdified_j(*chain(y, params))
 
     def integrate_odeint(self, tout, y0, params=(), **kwargs):
         return odeint(self.f_eval, y0, tout, args=tuple(params), full_output=True, Dfun=self.j_eval, **kwargs)
