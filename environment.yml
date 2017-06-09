@@ -8,4 +8,5 @@ dependencies:
   - numpy
   - matplotlib
   - scipy
+  - sympy
   - sundials
