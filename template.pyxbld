@@ -1,5 +1,3 @@
-import os
-
 def make_ext(modname, pyxfilename):
     from Cython.Build import cythonize
     ext = cythonize([pyxfilename], include_path=['.'])[0]
@@ -10,9 +8,9 @@ def make_ext(modname, pyxfilename):
     return ext
 
 def make_setup_args():
+    import os
     if os.name == 'nt':
         return dict(script_args=['--compiler=msvc'])  # '--compiler=mingw32' or '--compiler=msvc'
+        #return {'options': {'build_ext': {'compiler': 'mingw32'}}}
     else:
         return {}
-
-    #return {'options': {'build_ext': {'compiler': 'mingw32'}}}
