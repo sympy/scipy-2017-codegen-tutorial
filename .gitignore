@@ -1,6 +1,9 @@
 __pycache__/
 .ipynb_checkpoints/
 ode_cython_*.pyx
+ode_cython_*.pyxbld
+ode_cython_*.c
 integrate_serial_*.c
 ode_c_*.pyx*
+ode_c_*.c
 .cache/
