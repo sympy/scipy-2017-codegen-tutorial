@@ -17,6 +17,6 @@ def mk_rsys(rxns, names):
     return [f[n] for n in names], concs
 
 
-def odesys_from_reactions_names_and_params(reactions, names, params=(), ODEcls=ODEsys, **kwargs):
+def odesys_from_reactions_names_and_params(ODEcls, reactions, names, params=(), **kwargs):
     f, symbs = mk_rsys(reactions, names)
     return ODEcls(f, symbs, params=map(sp.S, params), **kwargs)
