@@ -5,6 +5,8 @@ def make_ext(modname, pyxfilename):
     ext.include_dirs.extend(%(include_dirs)s)
     ext.library_dirs.extend(%(library_dirs)s)
     ext.libraries.extend(%(libraries)s)
+    ext.extra_compile_args.extend(%(extra_compile_args)s)
+    ext.extra_link_args.extend(%(extra_link_args)s)
     return ext
 
 def make_setup_args():
