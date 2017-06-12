@@ -11,3 +11,5 @@ dependencies:
   - cython
   - sympy
   - sundials
+  - python-symengine
+  - numba

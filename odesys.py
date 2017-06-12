@@ -3,7 +3,8 @@ import sympy as sp
 from scipy.integrate import odeint
 
 class ODEsys(object):
-    def __init__(self, f, y, t=None, params=(), tex_names=None):
+
+    def __init__(self, f, y, t=None, params=(), tex_names=None, lambdify=None):
         assert len(f) == len(y), 'f is dy/dt'
         self.f = tuple(f)
         self.y = tuple(y)
@@ -11,11 +12,12 @@ class ODEsys(object):
         self.p = tuple(params)
         self.tex_names = tex_names
         self.j = sp.Matrix(len(f), 1, f).jacobian(y)
+        self.lambdify = lambdify or sp.lambdify
         self.setup()
 
     def setup(self):
-        self.lambdified_f = sp.lambdify(self.y + self.p, self.f)
-        self.lambdified_j = sp.lambdify(self.y + self.p, self.j)
+        self.lambdified_f = self.lambdify(self.y + self.p, self.f)
+        self.lambdified_j = self.lambdify(self.y + self.p, self.j)
 
     def f_eval(self, y, t, *params):
         return self.lambdified_f(*chain(y, params))
