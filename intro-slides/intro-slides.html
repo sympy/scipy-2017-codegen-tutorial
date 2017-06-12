@@ -15,12 +15,21 @@
       .remark-slide-content h1 { font-size: 100px }
       .remark-slide-content h2 { font-size: 70px }
 
-      .left-column {
+      .left-column75 {
         width: 75%;
         float: left;
       }
-      .right-column {
+      .right-column25 {
         width: 25%;
+        float: right;
+      }
+
+      .left-column {
+        width: 45%;
+        float: left;
+      }
+      .right-column {
+        width: 45%;
         float: right;
       }
     </style>
@@ -38,14 +47,14 @@ class: center, middle
 
 ## Who are we?
 
-.left-column[
+.left-column75[
 ### Aaron Meurer
 **@asmeurer**
 
 - Researcher ERGS, University of South Carolina
 - Lead developer of SymPy
 ]
-.right-column[
+.right-column25[
 <img src="asmeurer.jpeg" alt="asmeurer" style="width:200px">
 ]
 
@@ -53,11 +62,11 @@ class: center, middle
 
 ## Who are we?
 
-.left-column[
+.left-column75[
 ### Jason Moore
 **@moorepants**
 ]
-.right-column[
+.right-column25[
 <img src="moorepants.jpeg" alt="moorepants" style="width:200px">
 ]
 
@@ -65,13 +74,81 @@ class: center, middle
 
 ## Who are we?
 
-.left-column[
+.left-column75[
 ### Björn Dahlgren
 **@bjodah**
 ]
-.right-column[
+.right-column25[
 <img src="bjodah.jpeg" alt="bjodah" style="width:200px">
 ]
+
+---
+
+## This tutorial
+
+### We will learn about code generation with SymPy
+### Basic knowledge of the SymPy library is assumed
+
+---
+
+## What is code generation?
+
+---
+
+For the purposes of this tutorial, "code generation" (or just "codegen") refers to the automatic translation of a symbolic SymPy expression into code for another language
+
+---
+
+## What is code generation?
+
+For example:
+
+.left-column[
+*SymPy expression*
+```py
+abs(sin(pi*x))
+```
+]
+.right-column[
+*C code*
+```C
+fabs(sin(M_PI*x))
+```
+]
+
+---
+
+### Some of the languages supported
+
+- C
+- C++
+- Fortran
+- MATLAB/Octave
+- Python (NumPy/SciPy)
+- Julia
+- Mathematica
+- Javascript
+- LLVM
+- Rust
+- Theano
+- Easy to extend to others...
+
+---
+
+## Outline for today
+
+- Intro to SymPy Expressions [30 minutes]
+
+- Code Printers [30 minutes]
+
+- The Easy Way: High Level Generation (lambdify, ufuncify) [30 minutes]
+
+- The Harder Way: Code generation and compilation [1 hour]
+
+- Cythonizing Your Code (manually and autowrap) [30 minutes]
+
+- Extending SymPy's classes [1 hour]
+
 
     </textarea>
     <script src="remark-latest.min.js">
