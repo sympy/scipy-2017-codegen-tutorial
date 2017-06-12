@@ -38,8 +38,8 @@ class ODEsys(object):
         if info:
             nrhs = info.get('num_rhs')
             if not nrhs:
-                nrhs = len(info['nfe'])
+                nrhs = info['nfe'][-1]
             njac = info.get('num_dls_jac_evals')
             if not njac:
-                njac = len(info['nje'])
+                njac = info['nje'][-1]
             print("The rhs was evaluated %d times and the jacobian %d times" % (nrhs, njac))
