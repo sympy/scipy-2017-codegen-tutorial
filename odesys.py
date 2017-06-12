@@ -23,8 +23,9 @@ class ODEsys(object):
     def j_eval(self, y, t, *params):
         return self.lambdified_j(*chain(y, params))
 
-    def integrate_odeint(self, tout, y0, params=(), **kwargs):
-        return odeint(self.f_eval, y0, tout, args=tuple(params), full_output=True, Dfun=self.j_eval, **kwargs)
+    def integrate_odeint(self, tout, y0, params=(), rtol=1e-8, atol=1e-8, **kwargs):
+        return odeint(self.f_eval, y0, tout, args=tuple(params), full_output=True,
+                      Dfun=self.j_eval, rtol=rtol, atol=atol, **kwargs)
 
     def plot_result(self, tout, yout, info=None, ax=None):
         if ax is None:
