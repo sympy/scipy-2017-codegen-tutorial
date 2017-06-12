@@ -1,38 +1,42 @@
 import os
+import sys
 import uuid
 import sympy as sp
 import setuptools
 import numpy as np
+import setuptools
 import pyximport
 from odesys import ODEsys
 
-lapack_libs = []
 pyximport.install()
+libraries = ['sundials_cvode', 'sundials_nvecserial']
+extra_link_args = []
+
+if os.name != 'nt':
+    libraries += ['m']
+
+if os.name == 'posix':
+    libraries += ['openblas']
 
 if 'CONDA_PREFIX' in os.environ:
-    sundials_inc = [os.path.join(os.environ['CONDA_PREFIX'], 'Library', 'include')]
-    sundials_lib = [os.path.join(os.environ['CONDA_PREFIX'], 'Library', 'lib')]
+    prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
+    sundials_inc = [prefix_path('Library', 'include')]
+    library_dirs = [prefix_path('Library', 'lib')]
+    if sys.platform.lower() == 'darwin':
+        extra_link_args = ['-Wl,-rpath,%s/' % prefix_path('lib')]
 else:
     sundials_inc = []
-    sundials_lib = []
+    library_dirs = []
 
 setup_args={
     'include_dirs': [os.getcwd(), np.get_include()] + sundials_inc,
-    'library_dirs': sundials_lib,
-    'libraries': lapack_libs + ['sundials_cvode', 'sundials_nvecserial'] + ([] if os.name == 'nt' else ['m'])
+    'library_dirs': library_dirs,
+    'libraries': libraries,
+    'extra_compile_args': [],
+    'extra_link_args': extra_link_args
 }
 
-pyxbld_template = """
-def make_ext(modname, pyxfilename):
-    from setuptools import Extension
-    return Extension(
-        name=modname,
-        sources=[pyxfilename],
-        include_dirs=%(include_dirs)s,
-        library_dirs=%(library_dirs)s,
-        libraries=%(libraries)s
-    )
-"""
+pyxbld_template = open('template.pyxbld').read()
 
 class ODEcvode(ODEsys):
 

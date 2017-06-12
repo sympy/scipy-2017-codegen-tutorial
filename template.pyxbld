@@ -1,9 +1,14 @@
+nt_compiler = 'mingw32'  # 'mingw32' or 'msvc'
+
 def make_ext(modname, pyxfilename):
+    import os
     from Cython.Build import cythonize
     ext = cythonize([pyxfilename], include_path=['.'])[0]
     ext.extra_compile_args.extend(['-std=c99'])
     ext.include_dirs.extend(%(include_dirs)s)
     ext.library_dirs.extend(%(library_dirs)s)
+    if os.name == 'nt' and nt_compiler == 'mingw32' and 'CONDA_PREFIX' in os.environ:
+        ext.library_dirs.append(os.environ['CONDA_PREFIX'])  # libpythonXX.dll is located in the environment root
     ext.libraries.extend(%(libraries)s)
     ext.extra_compile_args.extend(%(extra_compile_args)s)
     ext.extra_link_args.extend(%(extra_link_args)s)
@@ -12,7 +17,6 @@ def make_ext(modname, pyxfilename):
 def make_setup_args():
     import os
     if os.name == 'nt':
-        return dict(script_args=['--compiler=msvc'])  # '--compiler=mingw32' or '--compiler=msvc'
-        #return {'options': {'build_ext': {'compiler': 'mingw32'}}}
+        return dict(script_args=['--compiler={0}'.format(nt_compiler)])
     else:
         return {}
