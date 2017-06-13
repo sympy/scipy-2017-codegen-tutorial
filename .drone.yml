@@ -1,0 +1,20 @@
+build:
+  image: bjodah/bjodahimg16dev:latest
+  commands:
+    - export PATH=/opt/miniconda3/bin:$PATH
+    - conda env create -f environment.yml
+    - mkdir deploy
+    - cd deploy
+    - jupyter nbconvert --debug --to=html --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
+    - jupyter nbconvert --debug --to=ipynb --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
+
+deploy:
+
+  rsync:
+    host: hera.physchem.kth.se
+    user: scipy-2017-codegen-tutorial
+    port: 22
+    source: deploy/
+    target: ~/public_html
+    recursive: true
+    delete: false
