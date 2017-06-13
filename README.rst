@@ -21,6 +21,7 @@ or using bash::
 
 next step is to start the jupyter notebook::
 
+   (codegen17)> cd notebooks
    (codegen17)> jupyter notebook
 
 a web interface should open in your browser (default address http://localhost:8888).
@@ -32,3 +33,13 @@ To exit the environment you write::
 If you for some reason want to remove the environment you can do so by writing::
 
    > conda env remove --name codegen17
+
+
+CI status
+---------
+drone
+~~~~~
+.. image:: http://hera.physchem.kth.se:9090/api/badges/sympy/scipy-2017-codegen-tutorial/status.svg
+   :target: http://hera.physchem.kth.se:9090/sympy/scipy-2017-codegen-tutorial
+   :alt: Build status
+Artifacts: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/

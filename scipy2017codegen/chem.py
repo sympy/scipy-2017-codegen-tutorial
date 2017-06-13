@@ -1,7 +1,6 @@
 from operator import mul
 from functools import reduce
 import sympy as sp
-from odesys import ODEsys
 
 def prod(seq):
     return reduce(mul, seq) if seq else 1
@@ -17,6 +16,6 @@ def mk_rsys(rxns, names):
     return [f[n] for n in names], concs
 
 
-def odesys_from_reactions_names_and_params(ODEcls, reactions, names, params=(), **kwargs):
+def mk_chemsys(ODEcls, reactions, names, params=(), **kwargs):
     f, symbs = mk_rsys(reactions, names)
     return ODEcls(f, symbs, params=map(sp.S, params), **kwargs)

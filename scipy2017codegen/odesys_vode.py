@@ -1,7 +1,5 @@
-from odesys import ODEsys
-
 from scipy.integrate import ode
-from odesys import ODEsys
+from scipy2017codegen.odesys import ODEsys
 
 class VODEsys(ODEsys):
     def integrate_vode(self, tout, y0, params=(), method='bdf', rtol=1e-8, atol=1e-8, **kwargs):

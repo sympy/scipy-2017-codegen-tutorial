@@ -3,7 +3,8 @@ import numpy as np
 import sympy as sp
 import setuptools
 import pyximport
-from odesys import ODEsys
+from scipy2017codegen import templates
+from scipy2017codegen.odesys import ODEsys
 
 pyximport.install()
 
@@ -22,7 +23,6 @@ def j(cnp.ndarray[cnp.float64_t, ndim=1] y, double t, %(args)s):
     return out
 
 """
-pyxbld_template = open('template.pyxbld').read()
 
 class CythonODEsys(ODEsys):
 
@@ -38,7 +38,7 @@ class CythonODEsys(ODEsys):
             j_exprs = '\n    '.join(j_exprs),
         )
         open('%s.pyx' % self.mod_name, 'wt').write(cython_template % ctx)
-        open('%s.pyxbld' % self.mod_name, 'wt').write(pyxbld_template % dict(
+        open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % dict(
             include_dirs=[np.get_include()],
             library_dirs=[], libraries=[], extra_compile_args=[], extra_link_args=[]
         ))

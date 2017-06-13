@@ -7,3 +7,4 @@ integrate_serial_*.c
 ode_c_*.pyx*
 ode_c_*.c
 .cache/
+*.egg-info/

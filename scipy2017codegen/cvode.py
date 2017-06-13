@@ -6,7 +6,8 @@ import setuptools
 import numpy as np
 import setuptools
 import pyximport
-from odesys import ODEsys
+from scipy2017codegen import templates
+from scipy2017codegen.odesys import ODEsys
 
 pyximport.install()
 libraries = ['sundials_cvode', 'sundials_nvecserial']
@@ -36,7 +37,6 @@ setup_args={
     'extra_link_args': extra_link_args
 }
 
-pyxbld_template = open('template.pyxbld').read()
 
 class ODEcvode(ODEsys):
 
@@ -56,11 +56,9 @@ class ODEcvode(ODEsys):
             dense_jac = '\n    '.join(j_col_defs + j_exprs + ['return 0;']),
             band_jac = 'return -1;'
         )
-        cvode_template = open(os.path.join('sundials_templates', 'integrate_serial.c')).read()
-        cython_template = open(os.path.join('sundials_templates', '_integrate_serial.pyx')).read()
-        open('integrate_serial_%s.c' % self.uid, 'wt').write(cvode_template % ctx)
-        open('%s.pyx' % self.mod_name, 'wt').write(cython_template % {'uid': self.uid})
-        open('%s.pyxbld' % self.mod_name, 'wt').write(pyxbld_template % {k: str(v) for k, v in setup_args.items()})
+        open('integrate_serial_%s.c' % self.uid, 'wt').write(templates.sundials['integrate_serial.c'] % ctx)
+        open('%s.pyx' % self.mod_name, 'wt').write(templates.sundials['_integrate_serial.pyx'] % {'uid': self.uid})
+        open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % {k: str(v) for k, v in setup_args.items()})
         self.mod = __import__(self.mod_name)
         self.integrate_odeint = None
 
