@@ -2,7 +2,8 @@ build:
   image: bjodah/scipy-2017-codegen-tutorial
   commands:
     - export PATH=/opt/miniconda3/bin:$PATH
-    - conda env create -f environment.yml
+    - conda env create --quiet -f environment.yml
+    - source activate codegen17
     - python setup.py install
     - mkdir deploy
     - cd deploy

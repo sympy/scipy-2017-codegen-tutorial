@@ -5,7 +5,9 @@ ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV PATH /opt/miniconda3/bin:$PATH
-RUN locale-gen en_US.UTF-8 && \
+RUN apt-get update && \
+    apt-get --quiet --assume-yes install locales && \
+    locale-gen en_US.UTF-8 && \
     echo "path-exclude /usr/share/doc/*" >/etc/dpkg/dpkg.cfg.d/01_nodoc && \
     echo "path-include /usr/share/doc/*/copyright" >>/etc/dpkg/dpkg.cfg.d/01_nodoc && \
     apt-get update && \
