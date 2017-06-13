@@ -22,7 +22,7 @@ install:
       source /Users/travis/miniconda3/bin/activate root
       conda config --add channels conda-forge
       conda config --set show_channel_urls true
-      conda create env -f environment.yml
+      conda env create -f environment.yml
 
 script:
     - bin/render_notebooks.sh
