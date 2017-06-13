@@ -37,9 +37,17 @@ If you for some reason want to remove the environment you can do so by writing::
 
 CI status
 ---------
+travis
+~~~~~~
+.. |Build status| image:: https://secure.travis-ci.org/sympy/scipy-2017-codegen-tutorial.svg?branch=master
+   :target: http://travis-ci.org/sympy/scipy-2017-codegen-tutorial
+
+Artifacts: https://sympy.github.io/scipy-2017-codegen-tutorial
+
 drone
 ~~~~~
 .. image:: http://hera.physchem.kth.se:9090/api/badges/sympy/scipy-2017-codegen-tutorial/status.svg
    :target: http://hera.physchem.kth.se:9090/sympy/scipy-2017-codegen-tutorial
    :alt: Build status
+
 Artifacts: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/

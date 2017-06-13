@@ -24,7 +24,7 @@ install:
       conda config --set show_channel_urls true
       conda create env -f environment.yml
 
-scripts:
+script:
     - bin/render_notebooks.sh
 
 after_success:
