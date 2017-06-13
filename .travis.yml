@@ -1,0 +1,40 @@
+language: generic
+os: osx
+osx_image: beta-xcode6.1
+
+before_install:
+    # Remove homebrew.
+    - brew remove --force $(brew list)
+    - brew cleanup -s
+    - rm -rf $(brew --cache)
+
+install:
+    - |
+      MINICONDA_URL="https://repo.continuum.io/miniconda"
+      MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
+      bash $MINICONDA_FILE -b
+
+      source /Users/travis/miniconda3/bin/activate root
+      conda config --add channels conda-forge
+      conda config --set show_channel_urls true
+      conda create env -f environment.yml
+      source activate codegen17
+      python setup.py install
+
+scripts:
+    - mkdir deploy
+    - cd deploy
+    - jupyter nbconvert --debug --to=html --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
+    - jupyter nbconvert --debug --to=ipynb --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
+
+after_success:
+    - git checkout gh-pages
+    - git pull
+    - git reset --hard HEAD~1
+    - git clean -xfd
+    - git rm -rf * > /dev/null
+    - mv /tmp/deploy/. .
+    - git add -f .
+    - git commit -m "Latest notebooks"
+    - git push -f origin gh-pages
