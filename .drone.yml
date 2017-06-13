@@ -1,8 +1,9 @@
 build:
-  image: bjodah/bjodahimg16dev:latest
+  image: bjodah/scipy-2017-codegen-tutorial
   commands:
     - export PATH=/opt/miniconda3/bin:$PATH
     - conda env create -f environment.yml
+    - python setup.py install
     - mkdir deploy
     - cd deploy
     - jupyter nbconvert --debug --to=html --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
