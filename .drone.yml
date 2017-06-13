@@ -3,12 +3,7 @@ build:
   commands:
     - export PATH=/opt/miniconda3/bin:$PATH
     - conda env create --quiet -f environment.yml
-    - source activate codegen17
-    - python setup.py install
-    - mkdir deploy
-    - cd deploy
-    - jupyter nbconvert --debug --to=html --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
-    - jupyter nbconvert --debug --to=ipynb --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 ../notebooks/*.ipynb
+    - bin/render_notebooks.sh
 
 deploy:
 
