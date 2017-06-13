@@ -4,7 +4,7 @@ osx_image: beta-xcode6.1
 
 env:
   global:
-    - secure: 
+    - secure: "StZigC8FRTt+d3mMM7EzCFhZ1a0p66/C1fxvtKiMEbaKNKyPl4Z8oQtQdu+sF5BqNH7PO/g/em3sNTOLxhsQTls8ZjT/JUYma36THZ9Pl/dR7zGBZO3xTTZh8N7OtqXRFHqGBpmijy+nI/Hg2vucU7oDpP1vKb1pdDPqADW7bVJaK/AagmO75Vwpa13gYP2kLxuGhgUTIgVrAxPn3299AHA6kjLLU6OLh+/uJwPuEDBNam6cFSLH0U81+k10Fdbmhce0NFD+Q+yg8haFL76XZFw5buQgkbtuAwhE3N0m7rw+cJehkqKknuZshOHr/Pz9Grj+d+13WzN3mDlI32NjzsSmsYM8uCgHpZhNSwnRnZG4xPem132swGl7yOKRfCJQpEvogSVMuAXIYaQc+37JwqczA0g5S+2NYcZobf+BUEgAgb9OIPuueM13U+HDfiB0PRv4c4Yyx8hboNRoRoWCM8rrkpCw6Xtkmk+id+FxGgDEfbvMvdijujYLNG3ltCUx0nAGKC1Iznz8OJvGPOMFUFWMsh4LUaupLs1TzXlG74BcUVJhC1ezH8KT8XLdckhGlcBUBgAoO8RGTV10KHe1e6I/EG+WKYqoayQ3rKFG1SgMAbgDQ4F5tMdXr5xYzh9bABfZDf9vEHNgL0OTaLRHw7NN+9TgXk5IPIs2Pww+8JM="
 
 before_install:
     # Remove homebrew.
@@ -28,4 +28,4 @@ scripts:
     - bin/render_notebooks.sh
 
 after_success:
-    - bin/update_gh-pages.sh deploy
+    - bin/travis_gh-pages.sh deploy

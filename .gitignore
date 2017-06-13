@@ -8,3 +8,6 @@ ode_c_*.pyx*
 ode_c_*.c
 .cache/
 *.egg-info/
+deploy/
+build/
+dist/
