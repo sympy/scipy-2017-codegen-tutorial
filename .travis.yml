@@ -26,6 +26,3 @@ install:
 
 script:
     - bin/render_notebooks.sh
-
-after_success:
-    - bin/travis_gh-pages.sh deploy
