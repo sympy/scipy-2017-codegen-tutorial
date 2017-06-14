@@ -39,13 +39,13 @@ CI status
 ---------
 Below are the build status of the CI services set up to test the tutorial notebooks.
 
-travis(OS X / Python 3)
-~~~~~~~~~~~~~~~~~~~~~~~
+Travis CI (OS X / Python 3)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. image:: https://secure.travis-ci.org/sympy/scipy-2017-codegen-tutorial.svg?branch=master
    :target: http://travis-ci.org/sympy/scipy-2017-codegen-tutorial
    :alt: Travis status
 
-appveyor (Windows)
+AppVeyor (Windows)
 ~~~~~~~~~~~~~~~~~~
 .. image:: https://ci.appveyor.com/api/projects/status/github/sympy/scipy-2017-codegen-tutorial?svg=True
     :target: https://ci.appveyor.com/project/sympy/scipy-2017-codegen-tutorial/branch/master
@@ -57,8 +57,8 @@ CircleCI (Linux / Python 2)
     :target: https://circleci.com/gh/sympy/scipy-2017-codegen-tutorial
     :alt: Circle CI status
 
-drone (Ubuntu 16.04 / Python 3 using dockerimage: bjodah/scipy-2017-codegen-tutorial)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Drone (Dockerized Ubuntu 16.04 / Python 3)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. image:: http://hera.physchem.kth.se:9090/api/badges/sympy/scipy-2017-codegen-tutorial/status.svg
    :target: http://hera.physchem.kth.se:9090/sympy/scipy-2017-codegen-tutorial
    :alt: Drone status
