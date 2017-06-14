@@ -1,0 +1,13 @@
+machine:
+  environment:
+    PATH: "$HOME/miniconda/bin:${PATH}"
+
+dependencies:
+  pre:
+    - ./bin/circleci_dependencies.sh
+  cache_directories:
+    - "~/miniconda"
+
+test:
+  override:
+    - ./bin/render_notebooks.sh
