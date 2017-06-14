@@ -20,10 +20,11 @@ if os.name == 'posix':
     libraries += ['openblas']
 
 if 'CONDA_PREFIX' in os.environ:
+    osx = sys.platform.lower() == 'darwin'
     prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
-    sundials_inc = [prefix_path('Library', 'include')]
-    library_dirs = [prefix_path('Library', 'lib')]
-    if sys.platform.lower() == 'darwin':
+    sundials_inc = [prefix_path('Library', 'include') if osx else prefix_path('include')]
+    library_dirs = [prefix_path('Library', 'lib') if osx else prefix_path('lib')]
+    if osx:
         extra_link_args = ['-Wl,-rpath,%s/' % prefix_path('lib')]
 else:
     sundials_inc = []
