@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -xe
 source activate codegen17
 python -m pip install -e .
 for f in notebooks/{30,35,40,45,50}*.ipynb; do

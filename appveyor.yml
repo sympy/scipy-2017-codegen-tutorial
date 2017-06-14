@@ -47,5 +47,6 @@ install:
 build: off
 
 test_script:
-    - "conda env create -f environment.yml"
+    - "conda env create --quiet -f environment-win-%CONDA_PY%.yml"
+    - "activate codegen17"
     - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html notebooks/*.ipynb"

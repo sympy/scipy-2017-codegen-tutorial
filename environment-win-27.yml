@@ -1,0 +1,15 @@
+name: codegen17
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - notebook
+  - numpy
+  - matplotlib
+  - scipy
+  - cython
+  - sympy
+  - sundials
+  - numba
+  - mingw
