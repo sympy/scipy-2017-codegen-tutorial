@@ -10,4 +10,5 @@ dependencies:
 
 test:
   override:
+    - cd && rm -rf ~/.pyenv && rm -rf ~/virtualenvs
     - ./bin/render_notebooks.sh

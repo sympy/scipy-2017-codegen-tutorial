@@ -50,4 +50,4 @@ test_script:
     - "conda env create --quiet -f environment-win-%CONDA_PY%.yml"
     - "activate codegen17"
     - "python -m pip install -e ."
-    - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html notebooks/*.ipynb"
+    - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html notebooks/30*.ipynb notebooks/35*.ipynb notebooks/40*.ipynb notebooks/45*.ipynb notebooks/50*.ipynb"
