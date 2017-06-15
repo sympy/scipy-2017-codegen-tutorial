@@ -47,8 +47,8 @@ Travis CI (OS X / Python 3)
 
 AppVeyor (Windows)
 ~~~~~~~~~~~~~~~~~~
-.. image:: https://ci.appveyor.com/api/projects/status/github/sympy/scipy-2017-codegen-tutorial?svg=True
-    :target: https://ci.appveyor.com/project/sympy/scipy-2017-codegen-tutorial/branch/master
+.. image:: https://ci.appveyor.com/api/projects/status/bjodah/sympy/scipy-2017-codegen-tutorial?svg=True
+    :target: https://ci.appveyor.com/project/bjodah/scipy-2017-codegen-tutorial/branch/master
     :alt: AppVeyor status
 
 CircleCI (Linux / Python 2)
