@@ -51,4 +51,9 @@ test_script:
     - "activate codegen17"
     - "python -m pip install -e ."
     - "cd notebooks"
+    - ps: >-
+        If ($env:CONDA_PY -Match "27") {
+          sed -i "s/python3/python2/" *.ipynb
+        }
+    - "set PYTHONPATH=%CD%:%PYTHONPATH"
     - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html 30*.ipynb 35*.ipynb 40*.ipynb 45*.ipynb 50*.ipynb"
