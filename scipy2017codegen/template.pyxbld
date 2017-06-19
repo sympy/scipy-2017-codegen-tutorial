@@ -1,4 +1,5 @@
 def get_nt_compiler():
+    import os
     return os.getenv('SCIPY2017CODEGEN_COMPILER', 'mingw32')  # 'mingw32' or 'msvc'
 
 def make_ext(modname, pyxfilename):
