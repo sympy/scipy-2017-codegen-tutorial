@@ -16,12 +16,12 @@ class VODEsys(ODEsys):
         j.ncall = 0
         r = ode(f, j)
         r.set_integrator('vode', method=method, rtol=rtol, atol=atol, **kwargs)
-        if params:
-            r.set_f_params(params)
-            r.set_jac_params(params)
         yout = np.zeros((len(tout), len(y0)))
         yout[0, :] = y0
         r.set_initial_value(yout[0, :], tout[0])
+        if params:
+            r.set_f_params(params)
+            r.set_jac_params(params)
         for idx in range(1, len(tout)):
             r.integrate(tout[idx])
             assert r.successful(), "Integration failed"
