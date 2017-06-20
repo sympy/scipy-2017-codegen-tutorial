@@ -27,7 +27,7 @@ class MOLsys(ODEsys):
         return np.clip(i, 1, self.ny - 2)
 
     def j_eval(self, y, t, *params):
-        j_out = np.empty(self.ny*self.n_lines, self.ny*self.n_lines)  # dense matrix
+        j_out = np.zeros((self.ny*self.n_lines, self.ny*self.n_lines))  # dense matrix
         for i in range(self.n_lines):
             slc = slice(i*self.ny, (i+1)*self.ny)
             j_out[slc, slc] = self.lambdified_j(*chain(y[slc], params))
@@ -59,7 +59,7 @@ class MOLsys(ODEsys):
         x_lines = self.x_centers()
         for i, t in enumerate(tout):
             for j in range(self.ny):
-                c = [0, 0, 0]
+                c = [0.0, 0.0, 0.0]
                 c[j] = t/tout[-1]
                 plt.plot(x_lines, yout[i, j, :], color=c)
         self.print_info(info)
