@@ -1,7 +1,10 @@
+import numpy as np
 from scipy.integrate import ode
 from scipy2017codegen.odesys import ODEsys
 
 class VODEsys(ODEsys):
+    default_integrator = 'vode'
+
     def integrate_vode(self, tout, y0, params=(), method='bdf', rtol=1e-8, atol=1e-8, **kwargs):
         def f(t, y, *args):
             f.ncall +=1

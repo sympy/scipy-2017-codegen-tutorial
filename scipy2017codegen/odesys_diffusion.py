@@ -1,8 +1,7 @@
-from operator import mul
-from functools import reduce
+from itertools import chain
 import numpy as np
-import sympy as sp
-from scipy2017codegen.odesys import ODESys
+import matplotlib.pyplot as plt
+from scipy2017codegen.odesys import ODEsys
 
 
 class MOLsys(ODEsys):
@@ -39,10 +38,28 @@ class MOLsys(ODEsys):
                 j_out[i*self.ny + j, (k+1)*self.ny + j] +=    self.D[j]/self.dx**2
         return j_out
 
-    def second_derivaties_spatial(i, y, out):
+    def second_derivatives_spatial(self, i, y, out):
         k = self.central_reference_bin(i)
         for j in range(self.ny):
             left = y[(k-1)*self.ny + j]
             cent = y[(k  )*self.ny + j]
             rght = y[(k+1)*self.ny + j]
             out[j] = (left - 2*cent + rght)/self.dx**2
+
+    def integrate(self, tout, y0, params=(), **kwargs):
+        y0 = np.array(np.vstack(y0).T.flat)
+        yout, info = super(MOLsys, self).integrate(tout, y0, params, **kwargs)
+        return yout.reshape((tout.size, self.n_lines, self.ny)).transpose((0, 2, 1)), info
+
+    def x_centers(self):
+        return np.linspace(self.dx/2, self.x_end - self.dx/2, self.n_lines)
+
+    def plot_result(self, tout, yout, info=None, ax=None):
+        ax = ax or plt.subplot(1, 1, 1)
+        x_lines = self.x_centers()
+        for i, t in enumerate(tout):
+            for j in range(self.ny):
+                c = [0, 0, 0]
+                c[j] = t/tout[-1]
+                plt.plot(x_lines, yout[i, j, :], color=c)
+        self.print_info(info)

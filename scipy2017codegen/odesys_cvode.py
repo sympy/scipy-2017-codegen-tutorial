@@ -41,6 +41,8 @@ setup_args={
 
 class ODEcvode(ODEsys):
 
+    default_integrator = 'cvode'
+
     def setup(self):
         self.uid = uuid.uuid4().hex[:10]
         self.mod_name = 'ode_c_%s' % self.uid
@@ -63,7 +65,7 @@ class ODEcvode(ODEsys):
         self.mod = __import__(self.mod_name)
         self.integrate_odeint = None
 
-    def integrate(self, tout, y0, params=(), rtol=1e-8, atol=1e-8, **kwargs):
+    def integrate_cvode(self, tout, y0, params=(), rtol=1e-8, atol=1e-8, **kwargs):
         return self.mod._integrate(np.asarray(tout, dtype=np.float64),
                                    np.asarray(y0, dtype=np.float64),
                                    np.atleast_1d(np.asarray(params, dtype=np.float64)),
