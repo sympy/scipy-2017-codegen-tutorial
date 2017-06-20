@@ -5,7 +5,7 @@ import sympy as sp
 def prod(seq):
     return reduce(mul, seq) if seq else 1
 
-def mk_rsys(rxns, names):
+def mk_exprs_symbs(rxns, names):
     concs = sp.symbols(names, real=True, nonnegative=True)
     c_dict = dict(zip(names, concs))
     f = {n: 0 for n in names}
@@ -16,6 +16,6 @@ def mk_rsys(rxns, names):
     return [f[n] for n in names], concs
 
 
-def mk_chemsys(ODEcls, reactions, names, params=(), **kwargs):
-    f, symbs = mk_rsys(reactions, names)
+def mk_rsys(ODEcls, reactions, names, params=(), **kwargs):
+    f, symbs = mk_exprs_symbs(reactions, names)
     return ODEcls(f, symbs, params=map(sp.S, params), **kwargs)

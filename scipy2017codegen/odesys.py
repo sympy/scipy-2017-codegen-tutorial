@@ -11,9 +11,13 @@ class ODEsys(object):
         self.t = t
         self.p = tuple(params)
         self.tex_names = tex_names
-        self.j = sp.Matrix(len(f), 1, f).jacobian(y)
+        self.j = sp.Matrix(self.ny, 1, f).jacobian(y)
         self.lambdify = lambdify or sp.lambdify
         self.setup()
+
+    @property
+    def ny(self):
+        return len(self.y)
 
     def setup(self):
         self.lambdified_f = self.lambdify(self.y + self.p, self.f)
