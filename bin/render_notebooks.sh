@@ -2,7 +2,7 @@
 source activate codegen17
 python -m pip install -e .
 for f in notebooks/*.ipynb; do
-    if [[ $f == _* ]]; then
+    if [[ $f == notebooks/_* ]]; then
         continue
     fi
     jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html $f
