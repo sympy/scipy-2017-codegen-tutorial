@@ -1,5 +1,5 @@
 from itertools import chain  # Py 2.7 does not support func(*args1, *args2)
-import sympy as sp
+import sympy as sym
 from scipy.integrate import odeint
 
 class ODEsys(object):
@@ -13,8 +13,8 @@ class ODEsys(object):
         self.t = t
         self.p = tuple(params)
         self.tex_names = tex_names
-        self.j = sp.Matrix(self.ny, 1, f).jacobian(y)
-        self.lambdify = lambdify or sp.lambdify
+        self.j = sym.Matrix(self.ny, 1, f).jacobian(y)
+        self.lambdify = lambdify or sym.lambdify
         self.setup()
 
     @property

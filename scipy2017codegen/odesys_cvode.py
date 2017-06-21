@@ -1,7 +1,7 @@
 import os
 import sys
 import uuid
-import sympy as sp
+import sympy as sym
 import setuptools
 import numpy as np
 import setuptools
@@ -47,8 +47,8 @@ class ODEcvode(ODEsys):
         self.uid = uuid.uuid4().hex[:10]
         self.mod_name = 'ode_c_%s' % self.uid
         idxs = list(range(len(self.f)))
-        subs = {s: sp.Symbol('y[%d]' % i) for i, s in enumerate(self.y)}
-        f_exprs = ['out[%d] = %s;' % (i, sp.ccode(self.f[i].xreplace(subs)))
+        subs = {s: sym.Symbol('y[%d]' % i) for i, s in enumerate(self.y)}
+        f_exprs = ['out[%d] = %s;' % (i, sym.ccode(self.f[i].xreplace(subs)))
                    for i in idxs]
         j_col_defs = ['realtype * const col_%d = DENSE_COL(J, %d);' % (ci, ci)
                       for ci in idxs]

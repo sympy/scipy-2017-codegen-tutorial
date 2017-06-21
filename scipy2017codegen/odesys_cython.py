@@ -1,6 +1,6 @@
 import uuid
 import numpy as np
-import sympy as sp
+import sympy as sym
 import setuptools
 import pyximport
 from scipy2017codegen import templates
@@ -29,7 +29,7 @@ class CythonODEsys(ODEsys):
     def setup(self):
         self.mod_name = 'ode_cython_%s' % uuid.uuid4().hex[:10]
         idxs = list(range(len(self.f)))
-        subs = {s: sp.Symbol('y[%d]' % i) for i, s in enumerate(self.y)}
+        subs = {s: sym.Symbol('y[%d]' % i) for i, s in enumerate(self.y)}
         f_exprs = ['out[%d] = %s' % (i, str(self.f[i].xreplace(subs))) for i in idxs]
         j_exprs = ['out[%d, %d] = %s' % (ri, ci, self.j[ri, ci].xreplace(subs)) for ri in idxs for ci in idxs]
         ctx = dict(
