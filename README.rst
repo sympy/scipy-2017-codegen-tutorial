@@ -2,6 +2,8 @@ scipy-2017-codegen-tutorial
 ===========================
 SymPy code generation tutorial at SciPy 2017.
 
+Rendered notebooks: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
+
 
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
@@ -62,5 +64,3 @@ Drone (Dockerized Ubuntu 16.04 / Python 3)
 .. image:: http://hera.physchem.kth.se:9090/api/badges/sympy/scipy-2017-codegen-tutorial/status.svg
    :target: http://hera.physchem.kth.se:9090/sympy/scipy-2017-codegen-tutorial
    :alt: Drone status
-
-Artifacts: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
