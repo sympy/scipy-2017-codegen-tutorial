@@ -1,0 +1,45 @@
+package:
+  name: scipy2017codegen
+  version: 2017.1
+
+source:
+  git_url: ../
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record record.txt
+
+requirements:
+  build:
+    - python
+    - notebook
+    - nbconvert
+    - numpy
+    - matplotlib
+    - scipy
+    - cython
+    - sympy
+    - sundials
+    - python-symengine
+    - numba
+  run:
+    - python
+    - notebook
+    - nbconvert
+    - numpy
+    - matplotlib
+    - scipy
+    - cython
+    - sympy
+    - sundials
+    - python-symengine
+    - numba
+    
+
+test:
+  imports:
+    - scipy2017codegen
+
+about:
+  home: https://github.com/sympy/scipy-2017-codegen-tutorial
+  summary: 'Python package for the SciPy 2017 tutorial on code-generation'

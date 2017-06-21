@@ -8,6 +8,7 @@ build:
     - cp intro-slides/* deploy/
     - mv notebooks/*.html deploy/
     - mv notebooks/*.nbconvert.ipynb deploy/
+    - ./bin/build_and_upload_conda_pkg.sh
 
 
 deploy:
