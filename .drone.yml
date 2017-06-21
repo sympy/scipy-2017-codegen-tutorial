@@ -4,9 +4,8 @@ build:
     - export PATH=/opt/miniconda3/bin:$PATH
     - conda env create --quiet -f environment.yml
     - bin/render_notebooks.sh
-    - apt-get update && apt-get install phantomjs imagemagick
-    - cd notebooks/; ../bin/render_index.sh *.html; cd -
     - mkdir deploy
+    - cp intro-slides/* deploy/
     - mv notebooks/*.html deploy/
     - mv notebooks/*.nbconvert.ipynb deploy/
 
