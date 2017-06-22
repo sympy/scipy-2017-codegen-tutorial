@@ -22,6 +22,7 @@ install:
       source /Users/travis/miniconda3/bin/activate root
       conda config --add channels conda-forge
       conda config --set show_channel_urls true
+      sed -i '' -e '$ d' environment.yml
       conda env create -f environment.yml
 
 script:
