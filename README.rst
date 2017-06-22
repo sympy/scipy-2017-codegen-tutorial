@@ -4,6 +4,13 @@ SymPy code generation tutorial at SciPy 2017.
 
 Rendered notebooks: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
 
+Run notebooks using binder
+--------------------------
+.. image:: http://mybinder.org/badge.svg
+   :target: http://mybinder.org/repo/sympy/scipy-2017-codegen-tutorial
+   :alt: Binder
+
+
 
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------

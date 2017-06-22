@@ -6,15 +6,10 @@ build:
     - sed -i '$ d' environment.yml
     - conda env create --quiet -f environment.yml
     - bin/render_notebooks.sh
-    - mkdir deploy
-    - cp intro-slides/* deploy/
-    - mv notebooks/*.html deploy/
-    - mv notebooks/*.nbconvert.ipynb deploy/
+    - bin/prepare_deploy.sh
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
-    - set +x
-    - anaconda -t $$ANACONDA_TOKEN upload -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
-    - set -x
+    - anaconda -t ${ANACONDA_TOKEN} upload --quiet -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
     - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
 
 deploy:
