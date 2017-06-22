@@ -3,8 +3,7 @@ build:
   environment:
     - CONDA_BLD_PATH=/root/conda-bld
   commands:
-    - export PATH=/opt/miniconda3/bin:$PATH
-    - sed -i '' -e '$ d' environment.yml
+    - sed -i '$ d' environment.yml
     - conda env create --quiet -f environment.yml
     - bin/render_notebooks.sh
     - mkdir deploy
@@ -14,6 +13,7 @@ build:
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
     - anaconda -t $$ANACONDA_TOKEN upload -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
+    - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
 
 deploy:
 
