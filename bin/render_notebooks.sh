@@ -6,7 +6,6 @@ for f in notebooks/*.ipynb; do
     if [[ $f == notebooks/_* ]]; then
         continue
     fi
-    sed -i.bak 's/conda-root-py/python3/' $f
     jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html $f
     jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=notebook $f
 done

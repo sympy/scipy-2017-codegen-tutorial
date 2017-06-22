@@ -26,6 +26,7 @@ install:
       conda env create -f environment.yml
 
 script:
+    - sed -i.bak 's/conda-root-py/python3/' notebooks/*.ipynb
     - bin/render_notebooks.sh
 
 notifications:

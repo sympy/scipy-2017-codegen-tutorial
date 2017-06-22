@@ -12,4 +12,5 @@ test:
   override:
     - cd && rm -rf ~/.pyenv && rm -rf ~/virtualenvs
     - sed -i 's/python3/python2/' notebooks/*.ipynb
+    - sed -i 's/conda-root-py/python2/' notebooks/*.ipynb
     - ./bin/render_notebooks.sh

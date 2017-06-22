@@ -6,6 +6,7 @@ build:
   commands:
     - sed -i.bak '$ d' environment.yml
     - conda env create --quiet -f environment.yml
+    - sed -i 's/conda-root-py/python3/' notebooks/*.ipynb
     - bin/render_notebooks.sh
     - bin/prepare_deploy.sh
     - mkdir $CONDA_BLD_PATH
