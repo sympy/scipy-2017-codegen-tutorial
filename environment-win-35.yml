@@ -1,6 +1,6 @@
 name: codegen17
 channels:
-  - sympy
+  - sympy ==3.5
   - symengine
   - conda-forge
   - defaults

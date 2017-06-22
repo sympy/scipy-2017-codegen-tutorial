@@ -4,17 +4,6 @@
 
 environment:
 
-  matrix:
-    - TARGET_ARCH: x86
-      CONDA_PY: 27
-      CONDA_INSTALL_LOCN: C:\\Miniconda
-      SCIPY2017CODEGEN_COMPILER: msvc
-
-    - TARGET_ARCH: x64
-      CONDA_PY: 27
-      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
-      SCIPY2017CODEGEN_COMPILER: msvc
-
     - TARGET_ARCH: x86
       CONDA_PY: 35
       CONDA_INSTALL_LOCN: C:\\Miniconda35
@@ -55,10 +44,6 @@ test_script:
     - "activate codegen17"
     - "python -m pip install -e ."
     - "cd notebooks"
-    - ps: >-
-        If ($env:CONDA_PY -Match "27") {
-          sed -i "s/python3/python2/" *.ipynb
-        }
     - "set PYTHONPATH=%CD%:%PYTHONPATH"
     - "del notebooks\_*.ipynb"
     - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html *.ipynb"
