@@ -6,5 +6,6 @@ if [[ ! -d $HOME/miniconda ]]; then
     conda config --add channels conda-forge
     conda config --set always_yes yes
     conda update --quiet --all
+    sed -i.bak '$ d' environment.yml
     conda env create --quiet -f environment.yml
 fi
