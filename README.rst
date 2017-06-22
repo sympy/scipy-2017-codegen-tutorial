@@ -4,14 +4,6 @@ SymPy code generation tutorial at SciPy 2017.
 
 Rendered notebooks: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
 
-Run notebooks using binder
---------------------------
-.. image:: http://mybinder.org/badge.svg
-   :target: http://mybinder.org/repo/sympy/scipy-2017-codegen-tutorial
-   :alt: Binder
-
-
-
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
 We have provided a file (called ``environment.yml``) describing the
@@ -43,6 +35,36 @@ If you for some reason want to remove the environment you can do so by writing::
 
    > conda env remove --name codegen17
 
+Host a jupyter server using docker
+----------------------------------
+If `docker <https://docker.com>`_ is installed it is possible to simply launch
+a jupyter notebook running in the correct environment by writing::
+
+  $ bin/host-jupyter-using-docker.sh
+
+Note that it will download roughly ~1 GiB first time you run the command. Also note
+that you do not need to have conda installed on your machine to do this (conda is
+installed in the dockerimage).
+
+
+Run notebooks using binder
+--------------------------
+Using only a web-browser (and an internet connection) it is possible to explore the
+notebooks here: (by the courtesy of the people behind mybinder)
+
+.. image:: http://mybinder.org/badge.svg
+   :target: https://beta.mybinder.org/v2/gh/sympy/scipy-2017-codegen-tutorial/master
+   :alt: Binder
+
+Developing the notebooks
+------------------------
+Note that you should remove the last line of ``environment.yml`` (i.e. scipy2017codegen) if
+you intend to make changes to the ``scipy2017codegen`` package (do not commit that change however).
+Otherwise conda will pull the package from:
+https://anaconda.org/SymPy/scipy2017codegen
+
+It is recommended that you run ``python setup.py develop`` after having activated the
+``codegen17`` environment lacking our above mentioned package.
 
 CI status
 ---------
