@@ -1,5 +1,7 @@
 build:
   image: bjodah/scipy-2017-codegen-tutorial
+  environment:
+    - CONDA_BLD_PATH=/root/conda-bld
   commands:
     - export PATH=/opt/miniconda3/bin:$PATH
     - conda env create --quiet -f environment.yml
@@ -8,8 +10,10 @@ build:
     - cp intro-slides/* deploy/
     - mv notebooks/*.html deploy/
     - mv notebooks/*.nbconvert.ipynb deploy/
-    - ./bin/build_and_upload_conda_pkg.sh
-
+    - bin/build_conda_pkg.sh
+    - mkdir $CONDA_BLD_PATH
+    - conda build conda-recipe/
+    - anaconda -t $$ANACONDA_TOKEN upload -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
 
 deploy:
 

@@ -18,5 +18,6 @@ RUN apt-get update && \
     rm miniconda3.sh && \
     conda config --set always_yes yes --set changeps1 no && \
     conda config --add channels conda-forge --force && \
-    conda install python notebook numpy matplotlib scipy cython sundials numba theano && \
+    conda install python notebook numpy matplotlib scipy cython sundials numba theano conda-build anaconda-client && \
+    conda config --set anaconda_upload no && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
