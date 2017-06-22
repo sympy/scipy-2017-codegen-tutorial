@@ -12,7 +12,9 @@ build:
     - mv notebooks/*.nbconvert.ipynb deploy/
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
+    - set +x
     - anaconda -t $$ANACONDA_TOKEN upload -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
+    - set -x
     - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
 
 deploy:
