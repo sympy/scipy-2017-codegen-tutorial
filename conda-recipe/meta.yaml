@@ -12,17 +12,6 @@ build:
 requirements:
   build:
     - python
-    - notebook
-    - nbconvert
-    - numpy
-    - matplotlib
-    - scipy
-    - cython
-    - theano
-    - sympy
-    - sundials
-    - python-symengine
-    - numba
   run:
     - python
     - notebook
