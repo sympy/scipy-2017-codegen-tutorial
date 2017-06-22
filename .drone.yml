@@ -9,8 +9,11 @@ build:
     - bin/prepare_deploy.sh
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
-    - anaconda -t ${ANACONDA_TOKEN} upload --quiet -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
     - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
+  environment:
+    - ANACONDA_TOKEN=$$ANACONDA_TOKEN
+  commands:
+    - anaconda -t ${ANACONDA_TOKEN} upload --quiet -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
 
 deploy:
 
