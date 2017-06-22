@@ -7,3 +7,6 @@ cp -r index.* intro-slides/ notebooks/ deploy/
 if [[ "$DRONE" == "true" ]]; then
     sed -i.bak "s/number: 0/number: ${DRONE_BUILD_NUMBER}/" conda-recipe/meta.yaml
 fi
+for f in deploy/*.nbconvert.ipynb; do
+    mv $f ${f%.nbconvert.ipynb}.ipynb
+done
