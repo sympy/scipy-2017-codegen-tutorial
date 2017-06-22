@@ -2,6 +2,7 @@ build:
   image: bjodah/scipy-2017-codegen-tutorial
   environment:
     - CONDA_BLD_PATH=/root/conda-bld
+    - ANACONDA_TOKEN=$$ANACONDA_TOKEN
   commands:
     - sed -i '$ d' environment.yml
     - conda env create --quiet -f environment.yml
@@ -10,9 +11,6 @@ build:
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
     - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
-  environment:
-    - ANACONDA_TOKEN=$$ANACONDA_TOKEN
-  commands:
     - anaconda -t ${ANACONDA_TOKEN} upload --no-progress -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
 
 deploy:
