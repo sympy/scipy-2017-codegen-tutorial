@@ -11,7 +11,7 @@ RUN apt-get update && \
     echo "path-exclude /usr/share/doc/*" >/etc/dpkg/dpkg.cfg.d/01_nodoc && \
     echo "path-include /usr/share/doc/*/copyright" >>/etc/dpkg/dpkg.cfg.d/01_nodoc && \
     apt-get update && \
-    apt-get --quiet --assume-yes --no-install-recommends install wget git g++ gfortran libgmp-dev binutils-dev bzip2 make && \
+    apt-get --quiet --assume-yes --no-install-recommends install wget git g++ gfortran libgmp-dev binutils-dev bzip2 make sudo && \
     apt-get clean && \
     wget --no-check-certificate --no-verbose "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh" -O miniconda3.sh && \
     bash miniconda3.sh -b -p /opt/miniconda3 && \

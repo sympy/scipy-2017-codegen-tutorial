@@ -11,3 +11,6 @@ ode_c_*.c
 deploy/
 build/
 dist/
+.conda/
+.ipython/
+.local/
