@@ -14,3 +14,5 @@ dist/
 .conda/
 .ipython/
 .local/
+.jupyter/migrated
+.pyxbld/

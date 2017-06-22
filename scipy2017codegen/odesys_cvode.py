@@ -10,33 +10,24 @@ from scipy2017codegen import templates
 from scipy2017codegen.odesys import ODEsys
 
 pyximport.install()
-libraries = ['sundials_cvode', 'sundials_nvecserial']
-extra_link_args = []
 
-if os.name != 'nt':
-    libraries += ['m']
-
-if os.name == 'posix':
-    libraries += ['openblas']
-
-if 'CONDA_PREFIX' in os.environ:
-    osx = sys.platform.lower() == 'darwin'
-    prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
-    sundials_inc = [prefix_path('Library', 'include') if osx else prefix_path('include')]
-    library_dirs = [prefix_path('Library', 'lib') if osx else prefix_path('lib')]
-    if osx:
-        extra_link_args = ['-Wl,-rpath,%s/' % prefix_path('lib')]
-else:
-    sundials_inc = []
-    library_dirs = []
-
-setup_args={
-    'include_dirs': [os.getcwd(), np.get_include()] + sundials_inc,
-    'library_dirs': library_dirs,
-    'libraries': libraries,
+kw = {
+    'include_dirs': [os.getcwd(), np.get_include()],
+    'libraries': ['sundials_cvode', 'sundials_nvecserial'],
+    'library_dirs': [],
     'extra_compile_args': [],
-    'extra_link_args': extra_link_args
+    'extra_link_args': []
 }
+
+osx = sys.platform.lower() == 'darwin'
+win = os.name == 'nt'
+posix = os.name == 'posix'
+
+if not win:
+    kw['libraries'] += ['m']
+
+if posix:
+    kw['libraries'] += ['openblas']
 
 
 class ODEcvode(ODEsys):
@@ -61,7 +52,7 @@ class ODEcvode(ODEsys):
         )
         open('integrate_serial_%s.c' % self.uid, 'wt').write(templates.sundials['integrate_serial.c'] % ctx)
         open('%s.pyx' % self.mod_name, 'wt').write(templates.sundials['_integrate_serial.pyx'] % {'uid': self.uid})
-        open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % {k: str(v) for k, v in setup_args.items()})
+        open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % kw)
         self.mod = __import__(self.mod_name)
         self.integrate_odeint = None
 
