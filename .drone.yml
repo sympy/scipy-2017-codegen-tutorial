@@ -4,7 +4,7 @@ build:
     - CONDA_BLD_PATH=/root/conda-bld
     - ANACONDA_TOKEN=$$ANACONDA_TOKEN
   commands:
-    - sed -i '$ d' environment.yml
+    - sed -i.bak '$ d' environment.yml
     - conda env create --quiet -f environment.yml
     - bin/render_notebooks.sh
     - bin/prepare_deploy.sh
@@ -14,7 +14,7 @@ build:
     - conda build --python 35 conda-recipe/
     - conda build --python 36 conda-recipe/
     - conda convert -p all --output $CONDA_BLD_PATH $CONDA_BLD_PATH/linux-64/*.tar.bz2
-    - cp $CONDA_BLD_PATH/* deploy/
+    - cp -r $CONDA_BLD_PATH/linux-* $CONDA_BLD_PATH/win-* $CONDA_BLD_PATH/osx-* deploy/
     - anaconda -t ${ANACONDA_TOKEN} upload --no-progress -u sympy --force $CONDA_BLD_PATH/*/*.tar.bz2
 
 deploy:
