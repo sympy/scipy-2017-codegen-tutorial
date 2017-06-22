@@ -1,39 +1,81 @@
+===========================
 scipy-2017-codegen-tutorial
 ===========================
-SymPy code generation tutorial at SciPy 2017.
 
-Rendered notebooks: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
+Introduction
+============
+
+This repository contains all of the source code and Jupyter notebooks for the
+SciPy 2017 tutorial "Automatic Code Generation with SymPy".
+
+The proposal for this tutorial can be found on the `SymPy Wiki`_.
+
+.. _SymPy Wiki: https://github.com/sympy/sympy/wiki/SciPy-2017-Tutorial-Proposal:-Automatic-Code-Generation-with-SymPy
+
+The statically rendered Jupyter notebooks in this repository can be viewed at
+the `KTH website`_ or on NBViewer_.
+
+.. _KTH website: http://hera.physchem.kth.se/~scipy-2017-codegen-tutorial/
+.. _NBViewer: http://nbviewer.jupyter.org/github/sympy/scipy-2017-codegen-tutorial/blob/master/index.ipynb
+
+Software Installation
+=====================
+
+We leverage the Conda package manager for installation of the necessary
+software on the three most popular platforms. Please install either Anaconda_
+or Miniconda_ using the instructions provided at the download links.
+
+.. _Anaconda: https://www.continuum.io/downloads
+.. _Miniconda: https://conda.io/miniconda.html
+
+You will need to download_ and unzip or clone_ this repository with Git so that
+the files are available on your computer.
+
+.. _download: https://github.com/sympy/scipy-2017-codegen-tutorial/archive/master.zip
+.. _clone: https://github.com/sympy/scipy-2017-codegen-tutorial.git
+
+At the command line, change into the repository directory::
+
+   > cd /path/to/scipy-2017-codegen-tutorial
 
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
-We have provided a file (called ``environment.yml``) describing the
-environment (named ``codegen17``). If you have `conda <https://www.continuum.io/downloads>`_
-installed you can create this environment by executing::
+Once you have conda installed, we have provided a file (called
+``environment.yml``) that specifies conda environment (named ``codegen17``).
+At the command line, you can create this environment by executing::
 
    > conda env create -f environment.yml
 
-when installation is complete you may acivate the environment by writing::
+**Run this command before you arrive at the tutorial, as it takes some time.**
+
+When installation is complete you may activate the environment by typing::
 
    > activate codegen17
 
-or using bash::
+on Windows or using Bash on Linux/Mac)::
 
    $ source activate codegen17
 
-next step is to start the jupyter notebook::
+The next step is to start Jupyter::
 
    (codegen17)> cd notebooks
    (codegen17)> jupyter notebook
 
-a web interface should open in your browser (default address http://localhost:8888).
+A web interface should open in your web browser (default address
+http://localhost:8888). Note that Ctrl-C will stop the notebook server.
 
-To exit the environment you write::
+To exit the environment you type::
 
    > deactivate
 
 If you for some reason want to remove the environment you can do so by writing::
 
    > conda env remove --name codegen17
+
+At this point you have everything installed to run the code in the tutorial.
+
+Optional Installation/Run Methods
+=================================
 
 Host a jupyter server using docker
 ----------------------------------
@@ -46,7 +88,6 @@ Note that it will download roughly ~1 GiB first time you run the command. Also n
 that you do not need to have conda installed on your machine to do this (conda is
 installed in the dockerimage).
 
-
 Run notebooks using binder
 --------------------------
 Using only a web-browser (and an internet connection) it is possible to explore the
@@ -57,7 +98,7 @@ notebooks here: (by the courtesy of the people behind mybinder)
    :alt: Binder
 
 Developing the notebooks
-------------------------
+========================
 Note that you should remove the last line of ``environment.yml`` (i.e. scipy2017codegen) if
 you intend to make changes to the ``scipy2017codegen`` package (do not commit that change however).
 Otherwise conda will pull the package from:
