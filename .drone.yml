@@ -9,9 +9,10 @@ build:
     - bin/render_notebooks.sh
     - bin/prepare_deploy.sh
     - mkdir $CONDA_BLD_PATH
-    - conda build conda-recipe/
-    - cp $CONDA_BLD_PATH/linux-64/*.tar.bz2 deploy/
-    - anaconda -t ${ANACONDA_TOKEN} upload --no-progress -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2
+    - conda build --python 27 --python 34 --python 35 --python 36 conda-recipe/
+    - conda convert -p all --output $CONDA_BLD_PATH $CONDA_BLD_PATH/linux-64/*.tar.bz2
+    - cp $CONDA_BLD_PATH/* deploy/
+    - anaconda -t ${ANACONDA_TOKEN} upload --no-progress -u sympy --force $CONDA_BLD_PATH/*/*.tar.bz2
 
 deploy:
 
