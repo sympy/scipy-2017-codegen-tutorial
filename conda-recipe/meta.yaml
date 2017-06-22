@@ -18,6 +18,7 @@ requirements:
     - matplotlib
     - scipy
     - cython
+    - theano
     - sympy
     - sundials
     - python-symengine
@@ -30,6 +31,7 @@ requirements:
     - matplotlib
     - scipy
     - cython
+    - theano
     - sympy
     - sundials
     - python-symengine
