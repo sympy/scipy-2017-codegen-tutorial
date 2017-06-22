@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -u
 conda install conda-build anaconda-client
 conda config --add channels https://conda.anaconda.org/t//sympy
 conda config --set anaconda_upload no
