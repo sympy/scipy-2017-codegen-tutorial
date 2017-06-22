@@ -10,8 +10,6 @@ build:
     - bin/render_notebooks.sh
     - bin/prepare_deploy.sh
     - mkdir $CONDA_BLD_PATH
-    - conda build --python 27 conda-recipe/
-    - conda build --python 34 conda-recipe/
     - conda build --python 35 conda-recipe/
     - conda build --python 36 conda-recipe/
     - conda convert -p all --output $CONDA_BLD_PATH $CONDA_BLD_PATH/linux-64/*.tar.bz2
