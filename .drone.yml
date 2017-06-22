@@ -10,7 +10,6 @@ build:
     - cp intro-slides/* deploy/
     - mv notebooks/*.html deploy/
     - mv notebooks/*.nbconvert.ipynb deploy/
-    - bin/build_conda_pkg.sh
     - mkdir $CONDA_BLD_PATH
     - conda build conda-recipe/
     - anaconda -t $$ANACONDA_TOKEN upload -u sympy --force $CONDA_BLD_PATH/linux-64/*.tar.bz2

@@ -18,3 +18,4 @@ dependencies:
   - python-symengine
   - numba
   - mingw
+  - scipy2017codegen

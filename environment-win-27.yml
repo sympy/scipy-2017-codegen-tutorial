@@ -16,3 +16,4 @@ dependencies:
   - sundials
   - numba
   - mingw
+  - scipy2017codegen
