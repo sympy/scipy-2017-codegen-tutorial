@@ -29,7 +29,14 @@ or Miniconda_ using the instructions provided at the download links.
 .. _Miniconda: https://conda.io/miniconda.html
 
 You will need to download_ and unzip or clone_ this repository with Git so that
-the files are available on your computer.
+the files are available on your computer. For example::
+
+   > wget https://github.com/sympy/scipy-2017-codegen-tutorial/archive/master.zip
+   > unzip master.zip
+
+or::
+
+   > git clone https://github.com/sympy/scipy-2017-codegen-tutorial.git
 
 .. _download: https://github.com/sympy/scipy-2017-codegen-tutorial/archive/master.zip
 .. _clone: https://github.com/sympy/scipy-2017-codegen-tutorial.git
