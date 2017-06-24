@@ -29,7 +29,14 @@ or Miniconda_ using the instructions provided at the download links.
 .. _Miniconda: https://conda.io/miniconda.html
 
 You will need to download_ and unzip or clone_ this repository with Git so that
-the files are available on your computer.
+the files are available on your computer. For example::
+
+   > wget https://github.com/sympy/scipy-2017-codegen-tutorial/archive/master.zip
+   > unzip master.zip
+
+or::
+
+   > git clone https://github.com/sympy/scipy-2017-codegen-tutorial.git
 
 .. _download: https://github.com/sympy/scipy-2017-codegen-tutorial/archive/master.zip
 .. _clone: https://github.com/sympy/scipy-2017-codegen-tutorial.git
@@ -40,6 +47,7 @@ At the command line, change into the repository directory::
 
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
+
 Once you have conda installed, we have provided a file (called
 ``environment.yml``) that specifies conda environment (named ``codegen17``).
 At the command line, you can create this environment by executing::
@@ -56,23 +64,34 @@ on Windows or using Bash on Linux/Mac)::
 
    $ source activate codegen17
 
-The next step is to start Jupyter::
+To check to see if everything is installed correctly type::
+
+   (codegen17)> python bin/check_installation.py
+
+If there are no errors or warnings you have installed the software correctly.
+
+To exit the environment you type::
+
+   (codegen17)> deactivate
+
+If you for some reason want to remove the environment you can do so after
+deactivating by typing::
+
+   > conda env remove --name codegen17
+
+At this point you have everything installed to run the code in the tutorial.
+
+Running the notebooks
+=====================
+
+After activating the `codgen17` environment start Jupyter in the `notebooks`
+directory::
 
    (codegen17)> cd notebooks
    (codegen17)> jupyter notebook
 
 A web interface should open in your web browser (default address
 http://localhost:8888). Note that Ctrl-C will stop the notebook server.
-
-To exit the environment you type::
-
-   > deactivate
-
-If you for some reason want to remove the environment you can do so by writing::
-
-   > conda env remove --name codegen17
-
-At this point you have everything installed to run the code in the tutorial.
 
 Optional Installation/Run Methods
 =================================
