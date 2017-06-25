@@ -10,7 +10,7 @@ dependencies:
 
 test:
   override:
-    - apt-get remove gcc
+    - sudo apt-get remove gcc
     - cd && rm -rf ~/.pyenv && rm -rf ~/virtualenvs
     - sed -i 's/conda-root-py/python3/' notebooks/*.ipynb
     - ./bin/render_notebooks.sh
