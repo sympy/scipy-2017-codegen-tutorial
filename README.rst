@@ -48,9 +48,14 @@ At the command line, change into the repository directory::
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
 
-Once you have conda installed, we have provided a file (called
-``environment.yml``) that specifies conda environment (named ``codegen17``).
-At the command line, you can create this environment by executing::
+Once you have conda installed, you can choose from one of our environment files:
+
+- ``environment.yml`` (install gcc)
+- ``environment-nogcc.yml`` (will rely on your system compiler)
+- ``environment-win-35.yml`` (for use on Windows if Microsoft Visual C++ is missing)
+
+that specifies our conda environment (named ``codegen17``).
+At the command line, you can create this environment by executing e.g.::
 
    > conda env create -f environment.yml
 
@@ -142,14 +147,14 @@ AppVeyor (Windows)
     :target: https://ci.appveyor.com/project/bjodah/scipy-2017-codegen-tutorial/branch/master
     :alt: AppVeyor status
 
-CircleCI (Linux)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CircleCI (Linux - tests environment.yml)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. image:: https://circleci.com/gh/sympy/scipy-2017-codegen-tutorial.svg?style=shield
     :target: https://circleci.com/gh/sympy/scipy-2017-codegen-tutorial
     :alt: Circle CI status
 
-Drone (Dockerized Ubuntu 16.04)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Drone (Dockerized Ubuntu 16.04 - tests environment-nogcc.yml)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. image:: http://hera.physchem.kth.se:9090/api/badges/sympy/scipy-2017-codegen-tutorial/status.svg
    :target: http://hera.physchem.kth.se:9090/sympy/scipy-2017-codegen-tutorial
    :alt: Drone status

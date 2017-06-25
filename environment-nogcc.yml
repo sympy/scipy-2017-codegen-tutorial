@@ -18,5 +18,4 @@ dependencies:
   - sundials
   - python-symengine
   - numba
-  - gcc
   - scipy2017codegen
