@@ -21,7 +21,6 @@ requirements:
     - scipy
     - cython
     - theano
-    - sympy
     - sundials
     - python-symengine
     - numba
