@@ -16,3 +16,4 @@ dist/
 .local/
 .jupyter/migrated
 .pyxbld/
+.theano/
