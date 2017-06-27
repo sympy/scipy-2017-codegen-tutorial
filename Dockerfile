@@ -10,8 +10,10 @@ RUN apt-get update && \
     apt-get clean
 
 USER main
+
 COPY environment.yml /tmp/environment.yml
 RUN sed 's/codegen17/binder/' /tmp/environment.yml > /tmp/binder.yml && \
+    conda update -y conda && \
     conda env create -f /tmp/binder.yml && \
     echo "export PATH=/home/main/anaconda2/envs/binder/bin/:/home/main/anaconda3/envs/binder/bin/:$PATH" >> ~/.binder_start && \
     /bin/bash -c "source activate binder && jupyter kernelspec install-self --user" && \
