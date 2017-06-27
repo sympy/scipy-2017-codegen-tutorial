@@ -4,7 +4,7 @@ MAINTAINER SymPy devlopment team <sympy@googlegroups.com>
 
 USER root
 
-# Add dependency
+# This dockerfile is solely designed to run on binder (mybinder.org)
 RUN apt-get update && \
     apt-get --quiet --assume-yes install wget git g++ gfortran libgmp-dev binutils-dev bzip2 make sudo && \
     apt-get clean
@@ -21,3 +21,4 @@ RUN sed 's/codegen17/binder/' /tmp/environment.yml > /tmp/binder.yml && \
     echo "c.NotebookApp.token = ''" >> $HOME/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.password=''" >> $HOME/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.password_required=False" >> $HOME/.jupyter/jupyter_notebook_config.py
+ENV CONDA_PREFIX /home/main/anaconda2/envs/binder
