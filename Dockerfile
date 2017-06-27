@@ -10,6 +10,6 @@ RUN apt-get update && \
     apt-get clean
 
 USER main
-
+ADD .
 RUN conda env create -f environment.yml && \
     conda config --set core.default_env=codegen17
