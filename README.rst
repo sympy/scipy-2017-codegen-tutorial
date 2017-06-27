@@ -71,7 +71,7 @@ on Windows or using Bash on Linux/Mac)::
 
 To check to see if everything is installed correctly type::
 
-   (codegen17)> python bin/check_installation.py
+   (codegen17)> python test_installation.py
 
 If there are no errors or warnings you have installed the software correctly.
 
