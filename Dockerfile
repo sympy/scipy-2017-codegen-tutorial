@@ -11,5 +11,11 @@ RUN apt-get update && \
 
 USER main
 COPY environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml && \
-    conda config --set core.default_env=codegen17
+RUN sed -i 's/codegen17/binder/' /tmp/environment.yml && \
+    conda env create -f /tmp/environment.yml && \
+    echo "export PATH=/home/main/anaconda2/envs/binder/bin/:/home/main/anaconda3/envs/binder/bin/:$PATH" >> ~/.binder_start && \
+    /bin/bash -c "source activate binder && jupyter kernelspec install-self --user" && \
+    mkdir $HOME/.jupyter && \
+    echo "c.NotebookApp.token = ''" >> $HOME/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.password=''" >> $HOME/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.password_required=False" >> $HOME/.jupyter/jupyter_notebook_config.py
