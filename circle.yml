@@ -14,3 +14,4 @@ test:
     - cd && rm -rf ~/.pyenv && rm -rf ~/virtualenvs
     - sed -i 's/conda-root-py/python3/' notebooks/*.ipynb
     - ./bin/render_notebooks.sh
+    - python test_installation.py

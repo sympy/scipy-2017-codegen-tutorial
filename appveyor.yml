@@ -49,3 +49,5 @@ test_script:
     - "set PYTHONPATH=%CD%:%PYTHONPATH"
     - "del notebooks\_*.ipynb"
     - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html *.ipynb"
+    - "cd .."
+    - "python test_installation.py"
