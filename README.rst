@@ -8,7 +8,7 @@ Introduction
 This repository contains all of the source code and Jupyter notebooks for the
 SciPy 2017 tutorial "Automatic Code Generation with SymPy".
 
-The proposal for this tutorial can be found on the `SymPy Wiki`_.
+The original proposal for this tutorial can be found on the `SymPy Wiki`_.
 
 .. _SymPy Wiki: https://github.com/sympy/sympy/wiki/SciPy-2017-Tutorial-Proposal:-Automatic-Code-Generation-with-SymPy
 
@@ -27,6 +27,13 @@ or Miniconda_ using the instructions provided at the download links.
 
 .. _Anaconda: https://www.continuum.io/downloads
 .. _Miniconda: https://conda.io/miniconda.html
+
+If you are using Windows, please also install the `Visual C++ Build Tools`_ for
+proper Cython compiliation with Python 3.5+. **Install this before you arrive
+at the tutorial, as it takes some time.**
+
+.. _Visual C++ Build Tools: http://landinghub.visualstudio.com/visual-cpp-build-tools
+
 
 You will need to download_ and unzip or clone_ this repository with Git so that
 the files are available on your computer. For example::
@@ -54,8 +61,8 @@ Once you have conda installed, you can choose from one of our environment files:
 - ``environment-nogcc.yml`` (will rely on your system compiler)
 - ``environment-win-35.yml`` (for use on Windows if Microsoft Visual C++ is missing)
 
-that specifies our conda environment (named ``codegen17``).
-At the command line, you can create this environment by executing e.g.::
+that specifies our conda environment (named ``codegen17``). At the command
+line, you can create this environment by executing e.g.::
 
    > conda env create -f environment.yml
 
