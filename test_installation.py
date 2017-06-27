@@ -35,3 +35,26 @@ try:
 except:
     print("sympy.utilities.autowrap.ufuncify does not work")
     raise
+
+try:
+    import conda
+except ImportError:
+    print("conda is needed (either anaconda or miniconda from https://www.continuum.io/downloads)")
+    print("(try rerunning this script under conda if you are using for system's python distribution)")
+else:
+    major, minor, patch = map(int, conda.__version__.split('.'))
+    if major > 4 or (major == 4 and minor >= 1):
+        pass
+    else:
+        print("please update conda ($ conda update conda), we need conda >= 4.1.0")
+        exit(1)
+
+try:
+    import matplotlib
+except ImportError:
+    print("matplotlib is required for the tutorial")
+
+try:
+    import notebook
+except ImportError:
+    print("notebook (jupyter notebook) is required for the tutorial")
