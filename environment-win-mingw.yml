@@ -1,11 +1,11 @@
 name: codegen17
 channels:
-  - sympy ==3.5
+  - sympy
   - symengine
   - conda-forge
   - defaults
 dependencies:
-  - python
+  - python ==3.5
   - notebook
   - nbconvert
   - numpy

@@ -57,9 +57,9 @@ Creating a conda environment from ``environment.yml``
 
 Once you have conda installed, you can choose from one of our environment files:
 
-- ``environment.yml`` (install gcc)
-- ``environment-nogcc.yml`` (will rely on your system compiler)
-- ``environment-win-35.yml`` (for use on Windows if Microsoft Visual C++ is missing)
+- ``environment.yml`` (relies on your system compiler, e.g. gcc/clang/msvc on linux/osx/win)
+- ``environment-gcc.yml`` (installs conda's version of gcc)
+- ``environment-win-mingw.yml`` (for use on Windows if Microsoft Visual C++ is missing)
 
 that specifies our conda environment (named ``codegen17``). At the command
 line, you can create this environment by executing e.g.::
@@ -78,7 +78,7 @@ on Windows or using Bash on Linux/Mac)::
 
 To check to see if everything is installed correctly type::
 
-   (codegen17)> python bin/check_installation.py
+   (codegen17)> python test_installation.py
 
 If there are no errors or warnings you have installed the software correctly.
 
@@ -125,7 +125,7 @@ Using only a web-browser (and an internet connection) it is possible to explore 
 notebooks here: (by the courtesy of the people behind mybinder)
 
 .. image:: http://mybinder.org/badge.svg
-   :target: https://beta.mybinder.org/v2/gh/sympy/scipy-2017-codegen-tutorial/master
+   :target: https://beta.mybinder.org/v2/gh/sympy/scipy-2017-codegen-tutorial/master?filepath=index.ipynb
    :alt: Binder
 
 Developing the notebooks
