@@ -40,8 +40,8 @@ install:
 build: off
 
 test_script:
-    - "sed -i '$ d' environment-win-%CONDA_PY%.yml"
-    - "conda env create --quiet -f environment-win-%CONDA_PY%.yml"
+    - "sed -i '$ d' environment.yml"
+    - "conda env create --quiet -f environment.yml"
     - "activate codegen17"
     - "python -m pip install -e ."
     - "cd notebooks"
