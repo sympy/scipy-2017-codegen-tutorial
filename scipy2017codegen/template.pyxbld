@@ -6,6 +6,7 @@ def make_ext(modname, pyxfilename):
     import os
     import sys
     from Cython.Build import cythonize
+    import scipy2017codegen
     ext = cythonize([pyxfilename], include_path=['.'])[0]
     ext.extra_compile_args.extend(['-std=c99'])
     ext.include_dirs.extend(%(include_dirs)s)
@@ -20,8 +21,9 @@ def make_ext(modname, pyxfilename):
         prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
         if win and get_nt_compiler() == 'mingw32':
             ext.library_dirs.append(os.environ['CONDA_PREFIX'])  # libpythonXX.dll is located in the environment root
-        ext.include_dirs.append(prefix_path('Library', 'include') if osx or win else prefix_path('include'))
         ext.library_dirs.append(prefix_path('Library', 'lib') if osx or win else prefix_path('lib'))
+        ext.include_dirs.append(prefix_path('Library', 'include') if osx or win else prefix_path('include'))
+        ext.include_dirs.append(os.path.dirname(scipy2017codegen.__file__))
     ext.libraries.extend(%(libraries)s)
     ext.extra_compile_args.extend(%(extra_compile_args)s)
     ext.extra_link_args.extend(%(extra_link_args)s)
