@@ -1,3 +1,4 @@
 graft scipy2017codegen/sundials_templates
 include scipy2017codegen/template.pyxbld
 graft scipy2017codegen/data
+graft scipy2017codegen/fastapprox
