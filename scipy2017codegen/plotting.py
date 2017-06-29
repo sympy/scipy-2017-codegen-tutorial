@@ -166,5 +166,5 @@ var myBarChart = new chartjs.Chart(ctx, {{
 
 }});
 
-element.append("<canvas id='{chart_id}'></canvas>");\
+element.append("<canvas id='{chart_id}' width='400'></canvas>");\
 """
