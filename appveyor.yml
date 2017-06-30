@@ -15,6 +15,16 @@ environment:
       CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
       SCIPY2017CODEGEN_COMPILER: msvc
 
+    - TARGET_ARCH: x86
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35
+      SCIPY2017CODEGEN_COMPILER: mingw32
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      SCIPY2017CODEGEN_COMPILER: mingw32
+
 # We always use a 64-bit machine, but can build x86 distributions
 # with the TARGET_ARCH variable.
 platform:
@@ -40,6 +50,11 @@ install:
 build: off
 
 test_script:
+    - ps: |
+        if ($env:SCIPY2017CODEGEN_COMPILER -Match "mingw32") {
+           Remove-Item environment.yml
+           Move-Item environment-win-mingw.yml environment.yml
+        }
     - "sed -i '$ d' environment.yml"
     - "conda env create --quiet -f environment.yml"
     - "activate codegen17"
