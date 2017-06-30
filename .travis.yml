@@ -28,7 +28,7 @@ install:
 script:
     - sed -i.bak 's/conda-root-py/python3/' notebooks/*.ipynb
     - bin/render_notebooks.sh
-    - python test_installation.py
+    - bash -c "source activate codegen17; python test_installation.py"
 
 notifications:
   email: false
