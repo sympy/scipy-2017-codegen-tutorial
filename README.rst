@@ -55,13 +55,13 @@ At the command line, change into the repository directory::
 Creating a conda environment from ``environment.yml``
 -----------------------------------------------------
 
-Once you have conda installed, you can choose from one of our environment files:
+Once you have conda installed, you can choose from one of our environment
+files that specifies our conda environment (named ``codegen17``):
 
 - ``environment.yml`` (relies on your system compiler, e.g. gcc/clang/msvc on linux/osx/win)
 - ``environment-gcc.yml`` (installs conda's version of gcc)
-- ``environment-win-mingw.yml`` (for use on Windows if Microsoft Visual C++ is missing)
 
-that specifies our conda environment (named ``codegen17``). At the command
+we strongly encourage user to use ``environment.yml``. At the command
 line, you can create this environment by executing e.g.::
 
    > conda env create -f environment.yml
