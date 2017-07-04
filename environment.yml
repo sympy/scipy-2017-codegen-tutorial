@@ -14,7 +14,7 @@ dependencies:
   - cython
   - theano
   - pip:
-      - https://github.com/sympy/sympy/archive/7efbee85cf49d767a11de8344b2b99b2b2460769.tar.gz
+      - https://github.com/sympy/sympy/archive/sympy-1.1rc1.tar.gz
   - sundials
   - python-symengine
   - numba
