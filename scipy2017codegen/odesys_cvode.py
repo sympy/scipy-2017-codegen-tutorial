@@ -12,6 +12,7 @@ from scipy2017codegen.odesys import ODEsys
 pyximport.install()
 
 kw = {
+    'sources': [],
     'include_dirs': [os.getcwd(), np.get_include()],
     'libraries': ['sundials_cvode', 'sundials_nvecserial'],
     'library_dirs': [],

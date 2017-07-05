@@ -39,7 +39,7 @@ class CythonODEsys(ODEsys):
         )
         open('%s.pyx' % self.mod_name, 'wt').write(cython_template % ctx)
         open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % dict(
-            include_dirs=[np.get_include()],
+            sources=[], include_dirs=[np.get_include()],
             library_dirs=[], libraries=[], extra_compile_args=[], extra_link_args=[]
         ))
         mod = __import__(self.mod_name)
