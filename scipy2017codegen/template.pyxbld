@@ -5,12 +5,23 @@ def get_nt_compiler():
 def make_ext(modname, pyxfilename):
     import os
     import sys
-    from Cython.Build import cythonize
+    from distutils.extension import Extension
     import scipy2017codegen
-    ext = cythonize([pyxfilename], include_path=['.'])[0]
-    ext.extra_compile_args.extend(['-std=c99'])
-    ext.include_dirs.extend(%(include_dirs)s)
-    ext.library_dirs.extend(%(library_dirs)s)
+
+    sources = [pyxfilename]
+    sources.extend(%(sources)s)
+
+    libraries = %(libraries)s
+
+    include_dirs = ['.']
+    include_dirs.extend(%(include_dirs)s)
+
+    library_dirs = %(library_dirs)s
+
+    extra_compile_args = ['-std=c99']
+    extra_compile_args.extend(%(extra_compile_args)s)
+
+    extra_link_args = %(extra_link_args)s
 
     osx = sys.platform.lower() == 'darwin'
     win = os.name == 'nt'
@@ -21,12 +32,18 @@ def make_ext(modname, pyxfilename):
         prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
         if win and get_nt_compiler() == 'mingw32':
             ext.library_dirs.append(os.environ['CONDA_PREFIX'])  # libpythonXX.dll is located in the environment root
-        ext.library_dirs.append(prefix_path('Library', 'lib') if osx or win else prefix_path('lib'))
-        ext.include_dirs.append(prefix_path('Library', 'include') if osx or win else prefix_path('include'))
-        ext.include_dirs.append(os.path.dirname(scipy2017codegen.__file__))
-    ext.libraries.extend(%(libraries)s)
-    ext.extra_compile_args.extend(%(extra_compile_args)s)
-    ext.extra_link_args.extend(%(extra_link_args)s)
+        library_dirs.append(prefix_path('Library', 'lib') if osx or win else prefix_path('lib'))
+        include_dirs.append(prefix_path('Library', 'include') if osx or win else prefix_path('include'))
+        include_dirs.append(os.path.dirname(scipy2017codegen.__file__))
+
+    ext = Extension(modname,
+                    sources=sources,
+                    libraries=libraries,
+                    include_dirs=include_dirs,
+                    library_dirs=library_dirs,
+                    extra_compile_args=extra_compile_args,
+                    extra_link_args=extra_link_args)
+
     return ext
 
 def make_setup_args():

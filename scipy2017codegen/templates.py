@@ -16,6 +16,8 @@ sundials = {
 }
 
 def render_pyxbld(pyxbasename, **kwargs):
+    if 'sources' not in kwargs:
+        kwargs['sources'] = []
     if 'include_dirs' not in kwargs:
         kwargs['include_dirs'] = []
     if 'library_dirs' not in kwargs:
