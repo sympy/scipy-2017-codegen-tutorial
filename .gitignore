@@ -17,6 +17,7 @@ dist/
 .jupyter/migrated
 .pyxbld/
 .theano/
+notebooks/*.h
 notebooks/*.c
 notebooks/*.pyx
 notebooks/*.pyxbld
