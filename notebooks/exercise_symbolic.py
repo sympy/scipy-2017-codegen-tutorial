@@ -15,4 +15,4 @@ def mk_exprs_symbs(rxns, names):
         r = k[-1]*prod([c[rk]**p for rk, p in r_stoich.items()])  # EXERCISE: c[rk]**p
         for net_key, net_mult in net_stoich.items():
             f[net_key] += net_mult*r  # EXERCISE: net_mult*r
-    return [f[n] for n in names], c, tuple(k)
+    return [f[n] for n in names], symbs, tuple(k)
