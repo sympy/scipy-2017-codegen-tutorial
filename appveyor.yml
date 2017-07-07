@@ -47,7 +47,7 @@ test_script:
     - "cd notebooks"
     - "sed -i 's/conda-root-py/python3/' *.ipynb"
     - "del _*.ipynb"
-    - "python bin/preprocess_notebook_exercise_magic.py *.ipynb"
+    - "python ..\bin\preprocess_notebook_exercise_magic.py *.ipynb"
     - "jupyter nbconvert --debug --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=300 --to=html *.ipynb"
     - "cd .."
     - "python test_installation.py"
