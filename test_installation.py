@@ -33,7 +33,7 @@ try:
     f = ufuncify(x, sin(x))
     assert f(0) == 0
 except:
-    print("sympy.utilities.autowrap.ufuncify does not work")
+    print("sympy.utilities.autowrap.ufuncify does not work, your Cython installation or compiler may be missing")
     raise
 
 try:
