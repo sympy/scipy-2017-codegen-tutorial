@@ -13,7 +13,7 @@ dependencies:
   - matplotlib
   - scipy
   - cython
-  - sympy
+  - sympy =1.1
   - sundials
   - python-symengine
   - numba
