@@ -22,7 +22,7 @@ def preprocess_ipynb(path):
       referenced file (and leaving the magic commented out, analogous to %load).
 
     """
-    lines = open(path).readlines()
+    lines = open(path, 'rt', encoding='utf-8').readlines()
     new_lines = []
     for line in lines:
         if line.lstrip().startswith('"%exercise'):
@@ -37,7 +37,7 @@ def preprocess_ipynb(path):
             new_lines.append('    "%s"\n' % src_lines[-1].rstrip('\n'))
         else:
             new_lines.append(line)
-    open(path, 'wt').write(''.join(new_lines))
+    open(path, 'wt', encoding='utf-8').write(''.join(new_lines))
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
