@@ -18,13 +18,12 @@ requirements:
     - nbconvert
     - numpy
     - matplotlib
+    - sympy
     - scipy
     - cython
-    - theano
     - sundials
     - python-symengine
     - numba
-    
 
 test:
   imports:

@@ -6,6 +6,7 @@ channels:
   - defaults
 dependencies:
   - python >=3.5
+  - setuptools
   - notebook
   - nbconvert
   - numpy
