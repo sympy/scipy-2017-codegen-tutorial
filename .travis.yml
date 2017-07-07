@@ -5,6 +5,7 @@ osx_image: beta-xcode6.1
 env:
   global:
     - secure: "StZigC8FRTt+d3mMM7EzCFhZ1a0p66/C1fxvtKiMEbaKNKyPl4Z8oQtQdu+sF5BqNH7PO/g/em3sNTOLxhsQTls8ZjT/JUYma36THZ9Pl/dR7zGBZO3xTTZh8N7OtqXRFHqGBpmijy+nI/Hg2vucU7oDpP1vKb1pdDPqADW7bVJaK/AagmO75Vwpa13gYP2kLxuGhgUTIgVrAxPn3299AHA6kjLLU6OLh+/uJwPuEDBNam6cFSLH0U81+k10Fdbmhce0NFD+Q+yg8haFL76XZFw5buQgkbtuAwhE3N0m7rw+cJehkqKknuZshOHr/Pz9Grj+d+13WzN3mDlI32NjzsSmsYM8uCgHpZhNSwnRnZG4xPem132swGl7yOKRfCJQpEvogSVMuAXIYaQc+37JwqczA0g5S+2NYcZobf+BUEgAgb9OIPuueM13U+HDfiB0PRv4c4Yyx8hboNRoRoWCM8rrkpCw6Xtkmk+id+FxGgDEfbvMvdijujYLNG3ltCUx0nAGKC1Iznz8OJvGPOMFUFWMsh4LUaupLs1TzXlG74BcUVJhC1ezH8KT8XLdckhGlcBUBgAoO8RGTV10KHe1e6I/EG+WKYqoayQ3rKFG1SgMAbgDQ4F5tMdXr5xYzh9bABfZDf9vEHNgL0OTaLRHw7NN+9TgXk5IPIs2Pww+8JM="
+    - secure: "PBKqObFCBCWKUEaZpp2+QL00SqUUgMLxtrpQus9iv5cfmU7m/c06wTNrNXV8RyiWZVB+B6/GyYZdF4Q7CnE5AtIKAx7RvTlMDlpIQNyFDEyyZA3yR3lLHbhHLrP/9l6Ln9ZS1MjSINmIvPCTxBNTQ9c4nsYeWlUllK6XTpS4zH1Gs65SW4kMpANnCF4CsQmp8dsSQpVCVe07mMdVbZ2pvmO5WC1LiJDO/Pxy65bFSVqKXtbA/T7nOySJhmaGR+RBMQXktrnZyRA8AAb0+PDi088oyhhYZcdi41T5Vxl8CDEknQjUkrWyG1T86Q9/fWsguWuCazr0g/XmxjJzeBgcTFugylSkn+A4glRA35Iuz9am48irKPgn5jYv9Mjpa4aK6CEWUrIuw9hu6Z4PB5jAnoriv3hoPOj38LkyD2VQaVcMXYK3bUOW50JFm6FMGh2wCLwoCjfOeluVbBTlnAquqAXtR2XlTFJjb3RVDg+0LqE+oj2/IPoWaZJh7TwXKIkWdtboEN6671P77ZO/NeypSHEi/u4srx/HrV8CUxaac/1v6wvRtyG4VlBLLfA+wNbC0hDU+jjNqTImBNHz2a5So0mPIYqH5v+Soqf4LTSYdzkP0mNk1YY7qqV/YfJAoKrfPJIbedqcQ0+/Cjg85pa0u9rJA/MJEdh/Feh3IchInYg="
 
 before_install:
     # Remove homebrew.
@@ -24,11 +25,15 @@ install:
       conda config --set show_channel_urls true
       sed -i.bak -e '$ d' environment.yml
       conda env create -f environment.yml
+      conda install doctr
 
 script:
+    - set -e
     - sed -i.bak 's/conda-root-py/python3/' notebooks/*.ipynb
     - bin/render_notebooks.sh
     - bash -c "source activate codegen17; python test_installation.py"
+    - bin/prepare_deploy.sh
+    - doctr deploy . --built-docs deploy/
 
 notifications:
   email: false
