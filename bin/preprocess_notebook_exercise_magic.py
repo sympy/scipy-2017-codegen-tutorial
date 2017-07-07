@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import glob
+import itertools
 import sys
 import os
 
@@ -23,7 +25,7 @@ def preprocess_ipynb(path):
     lines = open(path).readlines()
     new_lines = []
     for line in lines:
-        if '"%exercise' in line:
+        if line.lstrip().startswith('"%exercise'):
             if not '"%exercise exercise_' in line or not line.endswith('.py"\n'):
                 raise ValueError("Expected the file to be named exercise_*.py")
             new_lines.append(line.replace('"%exercise ', '"# %exercise ').rstrip('"\n') + '\\n",\n')
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         print("Please specify notebook files as arguments.", file=sys.stderr)
         sys.exit(1)
-    for arg in sys.argv[1:]:
+    for arg in itertools.chain(*map(glob.glob, sys.argv[1:])):
         if not arg.endswith('.ipynb'):
             raise ValueError("Expected notebookfile (.ipynb), got: %s" % arg)
         preprocess_ipynb(arg)
