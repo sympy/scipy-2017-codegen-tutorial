@@ -12,9 +12,7 @@ dependencies:
   - matplotlib
   - scipy
   - cython
-  - theano
-  - pip:
-      - https://github.com/sympy/sympy/archive/sympy-1.1rc1.tar.gz
+  - sympy
   - sundials
   - python-symengine
   - numba

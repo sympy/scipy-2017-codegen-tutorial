@@ -1,6 +1,5 @@
 #!/bin/bash -xe
 source activate codegen17
-python -m pip install https://github.com/sympy/sympy/archive/sympy-1.1rc1.tar.gz
 python setup.py develop
 for f in notebooks/*.ipynb; do
     if [[ $f == notebooks/_* ]]; then
