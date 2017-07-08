@@ -1,6 +1,6 @@
 #!/bin/bash
 source activate codegen17
-mkdir deploy
+mkdir -p deploy/notebooks
 sed -i.bak 's/ipynb/html/' index.ipynb
 jupyter nbconvert --to=html index.ipynb
 mv index.ipynb.bak index.ipynb
