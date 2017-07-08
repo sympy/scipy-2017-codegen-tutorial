@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 source activate codegen17
 mkdir -p deploy/notebooks
 sed -i.bak 's/ipynb/html/' index.ipynb
