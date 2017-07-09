@@ -1,0 +1,251 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Chemical kinetics\n",
+    "As we saw in the previous notebook, the rate of chemical reactions can be described by ordinary differential equations.\n",
+    "\n",
+    "In this notebook we will look at a classic example in chemical kinetics:\n",
+    "[Robertson's example](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.8603).\n",
+    "It is a 3-species reaction system:\n",
+    "\n",
+    "$$\n",
+    "A \\overset{k_1}{\\rightarrow} B \\\\\n",
+    "B + C \\overset{k_2}{\\rightarrow} A + C \\\\\n",
+    "2 B \\overset{k_3}{\\rightarrow} B + C\n",
+    "$$\n",
+    "\n",
+    "where A, B and C represent three different chemical species (e.g. reactive molecules dissolved in water). What is special about this system is that the numerical stepping needs to be performed using an implicit method (requiring the Jacobian) when solving for large time scales.\n",
+    "\n",
+    "The rate of each process follows the [law of mass action](https://en.wikipedia.org/wiki/Law_of_mass_action), i.e. the rate is proportional to the concentration of each reacting species (to the power of their multiplicity). The proportionality constant is known as the rate constant of the reaction ($k_1,\\ k_2\\ \\&\\ k_3$ in our case). If we denote the rate of each reaction:\n",
+    "\n",
+    "$$\n",
+    "r_1 = k_1[A] \\\\\n",
+    "r_2 = k_2[B][C] \\\\\n",
+    "r_3 = k_3[B]^2\n",
+    "$$\n",
+    "\n",
+    "$[A],\\ [B],\\ [C]$ denotes the concentration of respective species. We can now formulate a system of ordinary differential equations describing how the concentrations evolve over time:\n",
+    "\n",
+    "$$\n",
+    "\\frac{d[A]}{dt} = r_2 - r_1 \\\\\n",
+    "\\frac{d[B]}{dt} = r_1 - r_2 - r_3 \\\\\n",
+    "\\frac{d[C]}{dt} = r_3\n",
+    "$$\n",
+    "\n",
+    "We will now express these differential equations (and their Jacobian) symbolically using SymPy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sympy as sym\n",
+    "sym.init_printing()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "t = sym.symbols('t')  # not used, only a placeholder\n",
+    "c = cA, cB, cC = sym.symbols('[A] [B] [C]')  # concentrations\n",
+    "k = k1, k2, k3 = sym.symbols('k_1 k_2 k_3')\n",
+    "r1, r2, r3 = k1*cA, k2*cB*cC, k3*cB**2\n",
+    "ydot = r2 - r1, r1 - r2 - r3, r3\n",
+    "ydot"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\dot{\\mathbf{y}}$ now represent our ODE system, where $\\mathbf{y}$ is our state vector (concentrations). We will need a callback to evaluate $\\dot{\\mathbf{y}}$ when we integrate this ODE system numerically (using ``scipy.integrate.odeint``). As we have seen SymPy can provide us with this callback:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from scipy.integrate import odeint"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f = sym.lambdify((c, t) + k, ydot)\n",
+    "\n",
+    "def integrate(tend=3600, t0=1e-6, **kwargs):\n",
+    "    tout = np.logspace(np.log10(t0), np.log10(tend))\n",
+    "    k_vals = (0.04, 1e4, 3e7)  # from the literature, k1 has another unit than k2 & k3\n",
+    "    c0 = [1, 0, 0]  # we start with unit concentration of A (number density)\n",
+    "    yout, info = odeint(f, c0, tout, args=k_vals, full_output=True, **kwargs)\n",
+    "    return tout, yout, info"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The lambda function is needed to give f the signature asked for by ``odeint``. ``full_output=True`` makes odeint return a dictionary with information about the numerical integration."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tout, yout, info = integrate(1e6, atol=1e-9, rtol=1e-9)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def plot_result(tout, yout, info=None):\n",
+    "    fig, axes = plt.subplots(1, 2, figsize=(14, 4))\n",
+    "    for i, label in enumerate('ABC'):\n",
+    "        for ax in axes:\n",
+    "            ax.plot(tout, yout[:, i], label=label)\n",
+    "    axes[1].set_xscale('log')\n",
+    "    axes[1].set_yscale('log')\n",
+    "    for ax in axes:\n",
+    "        ax.set_ylabel('$\\mathrm{concentration / mol \\cdot dm^{-3}}$')\n",
+    "        ax.set_xlabel('$\\mathrm{time / s}$')\n",
+    "        ax.legend(loc='best')\n",
+    "    if info:\n",
+    "        print(\"The jacobian was evaluated %d times\" % info['nje'][-1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plot_result(tout, yout, info)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "\n",
+    "If we look closer at the info-dictionary we will see that odeint (or rather LSODA which is the underlying package) switched method from an explicit Adams method to an implicit Backward Differentiation Formula (BDF). It is common for chemical kinetics problems that the problem becomes stiff. The larger number of species, the bigger is the Jacobian matrix.\n",
+    "\n",
+    "By default the solver will approximate the elements in the Jacobian matrix by taking finite differences of $\\mathbf{f}$. This is often works quite satisfactorily but for larger systems it sometimes fails. A more robust (and faster) approach is to provide a callback which evaluates an analytic Jacobian. Using SymPy we can do this quite effortlessly:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "J = sym.Matrix(ydot).jacobian(c)\n",
+    "J"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "J_cb = sym.lambdify((c, t) + k, J)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tout, yout, info = integrate(1e6, Dfun=J_cb)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plot_result(tout, yout, info)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We see that the solver needed to evaluate the Jacobian fewer times (due to it being essentially exact this time around). For larger systems the impact of an analytic Jacobian is often even greater (being the difference between a failed and successful integration). \n",
+    "\n",
+    "Benchmarking with and without the analytic Jacobian callback:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit integrate(1e6)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit integrate(1e6, Dfun=J_cb)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

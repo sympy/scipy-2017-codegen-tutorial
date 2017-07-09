@@ -1,0 +1,54 @@
+def get_nt_compiler():
+    import os
+    return os.getenv('SCIPY2017CODEGEN_COMPILER', 'msvc')  # 'mingw32' or 'msvc'
+
+def make_ext(modname, pyxfilename):
+    import os
+    import sys
+    from distutils.extension import Extension
+    import scipy2017codegen
+
+    sources = [pyxfilename]
+    sources.extend([])
+
+    libraries = []
+
+    include_dirs = ['.']
+    include_dirs.extend(['/home/travis/miniconda3/envs/codegen17/lib/python3.6/site-packages/numpy/core/include'])
+
+    library_dirs = []
+
+    extra_compile_args = ['-std=c99']
+    extra_compile_args.extend([])
+
+    extra_link_args = []
+
+    osx = sys.platform.lower() == 'darwin'
+    win = os.name == 'nt'
+    posix = os.name == 'posix'
+    under_conda = 'CONDA_PREFIX' in os.environ
+
+    if under_conda:
+        prefix_path = lambda *args: os.path.join(os.environ['CONDA_PREFIX'], *args)
+        if win and get_nt_compiler() == 'mingw32':
+            ext.library_dirs.append(os.environ['CONDA_PREFIX'])  # libpythonXX.dll is located in the environment root
+        library_dirs.append(prefix_path('Library', 'lib') if osx or win else prefix_path('lib'))
+        include_dirs.append(prefix_path('Library', 'include') if osx or win else prefix_path('include'))
+        include_dirs.append(os.path.dirname(scipy2017codegen.__file__))
+
+    ext = Extension(modname,
+                    sources=sources,
+                    libraries=libraries,
+                    include_dirs=include_dirs,
+                    library_dirs=library_dirs,
+                    extra_compile_args=extra_compile_args,
+                    extra_link_args=extra_link_args)
+
+    return ext
+
+def make_setup_args():
+    import os
+    if os.name == 'nt':
+        return dict(script_args=['--compiler={0}'.format(get_nt_compiler())])
+    else:
+        return {}

@@ -1,0 +1,224 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Writing Cython\n",
+    "\n",
+    "In this notebook, we'll take a look at how to implement a simple function using Cython. The operation we'll implement is the [first-order diff](https://en.wikipedia.org/wiki/Finite_difference), which takes in an array of length $n$:\n",
+    "\n",
+    "$$\\mathbf{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\\\ \\vdots \\\\ x_n\\end{bmatrix}$$\n",
+    "\n",
+    "and returns the following:\n",
+    "\n",
+    "$$\\mathbf{y} = \\begin{bmatrix} x_2 - x_1 \\\\ x_3 - x_2 \\\\ \\vdots \\\\ x_n - x_{n-1} \\end{bmatrix}$$\n",
+    "\n",
+    "First we'll import everything we'll need and generate some data to work with."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "x = np.random.randn(10000)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Below is a simple implementation using pure Python (no NumPy). The `%timeit` magic command let's us see how long it takes the function to run on the 10,000-element array defined above."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def py_diff(x):\n",
+    "    n = x.size\n",
+    "    y = np.zeros(n-1)\n",
+    "    for i in range(n-1):\n",
+    "        y[i] = x[i+1] - x[i]\n",
+    "    return y\n",
+    "\n",
+    "%timeit py_diff(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now use the exact same function body but add the `%%cython` magic at the top of the code cell. How much of a difference does simply pre-compiling make?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%load_ext cython"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%%cython\n",
+    "import numpy as np\n",
+    "def cy_diff_naive(x):\n",
+    "    n = x.size\n",
+    "    y = np.zeros(n-1)\n",
+    "    for i in range(n-1):\n",
+    "        y[i] = x[i+1] - x[i]\n",
+    "    return y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit cy_diff_naive(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So it didn't make much of a difference. That's because Cython really shines when you specify data types. We do this by annotating the variables used in the function with `cdef <type> ...`. Let's see how much this improves things.\n",
+    "\n",
+    "*Note:* array types (like for the input arg `x`) can be declared using the [memoryview](http://docs.cython.org/en/latest/src/userguide/memoryviews.html) syntax `double[::1]` or using `np.ndarray[cnp.float64_t, ndim=1]`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%%cython\n",
+    "import numpy as np\n",
+    "def cy_diff(double[::1] x):\n",
+    "    cdef int n = x.size\n",
+    "    cdef double[::1] y = np.zeros(n-1)\n",
+    "    cdef int i\n",
+    "    for i in range(n-1):\n",
+    "        y[i] = x[i+1] - x[i]\n",
+    "    return y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit cy_diff(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That made a huge difference! There are a couple more things we can do to speed up our diff implementation, including [disabling some safety checks](https://cython.readthedocs.io/en/latest/src/reference/compilation.html?#compiler-directives). The combination of disabling bounds checking (making sure you don't try access an index of an array that doesn't exist) and disabling wraparound (disabling use of negative indices) can really improve things when we are sure neither condition will occur. Let's try that."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%%cython\n",
+    "from cython import wraparound, boundscheck\n",
+    "import numpy as np\n",
+    "\n",
+    "@boundscheck(False)\n",
+    "@wraparound(False)\n",
+    "def cy_diff2(double[::1] x):\n",
+    "    cdef int n = x.size\n",
+    "    cdef double[::1] y = np.zeros(n-1)\n",
+    "    cdef int i\n",
+    "    for i in range(n-1):\n",
+    "        y[i] = x[i+1] - x[i]\n",
+    "    return y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit cy_diff2(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, let's see how NumPy's `diff` performs for comparison."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def np_diff(x):\n",
+    "    return np.diff(x)\n",
+    "\n",
+    "%timeit np_diff(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Why is NumPy's `diff` implementation faster? Maybe use the `--annotate` flag to peek at the C code generated by our latest Cython implementation."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,142 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# NOTE\n",
+    "This notebook will make more sense (provide speed-up) once the LLVM backend is exposed in the python wrappers for SymEngine. I need to get back working on that [here](https://github.com/symengine/symengine.py/pull/112)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this notebook we will use `symengine` the increase the performance of our callbacks produced by lambdify in SymPy."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import json\n",
+    "import numpy as np\n",
+    "from scipy2017codegen.odesys import ODEsys\n",
+    "from scipy2017codegen.chem import mk_rsys"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `ODEsys` class and convenience functions from previous notebook (35) has been put in two modules for easy importing. Recapping what we did last:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "watrad_data = json.load(open('../scipy2017codegen/data/radiolysis_300_Gy_s.json'))\n",
+    "watrad = mk_rsys(ODEsys, **watrad_data)\n",
+    "tout = np.logspace(-6, 3, 200)  # close to one hour of operation\n",
+    "c0 = {'H2O': 55.4e3, 'H+': 1e-4, 'OH-': 1e-4}\n",
+    "y0 = [c0.get(symb.name, 0) for symb in watrad.y]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit yout, info = watrad.integrate_odeint(tout, y0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "so that is the benchmark to beat."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import symengine as se\n",
+    "def _lambdify(args, exprs):\n",
+    "    if isinstance(exprs, sym.MutableDenseMatrix):\n",
+    "        exprs = se.DenseMatrix(exprs.shape[0], exprs.shape[1], exprs.tolist())\n",
+    "    lmb = se.Lambdify(args, exprs)\n",
+    "    return lambda *args: lmb(args)\n",
+    "\n",
+    "watrad_symengine = mk_rsys(ODEsys, **watrad_data, lambdify=_lambdify)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit watrad_symengine.integrate_odeint(tout, y0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Just to see that everything looks alright:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(14, 6))\n",
+    "watrad_symengine.plot_result(tout, *watrad_symengine.integrate_odeint(tout, y0), ax=ax)\n",
+    "ax.set_xscale('log')\n",
+    "ax.set_yscale('log')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

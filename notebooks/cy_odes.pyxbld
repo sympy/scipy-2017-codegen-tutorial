@@ -1,0 +1,10 @@
+import numpy
+
+#            module name specified by `%%cython_pyximport` magic
+#            |        just `modname + ".pyx"`
+#            |        |
+def make_ext(modname, pyxfilename):
+    from setuptools.extension import Extension
+    return Extension(modname,
+                     sources=[pyxfilename, 'c_odes.c'],
+                     include_dirs=['.', numpy.get_include()])

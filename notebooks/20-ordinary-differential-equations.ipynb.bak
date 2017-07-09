@@ -1,0 +1,394 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Numerical integration of Ordinary Differential Equations\n",
+    "This notebook serves as a quick refresher on ordinary differential equations. If you are familiar with the topic: feel free to skim this notebook.\n",
+    "\n",
+    "We will first consider the decay of tritium as an example:\n",
+    "\n",
+    "$$\n",
+    "\\mathrm{^3H \\overset{\\lambda}\\rightarrow\\ ^3He + e^- + \\bar{\\nu_e}}\n",
+    "$$\n",
+    "\n",
+    "We will not concern ourselves with the products, instead we will only take interest in the number density of $\\mathrm{^3H}$ as function of time, let's call it $y(t)$. The rate of change of $y(t)$ is proportional to itself and the decay constant ($\\lambda$):\n",
+    "\n",
+    "$$\n",
+    "\\frac{dy(t)}{dt} = -\\lambda y(t)\n",
+    "$$\n",
+    "\n",
+    "you probably know the solution to this class of differential equations (either from experience or by guessing an appropriate ansatz). SymPy can of course also solve this equation:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sympy as sym\n",
+    "sym.init_printing()\n",
+    "t, l = sym.symbols('t lambda')\n",
+    "y = sym.Function('y')(t)\n",
+    "dydt = y.diff(t)\n",
+    "expr = sym.Eq(dydt, -l*y)\n",
+    "expr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sym.dsolve(expr)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, pretend for a while that this function lacked an analytic solution. We could then integrate this equation *numerically* from an initial state for a predetermined amount of time by discretizing the time into a series of small steps. And for each of these steps we would update $y$ by multiplying the derivative with the step size (assuming that the derivative is approximately constant on the scale of the step-size), formally this method is known as \"forward Euler\":\n",
+    "\n",
+    "$$\n",
+    "y_{n+1} = y_n + y'(t_n)\\cdot \\Delta h\n",
+    "$$\n",
+    "\n",
+    "it is quite easy to implement in Python, e.g.:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "def euler_fw(rhs, y0, tout, params):\n",
+    "    y0 = np.atleast_1d(np.asarray(y0, dtype=np.float64))\n",
+    "    dydt = np.empty_like(y0)\n",
+    "    yout = np.zeros((len(tout), len(y0)))\n",
+    "    yout[0] = y0\n",
+    "    t_old = tout[0]\n",
+    "    for i, t in enumerate(tout[1:], 1):\n",
+    "        dydt[:] = rhs(yout[i-1], t, *params)\n",
+    "        h = t - t_old\n",
+    "        yout[i] = yout[i-1] + dydt*h\n",
+    "        t_old = t\n",
+    "    return yout"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "applying this function on our model problem:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tout = np.linspace(0, 1, 100)\n",
+    "params = (2,)\n",
+    "yout = euler_fw(lambda y, t, l: -l*y, 3, tout, params)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and plotting the solution & the numerical error using matplotlib:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline\n",
+    "\n",
+    "def my_plot(tout, yout, params, xlbl='time / a.u.', ylabel=None, analytic=None):\n",
+    "    fig, axes = plt.subplots(1, 2 if analytic else 1, figsize=(14, 4))\n",
+    "    axes = np.atleast_1d(axes)\n",
+    "    for i in range(yout.shape[1]):\n",
+    "        axes[0].plot(tout, yout[:, i], label='y%d' % i)\n",
+    "    if ylabel:\n",
+    "        axes[0].set_ylabel(ylabel)\n",
+    "    for ax in axes:\n",
+    "        ax.set_xlabel(xlbl)\n",
+    "    if analytic:\n",
+    "        axes[0].plot(tout, analytic(tout, yout, params), '--')\n",
+    "        axes[1].plot(tout, yout[:, 0] - 3*np.exp(-2*(tout-tout[0])))\n",
+    "        if ylabel:\n",
+    "            axes[1].set_ylabel('Error in ' + ylabel)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def analytic(tout, yout, params):\n",
+    "    return yout[0, 0]*np.exp(-params[0]*tout)\n",
+    "my_plot(tout, yout, params, analytic=analytic, ylabel='number density / a.u.')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Well, that was easy: 100 points gave us almost plotting accuracy. Unfortunately, Euler forward is not practical for most real world problems. Usually we want a higher order formula (the error in euler forward scales only as $n^{-1}$), and we want to use an adaptive step size (larger steps when the function is smooth). Furthermore, for a large class of problems, we need to base the step not on the derivative at the current time point, but rather at the next time point (giving rise to an implicit expression). We will not go into the details of this at all. Instead we will use the well tested LSODA algorithm (provided in scipy as ``odeint``):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from scipy.integrate import odeint\n",
+    "yout, info = odeint(lambda y, t, l: -l*y, 3, tout, params, full_output=True)\n",
+    "my_plot(tout, yout, params, analytic=analytic)\n",
+    "print(\"Number of function evaluations: %d\" % info['nfe'][-1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that ``odeint`` was able to achieve a much higher precision using fewer number of function evaluations.\n",
+    "\n",
+    "Furthermore, the LSODA algorithm switches to an implicit stepper if the problem becomes \"stiff\". The simplest implicit stepper is \"backward euler\" (though not what is used by LSODA):\n",
+    "\n",
+    "$$\n",
+    "y_{n+1} = y_n + y'(t_{n+1})\\cdot \\Delta h\n",
+    "$$\n",
+    "\n",
+    "In the upcoming notebooks we will use ``odeint`` to solve systems of ODEs (and not only linear equations as in this notebook). The emphasis is not on the numerical methods, but rather on how we, from symbolic expressions, can generate fast functions for the solver.\n",
+    "\n",
+    "But in order to show how we would formulate a system of differential equations we will here briefly look at the [van der Pol oscillator](https://en.wikipedia.org/wiki/Van_der_Pol_oscillator). It is a second order differential equation:\n",
+    "\n",
+    "$$\n",
+    "{d^2y_0 \\over dx^2}-\\mu(1-y_0^2){dy_0 \\over dx}+y_0= 0\n",
+    "$$\n",
+    "\n",
+    "One way to reduce the order of our second order differential equation is to formulate a system of first order ODEs, using:\n",
+    "\n",
+    "$$ y_1 = \\dot y_0 $$\n",
+    "\n",
+    "which gives us:\n",
+    "\n",
+    "$$\n",
+    "\\begin{cases}\n",
+    "\\dot y_0 = y_1 \\\\\n",
+    "\\dot y_1 = \\mu(1-y_0^2) y_1-y_0\n",
+    "\\end{cases}\n",
+    "$$\n",
+    "\n",
+    "Let's call the function for this system of ordinary differential equations ``vdp``:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def vdp(y, t, mu):\n",
+    "    return [\n",
+    "        y[1],\n",
+    "        mu*(1-y[0]**2)*y[1] - y[0]\n",
+    "    ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "using \"Euler forward\":"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tout = np.linspace(0, 200, 1024)\n",
+    "y_init, params = [1, 0], (17,)\n",
+    "y_euler = euler_fw(vdp, y_init, tout, params)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "my_plot(tout, y_euler, params)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That does not look like an oscillator. (we see that Euler forward has deviated to values with enormous magnitude), here the advanced treatment by the ``odeint`` solver is far superior:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_odeint, info = odeint(vdp, y_init, tout, params, full_output=True)\n",
+    "print(\"Number of function evaluations: %d, number of Jacobian evaluations: %d\" % (info['nfe'][-1], info['nje'][-1]))\n",
+    "my_plot(tout, y_odeint, params)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We see that LSODA has evaluated the Jacobian. But we never gave it an explicit representation of it―so how could it?\n",
+    "\n",
+    "It estimated the Jacobian matrix by using finite differences. Let's see if it can do better if we provide a function to calculate the (analytic) Jacobian."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Exercise: manually write a function evaluating a Jacobian\n",
+    "First we need to know what signature ``odeint`` expects, we look at the documentation by using the ``help`` command: (or using ``?`` in IPython)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "help(odeint)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "so the signature needs to be: ``(state-vector, time, parameters) -> matrix``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%load_ext scipy2017codegen.exercise"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Use either the * ``%exercise`` * or * ``%load`` * magic to get the exercise / solution respectively (*i.e.* delete the whole contents of the cell except for the uncommented magic command):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%exercise exercise_jac_func.py"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "J_func(y_init, tout[0], params[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_odeint, info = odeint(vdp, y_init, tout, params, full_output=True, Dfun=J_func)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "my_plot(tout, y_odeint, params)\n",
+    "print(\"Number of function evaluations: %d, number of Jacobian evaluations: %d\" % (info['nfe'][-1], info['nje'][-1]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So this time the integration needed to evaluate both the ODE system function and its Jacobian fewer times than when using finite difference approximations. The reason for this is that the more accurate the Jacobian is, the better is the convergence in the iterative (Newton's) method solving the implicit system of equations.\n",
+    "\n",
+    "For larger systems of ODEs the importance of providing a (correct) analytic Jacobian can be much bigger. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Instead of writing the Jacobian function by hand we could have used SymPy's ``lambdify`` which we will introduce next. Here is a sneak peak on how it could be achieved:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y = y0, y1 = sym.symbols('y0 y1')\n",
+    "mu = sym.symbols('mu')\n",
+    "J = sym.Matrix(vdp(y, None, mu)).jacobian(y)\n",
+    "J_func = sym.lambdify((y, t, mu), J)\n",
+    "J"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

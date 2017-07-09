@@ -1,0 +1,210 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this notebook we will look how we can use Cython to generate a faster callback and hopefully shave off some running time from our integration."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import json\n",
+    "import numpy as np\n",
+    "from scipy2017codegen.odesys import ODEsys\n",
+    "from scipy2017codegen.chem import mk_rsys"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `ODEsys` class and convenience functions from previous notebook (35) has been put in two modules for easy importing. Recapping what we did last:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "watrad_data = json.load(open('../scipy2017codegen/data/radiolysis_300_Gy_s.json'))\n",
+    "watrad = mk_rsys(ODEsys, **watrad_data)\n",
+    "tout = np.logspace(-6, 3, 200)  # close to one hour of operation\n",
+    "c0 = {'H2O': 55.4e3, 'H+': 1e-4, 'OH-': 1e-4}\n",
+    "y0 = [c0.get(symb.name, 0) for symb in watrad.y]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%timeit yout, info = watrad.integrate_odeint(tout, y0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "so that is the benchmark to beat, we will export our expressions as Cython code. We then subclass `ODEsys` to have it render, compile and import the code:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# %load ../scipy2017codegen/odesys_cython.py\n",
+    "import uuid\n",
+    "import numpy as np\n",
+    "import sympy as sym\n",
+    "import setuptools\n",
+    "import pyximport\n",
+    "from scipy2017codegen import templates\n",
+    "from scipy2017codegen.odesys import ODEsys\n",
+    "\n",
+    "pyximport.install()\n",
+    "\n",
+    "cython_template = \"\"\"\n",
+    "cimport numpy as cnp\n",
+    "import numpy as np\n",
+    "\n",
+    "def f(cnp.ndarray[cnp.float64_t, ndim=1] y, double t, %(args)s):\n",
+    "    cdef cnp.ndarray[cnp.float64_t, ndim=1] out = np.empty(y.size)\n",
+    "    %(f_exprs)s\n",
+    "    return out\n",
+    "\n",
+    "def j(cnp.ndarray[cnp.float64_t, ndim=1] y, double t, %(args)s):\n",
+    "    cdef cnp.ndarray[cnp.float64_t, ndim=2] out = np.empty((y.size, y.size))\n",
+    "    %(j_exprs)s\n",
+    "    return out\n",
+    "\n",
+    "\"\"\"\n",
+    "\n",
+    "class CythonODEsys(ODEsys):\n",
+    "\n",
+    "    def setup(self):\n",
+    "        self.mod_name = 'ode_cython_%s' % uuid.uuid4().hex[:10]\n",
+    "        idxs = list(range(len(self.f)))\n",
+    "        subs = {s: sym.Symbol('y[%d]' % i) for i, s in enumerate(self.y)}\n",
+    "        f_exprs = ['out[%d] = %s' % (i, str(self.f[i].xreplace(subs))) for i in idxs]\n",
+    "        j_exprs = ['out[%d, %d] = %s' % (ri, ci, self.j[ri, ci].xreplace(subs)) for ri in idxs for ci in idxs]\n",
+    "        ctx = dict(\n",
+    "            args=', '.join(map(str, self.p)),\n",
+    "            f_exprs = '\\n    '.join(f_exprs),\n",
+    "            j_exprs = '\\n    '.join(j_exprs),\n",
+    "        )\n",
+    "        open('%s.pyx' % self.mod_name, 'wt').write(cython_template % ctx)\n",
+    "        open('%s.pyxbld' % self.mod_name, 'wt').write(templates.pyxbld % dict(\n",
+    "            sources=[], include_dirs=[np.get_include()],\n",
+    "            library_dirs=[], libraries=[], extra_compile_args=[], extra_link_args=[]\n",
+    "        ))\n",
+    "        mod = __import__(self.mod_name)\n",
+    "        self.f_eval = mod.f\n",
+    "        self.j_eval = mod.j\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "cython_sys = mk_rsys(CythonODEsys, **watrad_data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%timeit cython_sys.integrate(tout, y0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That is a considerable speed up from before. But the solver still has to\n",
+    "allocate memory for creating new arrays at each call, and each evaluation\n",
+    "has to pass the python layer which is now the bottleneck for the integration.\n",
+    "\n",
+    "In order to speed up integration further we need to make sure the solver can evaluate the function and Jacobian without calling into Python."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Just to see that everything looks alright:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(14, 6))\n",
+    "cython_sys.plot_result(tout, *cython_sys.integrate_odeint(tout, y0), ax=ax)\n",
+    "ax.set_xscale('log')\n",
+    "ax.set_yscale('log')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <!-- Make the font sizes much bigger than the remark defaults. Also, don't
+    rely on web fonts.-->
+    <style>
+      h1, h2, h3 {
+        font-family: 'Georgia';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Menlo'; font-size: 30px}
+      .remark-slide-content { font-size: 30px }
+      .remark-slide-content h1 { font-size: 100px }
+      .remark-slide-content h2 { font-size: 70px}
+      .remark-slide-content h3 { font-weight: bold }
+      .remark-slide-content {background-positionL 0% 0%; background-size: contain}
+
+      .left-column75 {
+        width: 75%;
+        float: left;
+      }
+      .right-column25 {
+        width: 25%;
+        float: right;
+      }
+
+      .left-column {
+        width: 45%;
+        float: left;
+      }
+      .right-column {
+        width: 50%;
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# SymPy Code Generation Tutorial
+### SciPy 2017
+### 07/10/2017, 8:00 AM
+
+---
+
+## Who are we?
+
+.left-column75[
+### Aaron Meurer
+**@asmeurer**
+
+- Researcher ERGS, University of South Carolina
+- Lead developer of SymPy
+]
+.right-column25[
+<img src="asmeurer.jpeg" alt="asmeurer" style="width:200px">
+]
+
+---
+
+## Who are we?
+
+.left-column75[
+### Jason Moore
+**@moorepants**
+
+- Faculty, Mechanical and Aerospace Engineering, University of California,
+Davis
+- SymPy and PyDy Developer
+]
+.right-column25[
+<img src="moorepants.jpeg" alt="moorepants" style="width:200px">
+]
+
+---
+
+## Who are we?
+
+.left-column75[
+### Björn Dahlgren
+**@bjodah**
+
+- PhD student, KTH Royal Institute of Technology (Stockholm, Sweden)
+- SymPy contributor
+]
+.right-column25[
+<img src="bjodah.jpeg" alt="bjodah" style="width:200px">
+]
+
+---
+
+## Who are we?
+
+.left-column75[
+### Kenny Lyons
+**@ixjlyons**
+
+- PhD student, University of California, Davis
+]
+.right-column25[
+<img src="ixjlyons.jpg" alt="ixjlyons" style="width:200px">
+]
+
+---
+
+
+## This tutorial
+
+### We will learn about code generation with SymPy
+### Basic knowledge of the SymPy library is assumed
+
+---
+
+class: center, middle
+
+## SymPy
+
+Python library for symbolic mathematics.
+
+Version 1.1 released last Thursday (July 6, 2017). Make sure you have it!
+
+<img src="sympy-notext.svg" alt="sympy logo" style="width:200px">
+
+---
+
+## What is code generation?
+
+--
+
+For the purposes of this tutorial, "code generation" (or just "codegen") refers to the automatic translation of a symbolic SymPy expression into code for another language
+
+---
+
+## What is code generation?
+
+For example:
+
+.left-column[
+*SymPy expression*
+```py
+abs(sin(pi*x))
+```
+]
+.right-column[
+*C code*
+```C
+fabs(sin(M_PI*x))
+```
+]
+
+---
+
+### Some of the languages supported
+
+- C
+- C++
+- Fortran
+- MATLAB/Octave
+- Python (NumPy/SciPy)
+- Julia
+- Mathematica
+- Javascript
+- LLVM
+- Rust
+- Theano
+- Tensorflow
+- Easy to extend to others...
+
+---
+
+background-image: url(codegen1.png)
+
+### What is code generation
+
+--
+
+background-image: url(codegen2.png)
+
+---
+
+background-image: url(abstraction.png)
+
+---
+
+### Why do code generation?
+
+--
+
+1. SymPy can deal with mathematical expressions in a high-level way. For example, it can take symbolic derivatives.
+
+--
+
+2. Using code generation avoids mistakes that come from translating mathematics into low level code.
+
+--
+
+3. It's possible to deal with expressions that are otherwise too large to write by hand.
+
+--
+
+4. Some "mathematical" optimizations are possible, which a normal compiler would not be able to do.
+
+---
+
+### Outline for today
+
+- Intro to SymPy Expressions [30 minutes]
+
+- Code Printers [30 minutes]
+
+- The Easy Way: High Level Generation (lambdify, ufuncify) [30 minutes]
+
+- The Harder Way: Code generation and compilation [1 hour]
+
+- Cythonizing Your Code (manually and autowrap) [30 minutes]
+
+- Bonus materials (if there is time)
+
+---
+
+class: center, middle
+
+This tutorial is intended to be interactive. Please stop us to ask questions at
+any time.
+
+---
+
+class: center, middle
+
+# Let's begin!
+
+    </textarea>
+    <script src="remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

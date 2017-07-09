@@ -1,0 +1,1149 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# The Harder Way: C Code generation, Custom Printers, and CSE [1 hour]\n",
+    "\n",
+    "One of the most common low level programming languages in use is C. Compiled C code can be optimized for execution speed for many different computers. Python is written in C as well as many of the vectorized operations in NumPy and numerical algorithms in SciPy. It is often necessary to translate a complex mathematical expression into C for optimal execution speeds and memory management. In this notebook you will learn how to automatically translate a complex SymPy expression into C, compile the code, and run the program.\n",
+    "\n",
+    "We will continue examining the complex chemical kinetic reaction ordinary differential equation introduced in the previous lesson.\n",
+    "\n",
+    "## Learning Objectives\n",
+    "\n",
+    "After this lesson you will be able to:\n",
+    "\n",
+    "- use a code printer class to convert a SymPy expression to compilable C code\n",
+    "- use an array compatible assignment to print valid C array code\n",
+    "- subclass the printer class and modify it to provide custom behavior\n",
+    "- utilize common sub expression elimination to simplify and speed up the code execution"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import sympy as sym"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Enable mathematical printing in the Jupyter notebook."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "sym.init_printing()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Ordinary Differential Equations\n",
+    "\n",
+    "The previously generated ordinary differential equations that describe chemical kinetic reactions are loaded below. These expressions describe the right hand side of this mathematical equation:\n",
+    "\n",
+    "$$\\frac{d\\mathbf{y}}{dt} = \\mathbf{f}(\\mathbf{y}(t))$$\n",
+    "\n",
+    "where the state vector $\\mathbf{y}(t)$ is made up of 14 states, i.e. $\\mathbf{y}(t) \\in \\mathbb{R}^{14}$.\n",
+    "\n",
+    "Below the variable `rhs_of_odes` represents $\\mathbf{f}(\\mathbf{y}(t))$ and `states` represents $\\mathbf{y}(t)$.\n",
+    "\n",
+    "From now own we will simply use $\\mathbf{y}$ instead of $\\mathbf{y}(t)$ and assume an implicit function of $t$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from scipy2017codegen.chem import load_large_ode"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "rhs_of_odes, states = load_large_ode()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Exercise [2 min]\n",
+    "\n",
+    "Display the expressions (`rhs_of_odes` and `states`), inspect them, and find out their types and dimensions. What are some of the characetistics of the equations?\n",
+    "\n",
+    "characteristics: what exrpessions, how long, what type of equations: lin, non-lin, poly, et"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "states"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "rhs_of_odes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "type(rhs_of_odes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "rhs_of_odes.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "type(states)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "states.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Compute the Jacobian\n",
+    "\n",
+    "As has been shown in the previous lesson the Jacobian of the right hand side of the differential equations is often very useful for computations, such as integration and optimization. With:\n",
+    "\n",
+    "$$\\frac{d\\mathbf{y}}{dt} = \\mathbf{f}(\\mathbf{y})$$\n",
+    "\n",
+    "the Jacobian is defined as:\n",
+    "\n",
+    "$$\\mathbf{J}(\\mathbf{y}) = \\frac{\\partial\\mathbf{f}(\\mathbf{y})}{\\partial\\mathbf{y}}$$\n",
+    "\n",
+    "SymPy can easily compute the Jacobian of matrix objects with the `Matrix.jacobian()` method.\n",
+    "\n",
+    "## Exercise [3 or 4 min]\n",
+    "\n",
+    "Look up the Jacobian in the SymPy documentation then compute the Jacobian and store the result in the variable `jac_of_odes`. Inspect the resulting Jacobian for dimensionality, type, and the symbolic form.\n",
+    "\n",
+    "remind to do rhs_of_odes.jacobian?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "jac_of_odes = rhs_of_odes.jacobian(states)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "type(jac_of_odes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "jac_of_odes.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "jac_of_odes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# C Code Printing\n",
+    "\n",
+    "The two expressions are large and will likely have to be excuted many thousands of times to compute the desired numerical values, so we want them to execute as fast as possible. We can use SymPy to print these expressions as C code.\n",
+    "\n",
+    "We will design a double precision C function that evaluates both $\\mathbf{f}(\\mathbf{y})$ and $\\mathbf{J}(\\mathbf{y})$ simultaneously given the values of the states $y$. Below is a basic template for a C program that can includes such a function. Our job is to populate the function with the SymPy expressions represented a C code.\n",
+    "\n",
+    "```C\n",
+    "#include <math.h>\n",
+    "#include <stdio.h>\n",
+    "\n",
+    "void evaluate_odes(const double state_vals[14], double rhs_result[14], double jac_result[196])\n",
+    "{\n",
+    "      // We need to fill in the code here using SymPy.\n",
+    "}\n",
+    "\n",
+    "int main() {\n",
+    "\n",
+    "    // initialize the state vector with some values\n",
+    "    double state_vals[14] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};\n",
+    "    // create \"empty\" 1D arrays to hold the results of the computation\n",
+    "    double rhs_result[14];\n",
+    "    double jac_result[196];\n",
+    "    \n",
+    "    // call the function\n",
+    "    evaluate_odes(state_vals, rhs_result, jac_result);\n",
+    "    \n",
+    "    // print the computed values to the terminal\n",
+    "    int i;\n",
+    "\n",
+    "    printf(\"The right hand side of the equations evaluates to:\\n\");\n",
+    "    for (i=0; i < 14; i++) {\n",
+    "        printf(\"%lf\\n\", rhs_result[i]);\n",
+    "    }\n",
+    "\n",
+    "    printf(\"\\nThe Jacobian evaluates to:\\n\");\n",
+    "    for (i=0; i < 196; i++) {\n",
+    "        printf(\"%lf\\n\", jac_result[i]);\n",
+    "    }\n",
+    "\n",
+    "    return 0;\n",
+    "}\n",
+    "\n",
+    "```\n",
+    "\n",
+    "Instead of using the `ccode` convenience function let's use the underlying code printer class to do the printing. This will allow us to modify the class to for custom printing further down."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sympy.printing.ccode import C99CodePrinter"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All printing classes have to be instantiated and then the `.doprint()` method can be used to print SymPy expressions. Let's try to print the right hand side of the differential equations."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "printer = C99CodePrinter()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(printer.doprint(rhs_of_odes))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this case the C code printer does not do what we desire. It does not support printing a SymPy Matrix (see the first line of the output). In C, on possible representation of a matrix is an array type. The array type in C stores contigous values, e.g. doubles, in a chunk of memory. You can declare an array of doubles in C like:\n",
+    "\n",
+    "```C\n",
+    "double my_array[10];\n",
+    "```\n",
+    "\n",
+    "The word `double` is the data type of the individual values in the array which must all be the same. The word `my_array` is the variable name we choose to name the array and the `[10]` is the syntax to declare that this array will have 10 values.\n",
+    "\n",
+    "The array is \"empty\" when first declared and can be filled with values like so:\n",
+    "\n",
+    "```C\n",
+    "my_array[0] = 5;\n",
+    "my_array[1] = 6.78;\n",
+    "my array[2] = my_array[0] * 12;\n",
+    "```\n",
+    "\n",
+    "or like:\n",
+    "\n",
+    "```C\n",
+    "my_array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};\n",
+    "```\n",
+    "\n",
+    "It is possible to declare multidimensional arrays in C that could map more directly to the indices of our two dimensional matrix, but in this case we will map our two dimensional matrix to a one dimenasional array using C contingous row ordering.\n",
+    "\n",
+    "The code printers are capable of dealing with this need through the `assign_to` keyword argument in the `.doprint()` method but we must define a SymPy object that is appropriate to be assigned to. In our case, since we want to assign a Matrix we need to use an appropriately sized Matrix symbol."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "rhs_result = sym.MatrixSymbol('rhs_result', 14, 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(rhs_result)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(printer.doprint(rhs_of_odes, assign_to=rhs_result))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notice that we have proper array value assignment and valid lines of C code that can be used in our function."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Excercise [5 min]\n",
+    "\n",
+    "Print out valid C code from the Jacobian.\n",
+    "\n",
+    "5 minutes may be too much"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "jac_result = sym.MatrixSymbol('jac_result', 14, 14)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(jac_result)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(printer.doprint(jac_of_odes, assign_to=jac_result))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Changing the Behavior of the Printer\n",
+    "\n",
+    "The SymPy code printers are relatively easy to extend. They are designed such that if you want to change how a particularly SymPy object prints, for example a `Symbol`, then you only need to modify the `_print_Symbol` method. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "C99CodePrinter._print_Symbol??"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Tab through all things you can print"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "#C99CodePrinter._print_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "class MyCodePrinter(C99CodePrinter):\n",
+    "    def _print_Symbol(self, expr):\n",
+    "        return \"No matter what symbol you pass in I will always print:\\n\\nNi!\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer = MyCodePrinter()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "theta = sym.symbols('theta')\n",
+    "theta"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(my_printer.doprint(theta))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Exercise [10 min]\n",
+    "\n",
+    "It turns out that in C calling `pow()` for low exponents executes slower than simply expanding the multiplication. For example `pow(x, 2)` should be printed as `x*x`. Modify the CCodePrinter `._print_Pow` method to expand the multiplication if the exponent is less than or equal to 4. You may want to have a look at the source code with `printer._print_Pow??`\n",
+    "\n",
+    "Note that a `Pow` expression has an `.exp` for exponent and `.base` for the item being raised. For example $x^2$ would have:\n",
+    "\n",
+    "```python\n",
+    "expr = x**2\n",
+    "expr.base == x\n",
+    "expr.exp == 2\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "printer._print_Pow??"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "class MyCodePrinter(C99CodePrinter):\n",
+    "    def _print_Pow(self, expr):\n",
+    "        if expr.exp.is_integer and expr.exp > 0 and expr.exp <= 4:\n",
+    "            return '*'.join([self._print(expr.base) for i in range(expr.exp)])\n",
+    "        else:\n",
+    "            return super()._print_Pow(expr)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer = MyCodePrinter()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "x = sym.Symbol('x')\n",
+    "my_printer.doprint(x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer.doprint(x**2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer.doprint(x**4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer.doprint(x**5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer.doprint(x**1.5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Exercise\n",
+    "\n",
+    "One issue with our current code printer is that the expressions use the symbols `y0, y1, ..., y13` instead of accessing the values directly from the arrays with `state_vals[0], state_vals[1], ..., state_vals[13]`. We could go back and rename our SymPy symbols to use brackets, but another way would be to override the `_print_Symbol()` method to print these symbols as we desire. Modify the code printer so that it prints with the proper array access in the expression.\n",
+    "\n",
+    "10 minutes not enough for both"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "state_vals = sym.MatrixSymbol('state_vals', 14, 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(state_vals[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "class MyCodePrinter(C99CodePrinter):\n",
+    "    def _print_Symbol(self, expr):\n",
+    "        if expr in states:\n",
+    "            idx = list(states).index(expr)\n",
+    "            return self._print(state_vals[idx])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "my_printer = MyCodePrinter()\n",
+    "print(my_printer.doprint(rhs_of_odes, assign_to=rhs_result))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Or as mentioned you can replace the symbols up front. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "state_array_map = dict(zip(states, state_vals))\n",
+    "print(state_array_map)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(printer.doprint(rhs_of_odes.xreplace(state_array_map), assign_to=rhs_result))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Common Subexpression Elimination\n",
+    "\n",
+    "If you look carefully at the expressions in the two matrices you'll see repeated expressions. These are not ideal in the sense that the computer has to repeat the exact same calculation multiple times. For large expressions this can be a major issue. Compilers, such as gcc, can often eliminate common subexpressions on their own when different optimization flags are invoked but for complex expressions the algorithms in some compilers do not do a thorough job or compilation can take an extremely long time. SymPy has tools to perform common subexpression elimination which is both thorough and reasonably efficient. In particular if gcc is run with the lowest optimization setting `-O0` cse can give large speedups.\n",
+    "\n",
+    "For example if you have two expressions:\n",
+    "\n",
+    "```python\n",
+    "a = x*y + 5\n",
+    "b = x*y + 6\n",
+    "```\n",
+    "\n",
+    "you can convert this to these three expressions:\n",
+    "\n",
+    "```python\n",
+    "z = x*y\n",
+    "a = z + 5\n",
+    "b = z + 6\n",
+    "```\n",
+    "\n",
+    "and `x*y` only has to be computed once.\n",
+    "\n",
+    "The `cse()` function in SymPy returns the subexpression, `z = x*y`, and the simplified expressions: `a = z + 5`, `b = z + 6`.\n",
+    "\n",
+    "Here is how it works:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "sym.cse?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "sub_exprs, simplified_rhs = sym.cse(rhs_of_odes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "for var, expr in sub_exprs:\n",
+    "    sym.pprint(sym.Eq(var, expr))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "`cse()` can return a number of simplified expressions and to do this it returns a list. In our case we have 1 simplified expression that can be accessed as the first item of the list."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "type(simplified_rhs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "len(simplified_rhs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "simplified_rhs[0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can find common subexpressions among multiple objects also:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "sub_exprs, simplified_exprs = sym.cse((rhs_of_odes, jac_of_odes))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "for var, expr in sub_exprs:\n",
+    "    sym.pprint(sym.Eq(var, expr))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "simplified_exprs[0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "simplified_exprs[1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Exercise [15min]\n",
+    "\n",
+    "Use common subexpression elimination to print out C code for your two arrays such that:\n",
+    "\n",
+    "```C\n",
+    "double x0 = some_sub_expression;\n",
+    "...\n",
+    "double xN = the_last_sub_expression;\n",
+    "\n",
+    "rhs_result[0] = expressions_containing_the_subexpressions;\n",
+    "...\n",
+    "rhs_result[13] = ...;\n",
+    "\n",
+    "jac_result[0] = ...;\n",
+    "...\n",
+    "jac_result[195] = ...;\n",
+    "```\n",
+    "\n",
+    "This code can be copied and pasted into the provided template above to make a C program.\n",
+    "\n",
+    "explain Assignment, self._print, and ImmutableDenseMatrix"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can add in cse fairly easily for printing a single matrix:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sympy.printing.codeprinter import Assignment\n",
+    "\n",
+    "class CMatrixPrinter(C99CodePrinter):\n",
+    "    def _print_ImmutableDenseMatrix(self, expr):\n",
+    "        sub_exprs, simplified = sym.cse(expr)\n",
+    "        lines = []\n",
+    "        for var, sub_expr in sub_exprs:\n",
+    "            lines.append('double ' + self._print(Assignment(var, sub_expr)))\n",
+    "        M = sym.MatrixSymbol('M', *expr.shape)\n",
+    "        return '\\n'.join(lines) + '\\n' + self._print(Assignment(M, expr))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "p = CMatrixPrinter()\n",
+    "print(p.doprint(jac_of_odes))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "_print_list(self, list_of_exprs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "class CMatrixPrinter(C99CodePrinter):\n",
+    "    \n",
+    "    def _print_list(self, list_of_exprs):\n",
+    "        # NOTE : The MutableDenseMatrix is turned in an ImmutableMatrix inside here.\n",
+    "        if all(isinstance(x, sym.ImmutableMatrix) for x in list_of_exprs):\n",
+    "            sub_exprs, simplified_exprs = sym.cse(list_of_exprs)\n",
+    "            lines = []\n",
+    "            for var, sub_expr in sub_exprs:\n",
+    "                ass = Assignment(var, sub_expr.xreplace(state_array_map))\n",
+    "                lines.append('double ' + self._print(ass))\n",
+    "            for mat in simplified_exprs:\n",
+    "                lines.append(self._print(mat.xreplace(state_array_map)))\n",
+    "            return '\\n'.join(lines)\n",
+    "        else:\n",
+    "            return super()._print_list(list_of_exprs)\n",
+    "            \n",
+    "    def _print_ImmutableDenseMatrix(self, expr):\n",
+    "        if expr.shape[1] > 1:\n",
+    "            M = sym.MatrixSymbol('jac_result', *expr.shape)\n",
+    "        else:\n",
+    "            M = sym.MatrixSymbol('rhs_result', *expr.shape)\n",
+    "        return self._print(Assignment(M, expr))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "p = CMatrixPrinter()\n",
+    "print(p.doprint([rhs_of_odes, jac_of_odes]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Bonus: Compile and Run the C Program"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "c_template = \"\"\"\\\n",
+    "#include <math.h>\n",
+    "#include <stdio.h>\n",
+    "\n",
+    "void evaluate_odes(const double state_vals[14], double rhs_result[14], double jac_result[196])\n",
+    "{{\n",
+    "    // We need to fill in the code here using SymPy.\n",
+    "{code}\n",
+    "}}\n",
+    "\n",
+    "int main() {{\n",
+    "\n",
+    "    // initialize the state vector with some values\n",
+    "    double state_vals[14] = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}};\n",
+    "    // create \"empty\" 1D arrays to hold the results of the computation\n",
+    "    double rhs_result[14];\n",
+    "    double jac_result[196];\n",
+    "\n",
+    "    // call the function\n",
+    "    evaluate_odes(state_vals, rhs_result, jac_result);\n",
+    "\n",
+    "    // print the computed values to the terminal\n",
+    "    int i;\n",
+    "    printf(\"The right hand side of the equations evaluates to:\\\\n\");\n",
+    "    for (i=0; i < 14; i++) {{\n",
+    "        printf(\"%lf\\\\n\", rhs_result[i]);\n",
+    "    }}\n",
+    "    printf(\"\\\\nThe Jacobian evaluates to:\\\\n\");\n",
+    "    for (i=0; i < 196; i++) {{\n",
+    "        printf(\"%lf\\\\n\", jac_result[i]);\n",
+    "    }}\n",
+    "\n",
+    "    return 0;\n",
+    "}}\\\n",
+    "\"\"\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "c_program = c_template.format(code=p.doprint([rhs_of_odes, jac_of_odes]))\n",
+    "print(c_program)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "with open('run.c', 'w') as f:\n",
+    "    f.write(c_program)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To compile the code there are several options. The first is gcc (the GNU C Compiler). If you have Linux, Mac, or Windows (w/ mingw installed) you can use the Jupyter notebook `!` command to send your command to the terminal. For example:\n",
+    "\n",
+    "```ipython\n",
+    "!gcc run.c -lm -o run\n",
+    "```\n",
+    "\n",
+    "This will compile `run.c`, link against the C math library with `-lm` and output, `-o`, to a file `run` (Mac/Linux) or `run.exe` (Windows).\n",
+    "\n",
+    "On Mac and Linux the program can be executed with:\n",
+    "\n",
+    "```ipython\n",
+    "!./run\n",
+    "```\n",
+    "\n",
+    "and on Windows:\n",
+    "\n",
+    "```ipython\n",
+    "!run.exe\n",
+    "```\n",
+    "\n",
+    "Other options are using the clang compiler or Windows cl:\n",
+    "\n",
+    "```ipython\n",
+    "!clang run.c -lm -o run\n",
+    "!cl run.c -lm\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python [default]",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

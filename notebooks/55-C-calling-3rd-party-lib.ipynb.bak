@@ -1,0 +1,296 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Generating C code calling a third-party library\n",
+    "In this notebook we will look at how we can customize the `CCodePrinter` to generate C code which calls functions provided by a 3rd party library. For this example we will use [fastapprox](https://github.com/pmineiro/fastapprox) which is an open source [header only](https://en.wikipedia.org/wiki/Header-only) library containing fast approximate versions of transcendental functions. Will will look into using fastexp instead of exp."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sympy as sym\n",
+    "sym.init_printing()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "args = x, y, z = sym.symbols('x y z')\n",
+    "expr = x + sym.exp(2*y + x) + sym.exp(3*z)\n",
+    "expr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "say that we need to evaluate this expression for vectors of values of x, y & z:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "N = 4096\n",
+    "inp = np.linspace(10, 20, N), np.linspace(-20, -30, N), np.linspace(-9, -3, N)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f = sym.lambdify(args, expr, modules=['numpy'])\n",
+    "f(*inp)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit f(*inp)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sympy.utilities.autowrap import ufuncify"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "uf = ufuncify(args, expr)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "uf(*inp)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit uf(*inp)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The fact that lambdify is about as fast as our ufuncify tells us that we are bound by the time to evaluate expensive transcendental ``exp``. For those of you who know Cython you can see that in a Cython version as well:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%load_ext cython"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from scipy2017codegen.templates import render_pyxbld\n",
+    "render_pyxbld('cy_f_mod', include_dirs=[np.get_include()])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%cython_pyximport cy_f_mod\n",
+    "from libc.math cimport exp\n",
+    "cimport numpy as cnp\n",
+    "import numpy as np\n",
+    "import cython\n",
+    "\n",
+    "def cy_f(\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] x,\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] y,\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] z,\n",
+    "):\n",
+    "    cdef cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] out = np.empty(x.size)\n",
+    "    cdef double * _x = &x[0]\n",
+    "    cdef double * _y = &y[0]\n",
+    "    cdef double * _z = &z[0]\n",
+    "    cdef double * _out = &out[0]\n",
+    "    cdef int i\n",
+    "    if x.size != y.size or x.size != z.size:\n",
+    "        raise ValueError(\"Inconsistent length\")\n",
+    "    for i in range(x.size):\n",
+    "        _out[i] = _x[i] + exp(2*_y[i] + _x[i]) + exp(3*_z[i])\n",
+    "    return out"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cy_f(*inp)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit cy_f(*inp)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So let's try to use ``fastexp`` from ``fastapprox``:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import scipy2017codegen\n",
+    "fastapprox_dir = os.path.join(os.path.dirname(scipy2017codegen.__file__), 'fastapprox')\n",
+    "print(''.join(open(os.path.join(fastapprox_dir, 'fastexp.h')).readlines()[62:67]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sym.ccode(expr, user_functions={'exp': 'fastexp'})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "render_pyxbld('cy_f_fastexp_mod', include_dirs=[np.get_include()])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%cython_pyximport cy_f_fastexp_mod\n",
+    "from libc.math cimport exp\n",
+    "cimport numpy as cnp\n",
+    "import numpy as np\n",
+    "import cython\n",
+    "\n",
+    "cdef extern from \"fastapprox/fastexp.h\":\n",
+    "    float fastexp(float)\n",
+    "\n",
+    "def cy_f_fastexp(\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] x,\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] y,\n",
+    "    cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] z,\n",
+    "):\n",
+    "    cdef cnp.ndarray[cnp.float64_t, ndim=1, mode='c'] out = np.empty(x.size)\n",
+    "    cdef double * _x = &x[0]\n",
+    "    cdef double * _y = &y[0]\n",
+    "    cdef double * _z = &z[0]\n",
+    "    cdef double * _out = &out[0]\n",
+    "    cdef int i\n",
+    "    if x.size != y.size or x.size != z.size:\n",
+    "        raise ValueError(\"Inconsistent length\")\n",
+    "    for i in range(x.size):\n",
+    "        _out[i] = _x[i] + fastexp(2*_y[i] + _x[i]) + fastexp(3*_z[i])\n",
+    "    return out"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%timeit cy_f_fastexp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So that's a 10x speedup, of course at the cost of lost precision, but we are already assuming that was acceptable:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cy_f_fastexp(*inp) - f(*inp)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

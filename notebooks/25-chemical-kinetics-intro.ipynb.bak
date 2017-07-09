@@ -1,0 +1,251 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Chemical kinetics\n",
+    "In chemistry one is often interested in how fast a chemical process proceeds. Chemical reactions (when viewed as single events on a molecular scale) are probabilistic. However, most reactive systems of interest involve very large number of molecules (a few grams of a simple substance contains on the order of $10^{23}$ molecules. The sheer number allows us to describe this inherently stochastic process deterministically.\n",
+    "\n",
+    "### Law of mass action\n",
+    "In order to describe chemical reactions as as system of ODEs in terms of concentrations ($c_i$) and time ($t$), one can use the [law of mass action](https://en.wikipedia.org/wiki/Law_of_mass_action):\n",
+    "\n",
+    "$$\n",
+    "\\frac{dc_i}{dt} = \\sum_j S_{ij} r_j\n",
+    "$$\n",
+    "where $r_j$ is given by:\n",
+    "$$\n",
+    "r_j = k_j\\prod_l c_l^{R_{jl}}\n",
+    "$$\n",
+    "\n",
+    "and $S$ is a matrix with the overall net stoichiometric (\"multiplicity\") coefficients (positive for net production, negative for net consumption), and $R$ is a matrix with the multiplicities of each reactant for each equation.\n",
+    "\n",
+    "### Example: Nitrosylbromide\n",
+    "We will now look at the following (bi-directional) chemical reaction:\n",
+    "\n",
+    "$$\n",
+    "\\mathrm{2\\,NO + Br_2 \\leftrightarrow 2\\,NOBr}\n",
+    "$$\n",
+    "\n",
+    "which describes the equilibrium between nitrogen monoxide (NO) and bromine (Br$_2$) and nitrosyl bromide (NOBr), can be expressed as a set of two reactions (**f**orward and **b**ackward):\n",
+    "\n",
+    "$$\n",
+    "\\mathrm{2\\,NO + Br_2 \\overset{k_f}{\\rightarrow} 2\\,NOBr} \\\\ \n",
+    "\\mathrm{2\\,NOBr \\overset{k_b}{\\rightarrow} 2\\,NO + Br_2}\n",
+    "$$\n",
+    "\n",
+    "The law of mass action tells us that the rate of the first process (forward) is proportional to the concentration Br$_2$ and the square of the concentration of NO. The rate of the second reaction (the backward process) is in analogy proportional to the square of the concentration of NOBr. Using the proportionality constants $k_f$ and $k_b$ we can formulate our system of nonlinear ordinary differential equations as follows:\n",
+    "\n",
+    "$$\n",
+    "\\frac{dc_1}{dt} = 2(k_b c_3^2 - k_f c_2 c_1^2) \\\\\n",
+    "\\frac{dc_2}{dt} = k_b c_3^2 - k_f c_2 c_1^2 \\\\\n",
+    "\\frac{dc_3}{dt} = 2(k_f c_2 c_1^2 - k_b c_3^2)\n",
+    "$$\n",
+    "\n",
+    "where we have denoted the concentration of NO, Br$_2$, NOBr with $c_1,\\ c_2,\\ c_3$ respectively.\n",
+    "\n",
+    "This ODE system corresponds to the following two matrices:\n",
+    "\n",
+    "$$\n",
+    "S = \\begin{bmatrix}\n",
+    "-2 & 2 \\\\\n",
+    "-1 & 1 \\\\\n",
+    "2 & -2\n",
+    "\\end{bmatrix}\n",
+    "$$\n",
+    "\n",
+    "$$\n",
+    "R = \\begin{bmatrix}\n",
+    "2 & 1 & 0 \\\\\n",
+    "0 & 0 & 2 \n",
+    "\\end{bmatrix}\n",
+    "$$\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Solving the initial value problem numerically\n",
+    "We will now integrate this system of ordinary differential equations numerically as an initial value problem (IVP) using the ``odeint`` solver provided by ``scipy``:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from scipy.integrate import odeint"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "By looking at the [documentation](https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.integrate.odeint.html) of odeint we see that we need to provide a callback which computes a vector of derivatives ($\\dot{\\mathbf{y}} = [\\frac{dy_1}{dt}, \\frac{dy_2}{dt}, \\frac{dy_3}{dt}]$). The expected signature of this callback is:\n",
+    "\n",
+    "    f(y: array[float64], t: float64, *args: arbitrary constants) -> dydt: array[float64]\n",
+    "    \n",
+    "in our case we can write it as:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def rhs(y, t, kf, kb):\n",
+    "    rf = kf * y[0]**2 * y[1]\n",
+    "    rb = kb * y[2]**2\n",
+    "    return [2*(rb - rf), rb - rf, 2*(rf - rb)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%load_ext scipy2017codegen.exercise"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%exercise exercise_odeint.py"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.plot(tout, yout)\n",
+    "_ = plt.legend(['NO', 'Br$_2$', 'NOBr'])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Writing the ``rhs`` function by hand for larger reaction systems quickly becomes tedious. Ideally we would like to construct it from a symbolic representation (having a symbolic representation of the problem opens up many possibilities as we will soon see). But at the same time, we need the ``rhs`` function to be fast. Which means that we want to produce a fast function from our symbolic representation. Generating a function from our symbolic representation is achieved through *code generation*. \n",
+    "\n",
+    "In summary we will need to:\n",
+    "\n",
+    "1. Construct a symbolic representation from the domain specific data structure using SymPy.\n",
+    "2. Have SymPy generate a function with an appropriate signature, which we pass on to the solver.\n",
+    "\n",
+    "We will achieve (1) by using SymPy symbols (and functions if needed). For (2) we will use a function in SymPy called ``lambdify``―it takes a symbolic expressions and returns a function. In a later notebook, we will look at (1), for now we will just use ``rhs`` which we've already written:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sympy as sym\n",
+    "sym.init_printing()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y, k = sym.symbols('y:3'), sym.symbols('kf kb')\n",
+    "ydot = rhs(y, None, *k)\n",
+    "ydot"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Exercise\n",
+    "Now assume that we had constructed ``ydot`` above by applying the more general law of mass action, instead of hard-coding the rate expressions in ``rhs``. Then we could have created a function corresponding to ``rhs`` using ``lambdify``:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%exercise exercise_lambdify.py"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.plot(tout, odeint(f, y0, tout, k_vals))\n",
+    "_ = plt.legend(['NO', 'Br$_2$', 'NOBr'])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this example the gains of using a symbolic representation are arguably limited. However, it is quite common that the numerical solver will need another function which calculates the [Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant) of $\\dot{\\mathbf{y}}$ (given as Dfun in the case of ``odeint``). Writing that by hand is both tedious and error prone. But SymPy makes solves both of those issues:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sym.Matrix(ydot).jacobian(y)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the next notebook we will look at an example where providing this as a function is beneficial for performance."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
