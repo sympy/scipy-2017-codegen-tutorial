@@ -21,7 +21,11 @@ before_install:
 install:
     - |
       MINICONDA_URL="https://repo.continuum.io/miniconda"
-      MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+          MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      else
+          MINICONDA_FILE="Miniconda3-latest-Linux-x86_64.sh"
+      fi
       curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
       bash $MINICONDA_FILE -b
 
