@@ -43,7 +43,7 @@ script:
     - bash -c "source activate codegen17; python test_installation.py"
     - bin/prepare_deploy.sh
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-        doctr deploy . --built-docs deploy/
+        doctr deploy . --built-docs deploy/;
       fi
 
 notifications:
