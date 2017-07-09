@@ -32,6 +32,7 @@ install:
       source ~/miniconda3/bin/activate root
       conda config --add channels conda-forge
       conda config --set show_channel_urls true
+      conda config --set always_yes yes
       sed -i.bak -e '$ d' environment.yml
       conda env create -f environment.yml
       conda install doctr
