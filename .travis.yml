@@ -29,7 +29,7 @@ install:
       curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
       bash $MINICONDA_FILE -b
 
-      source /Users/travis/miniconda3/bin/activate root
+      source ~/miniconda3/bin/activate root
       conda config --add channels conda-forge
       conda config --set show_channel_urls true
       sed -i.bak -e '$ d' environment.yml
