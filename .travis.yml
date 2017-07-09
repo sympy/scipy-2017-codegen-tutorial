@@ -43,6 +43,8 @@ script:
     - bin/render_notebooks.sh
     - bash -c "source activate codegen17; python test_installation.py"
     - bin/prepare_deploy.sh
+    # Clear changes to tracked files so doctr can checkout gh-pages
+    - git reset --hard
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
         doctr deploy . --built-docs deploy/;
       fi
