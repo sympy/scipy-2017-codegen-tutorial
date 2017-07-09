@@ -1,5 +1,7 @@
 language: generic
-os: osx
+os:
+  - osx
+  - linux
 osx_image: beta-xcode6.1
 
 env:
@@ -33,7 +35,9 @@ script:
     - bin/render_notebooks.sh
     - bash -c "source activate codegen17; python test_installation.py"
     - bin/prepare_deploy.sh
-    - doctr deploy . --built-docs deploy/
+    - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+        doctr deploy . --built-docs deploy/
+      fi
 
 notifications:
   email: false
