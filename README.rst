@@ -1,5 +1,5 @@
 ===========================
-scipy-2017-codegen-tutorial
+SciPy 2017 Codegen Tutorial
 ===========================
 
 Introduction
@@ -29,7 +29,7 @@ or Miniconda_ using the instructions provided at the download links.
 .. _Miniconda: https://conda.io/miniconda.html
 
 If you are using Windows, please also install the `Visual C++ Build Tools`_ for
-proper Cython compiliation with Python 3.5+. **Install this before you arrive
+proper Cython compilation with Python 3.5+. **Install this before you arrive
 at the tutorial, as it takes some time.**
 
 .. _Visual C++ Build Tools: http://landinghub.visualstudio.com/visual-cpp-build-tools
