@@ -91,6 +91,12 @@ deactivating by typing::
 
    > conda env remove --name codegen17
 
+on windows, and::
+
+   $ source deactivate
+
+on Linux/Mac (using bash).
+
 At this point you have everything installed to run the code in the tutorial.
 
 Running the notebooks
@@ -99,11 +105,11 @@ Running the notebooks
 After activating the `codgen17` environment start Jupyter in the `notebooks`
 directory::
 
-   (codegen17)> cd notebooks
    (codegen17)> jupyter notebook
 
 A web interface should open in your web browser (default address
-http://localhost:8888). Note that Ctrl-C will stop the notebook server.
+http://localhost:8888). Open "index.ipynb". Note that Ctrl-C will stop the notebook
+server.
 
 Optional Installation/Run Methods
 =================================

@@ -21,3 +21,4 @@ notebooks/*.h
 notebooks/*.c
 notebooks/*.pyx
 notebooks/*.pyxbld
+notebooks/autowraptmp*/
