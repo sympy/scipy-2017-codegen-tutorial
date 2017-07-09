@@ -1,5 +1,7 @@
 language: generic
-os: osx
+os:
+  - osx
+  - linux
 osx_image: beta-xcode6.1
 
 env:
@@ -9,14 +11,21 @@ env:
 
 before_install:
     # Remove homebrew.
-    - brew remove --force $(brew list)
-    - brew cleanup -s
-    - rm -rf $(brew --cache)
+    - |
+      if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+        brew remove --force $(brew list)
+        brew cleanup -s
+        rm -rf $(brew --cache)
+      fi
 
 install:
     - |
       MINICONDA_URL="https://repo.continuum.io/miniconda"
-      MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+          MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      else
+          MINICONDA_FILE="Miniconda3-latest-Linux-x86_64.sh"
+      fi
       curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
       bash $MINICONDA_FILE -b
 
@@ -33,7 +42,9 @@ script:
     - bin/render_notebooks.sh
     - bash -c "source activate codegen17; python test_installation.py"
     - bin/prepare_deploy.sh
-    - doctr deploy . --built-docs deploy/
+    - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+        doctr deploy . --built-docs deploy/;
+      fi
 
 notifications:
   email: false
