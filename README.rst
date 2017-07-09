@@ -102,13 +102,13 @@ At this point you have everything installed to run the code in the tutorial.
 Running the notebooks
 =====================
 
-After activating the `codgen17` environment start Jupyter in the `notebooks`
+After activating the `codegen17` environment start Jupyter in the `notebooks`
 directory::
 
-   (codegen17)> jupyter notebook
+   (codegen17)> jupyter notebook index.ipynb
 
 A web interface should open in your web browser (default address
-http://localhost:8888). Open "index.ipynb". Note that Ctrl-C will stop the notebook
+http://localhost:8888). Note that Ctrl-C will stop the notebook
 server.
 
 Optional Installation/Run Methods
