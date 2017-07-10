@@ -2,7 +2,7 @@ from libc.stdlib cimport malloc, free
 cimport numpy as cnp
 import numpy as np
 
-cdef extern from "integrate_serial_1ecf98b4fe.c":
+cdef extern from "integrate_serial_77c6f76be6.c":
     int integrate(double *, double *, int, int, void*, double*, double,
                   double, double, double*, int, int, int, int, long int *)
 
