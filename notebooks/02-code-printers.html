@@ -12241,10 +12241,10 @@ $$\left|{\sin{\left (x^{2} \right )}}\right|$$
 
 
 
-<div id="537af14e-35f3-4ce6-a38a-cb02207ab995"></div>
+<div id="e4e45fa5-9867-4362-bbc7-b37dc597bf05"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#537af14e-35f3-4ce6-a38a-cb02207ab995');
+var element = $('#e4e45fa5-9867-4362-bbc7-b37dc597bf05');
 require.config({
   paths: {
       'chartjs': '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart'
@@ -12449,10 +12449,10 @@ element.append(&#34;&lt;canvas id=&#39;***fill me in!***&#39; width=&#39;400&#39
 
 
 
-<div id="3dceb441-1b0c-4283-be7e-f23e122cd978"></div>
+<div id="4d45cc6a-630b-47b8-ab37-d5e722707f9b"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#3dceb441-1b0c-4283-be7e-f23e122cd978');
+var element = $('#4d45cc6a-630b-47b8-ab37-d5e722707f9b');
 
 require(['chartjs'], function(chartjs){
 
@@ -12534,6 +12534,15 @@ element.append("<canvas id='sincos' width='400'></canvas>");
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exercise:-Batman!">Exercise: Batman!<a class="anchor-link" href="#Exercise:-Batman!">&#182;</a></h2><p>Plot the equations below for <code>top</code> and <code>bottom</code>.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12641,219 +12650,7 @@ $$\begin{cases} - \frac{3}{7} \sqrt{- x^{2} + 49} & \text{for}\: x \geq 4 \\- x^
 <div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jscode</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[23]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;((x &gt;= 3) ? (\n   (3/7)*Math.sqrt(-Math.pow(x, 2) + 49)\n)\n: ((x &gt;= 1) ? (\n   -1/2*Math.abs(x) - 3/7*Math.sqrt(10)*Math.abs(Math.sqrt(-Math.pow(Math.abs(x) - 1, 2) + 4)) + 3/2 + (6/7)*Math.sqrt(10)\n)\n: ((x &gt;= 3/4) ? (\n   -8*Math.abs(x) + 9\n)\n: ((x &gt;= 7/12) ? (\n   3*Math.abs(x) + 3/4\n)\n: ((x &gt;= -7/12) ? (\n   5/2\n)\n: ((x &gt;= -3/4) ? (\n   3*Math.abs(x) + 3/4\n)\n: ((x &gt;= -1) ? (\n   -8*Math.abs(x) + 9\n)\n: ((x &gt;= -3) ? (\n   -1/2*Math.abs(x) - 3/7*Math.sqrt(10)*Math.abs(Math.sqrt(-Math.pow(Math.abs(x) - 1, 2) + 4)) + 3/2 + (6/7)*Math.sqrt(10)\n)\n: (\n   (3/7)*Math.sqrt(-Math.pow(x, 2) + 49)\n)))))))))&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jscode</span><span class="p">(</span><span class="n">bottom</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[24]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;((x &gt;= 4) ? (\n   -3/7*Math.sqrt(-Math.pow(x, 2) + 49)\n)\n: ((x &gt;= -4) ? (\n   -Math.pow(x, 2)*(-1/16 + (3/112)*Math.sqrt(33)) + Math.sqrt(-Math.pow(Math.abs(Math.abs(x) - 2) - 1, 2) + 1) + (1/2)*Math.abs(x) - 3\n)\n: (\n   -3/7*Math.sqrt(-Math.pow(x, 2) + 49)\n)))&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Javascript</span><span class="p">(</span><span class="n">js_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_function</span><span class="o">=</span><span class="n">jscode</span><span class="p">(</span><span class="n">top</span><span class="p">),</span>
-                              <span class="n">bottom_function</span><span class="o">=</span><span class="n">jscode</span><span class="p">(</span><span class="n">bottom</span><span class="p">),</span>
-                              <span class="n">chart_id</span><span class="o">=</span><span class="s1">&#39;batman&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[25]:</div>
-
-
-
-
-
-<div id="a5c274fb-74a6-4efe-a59b-f995e3122479"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#a5c274fb-74a6-4efe-a59b-f995e3122479');
-
-require(['chartjs'], function(chartjs){
-
-function f(x) {
-    return ((x >= 3) ? (
-   (3/7)*Math.sqrt(-Math.pow(x, 2) + 49)
-)
-: ((x >= 1) ? (
-   -1/2*Math.abs(x) - 3/7*Math.sqrt(10)*Math.abs(Math.sqrt(-Math.pow(Math.abs(x) - 1, 2) + 4)) + 3/2 + (6/7)*Math.sqrt(10)
-)
-: ((x >= 3/4) ? (
-   -8*Math.abs(x) + 9
-)
-: ((x >= 7/12) ? (
-   3*Math.abs(x) + 3/4
-)
-: ((x >= -7/12) ? (
-   5/2
-)
-: ((x >= -3/4) ? (
-   3*Math.abs(x) + 3/4
-)
-: ((x >= -1) ? (
-   -8*Math.abs(x) + 9
-)
-: ((x >= -3) ? (
-   -1/2*Math.abs(x) - 3/7*Math.sqrt(10)*Math.abs(Math.sqrt(-Math.pow(Math.abs(x) - 1, 2) + 4)) + 3/2 + (6/7)*Math.sqrt(10)
-)
-: (
-   (3/7)*Math.sqrt(-Math.pow(x, 2) + 49)
-)))))))))
-};
-
-function g(x) {
-    return ((x >= 4) ? (
-   -3/7*Math.sqrt(-Math.pow(x, 2) + 49)
-)
-: ((x >= -4) ? (
-   -Math.pow(x, 2)*(-1/16 + (3/112)*Math.sqrt(33)) + Math.sqrt(-Math.pow(Math.abs(Math.abs(x) - 2) - 1, 2) + 1) + (1/2)*Math.abs(x) - 3
-)
-: (
-   -3/7*Math.sqrt(-Math.pow(x, 2) + 49)
-)))
-};
-
-function linspace(a,b,n) {
-    // From: https://gist.github.com/joates/6584908
-    if(typeof n === "undefined") n = Math.max(Math.round(b-a)+1,1);
-    if(n<2) { return n===1?[a]:[]; }
-    var i,ret = Array(n);
-    n--;
-    for(i=n;i>=0;i--) { ret[i] = (i*b+(n-i)*a)/n; }
-    return ret;
-}
-
-var ctx = document.getElementById("batman");
-var data = {
-    labels: linspace(-7.5, 7.5, 500),
-    datasets: [{
-        label: "top",
-        function: f,
-        borderColor: "rgba(75, 192, 192, 1)",
-        data: [],
-        fill: false,
-        lineTension: 0,
-    },
-    {
-        label: "bottom",
-        function: g,
-        borderColor: "rgba(153, 102, 255, 1)",
-        data: [],
-        fill: false,
-        lineTension: 0,
-    }]
-};
-
-chartjs.Chart.pluginService.register({
-    beforeInit: function(chart) {
-        var data = chart.config.data;
-        for (var i = 0; i < data.datasets.length; i++) {
-            for (var j = 0; j < data.labels.length; j++) {
-                var fct = data.datasets[i].function,
-                    x = data.labels[j],
-                    y = fct(x);
-                data.datasets[i].data.push(y);
-            }
-        }
-    }
-});
-
-var myBarChart = new chartjs.Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-
-});
-
-element.append("<canvas id='batman' width='400'></canvas>");
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Write your answer here</span>
 </pre></div>
 
 </div>
