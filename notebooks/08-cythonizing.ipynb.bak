@@ -16,7 +16,7 @@
     "2. use the SymPy `codegen` function to output compilable C code\n",
     "3. wrap `codegen`-generated code with Cython, compile it into an extension module, and call it from Python\n",
     "4. use SymPy's `autowrap` function to do all of this behind the scenes\n",
-    "5. pass a custom code printer to `autowrap` to make use of an efficient C library"
+    "5. pass a custom code printer to `autowrap` to make use of an external C library"
    ]
   },
   {
@@ -64,7 +64,7 @@
    "source": [
     "### Example\n",
     "\n",
-    "As a quick example of what Cython can offer, we'll walk through a simple example of generating numbers in the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number). If you're not familiar with it already, the sequence is initialized with $F_0 = 0$ and $F_1 = 1$, then the remaining terms are defined recursively by:\n",
+    "As a quick demonstration of what Cython can offer, we'll walk through a simple example of generating numbers in the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number). If you're not familiar with it already, the sequence is initialized with $F_0 = 0$ and $F_1 = 1$, then the remaining terms are defined recursively by:\n",
     "\n",
     "$$\n",
     "F_i = F_{i-1} + F_{i-2}\n",
@@ -95,9 +95,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "[python_fib(i) for i in range(10)]"
@@ -113,9 +111,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "%timeit python_fib(100)"
@@ -145,19 +141,20 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Now we can write a Cython function. Note that the `--annotate` (or `-a`) flag of the `%%cython` magic command will produce an interactive annotated printout of the Cython code, allowing us to see the C code that is generated."
+    "Now we can write a Cython function.\n",
+    "\n",
+    "*Note: the `--annotate` (or `-a`) flag of the `%%cython` magic command will produce an interactive annotated printout of the Cython code, allowing us to see the C code that is generated.*"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "scrolled": true
    },
    "outputs": [],
    "source": [
-    "%%cython --annotate\n",
+    "%%cython\n",
     "def cython_fib(int n):\n",
     "    cdef double a = 0.0\n",
     "    cdef double b = 1.0\n",
@@ -172,9 +169,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "%timeit cython_fib(100)"
@@ -220,7 +215,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "scrolled": true
    },
    "outputs": [],
@@ -234,7 +228,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Now we'll use `sympy.utilities.codegen.codegen` to output C source and header files which can compute the right hand side (RHS) of the ODEs numerically, given the current values of our state variables. Here we'll import it and show the documentation:"
+    "Now we'll use `codegen` (under `sympy.utilities.codegen`) to output C source and header files which can compute the right hand side (RHS) of the ODEs numerically, given the current values of our state variables. Here we'll import it and show the documentation:"
    ]
   },
   {
@@ -271,15 +265,13 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Note that we've just expanded the outputs into individual variables so we can access the generated code easily. Let's print the source code."
+    "Note that we've just expanded the outputs into individual variables so we can access the generated code easily. `codegen` gives us back the `.c` filename and its source code in a tuple, and the `.h` filename and its source in another tuple. Let's print the source code."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "print(cs)"
@@ -295,7 +287,7 @@
     "- the state variables in the function signature are out of order\n",
     "- the output array is passed in as a pointer like in our Fibonacci sequence example, but it has an auto-generated name\n",
     "\n",
-    "Let's address the first issue first. Similarly to what we did in the C printing exercises, let's use a `MatrixSymbol` to represent our state vector instead of a matrix of individual state variables. First, create the `MatrixSymbol` object that is the same shape as our states matrix."
+    "Let's address the first issue first. Similarly to what we did in the C printing exercises, let's use a `MatrixSymbol` to represent our state vector instead of a matrix of individual state variable symbols (i.e. `y[0]` instead of `y0`). First, create the `MatrixSymbol` object that is the same shape as our states matrix."
    ]
   },
   {
@@ -319,9 +311,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "state_array_map = dict(zip(states, y))\n",
@@ -338,9 +328,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "rhs_of_odes_ind = rhs_of_odes.xreplace(state_array_map)\n",
@@ -377,9 +365,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "[(cf, cs), (hf, hs)] = codegen(('c_odes', rhs_of_odes_ind), language='c')\n",
@@ -440,9 +426,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "ode_eq = sym.Eq(dY, rhs_of_odes_ind)\n",
@@ -454,11 +438,11 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Now we see that the `c_odes` function signature is nice and clean. We pass it a pointer to an array representing the current values of all of our state variables and a pointer to an array we want to fill with the derivatives of each of those state variables.\n",
+    "Now we see that the `c_odes` function signature is nice and clean. We pass it a pointer to an array representing the current values of all of our state variables and a pointer to an array that we want to fill with the derivatives of each of those state variables.\n",
     "\n",
-    "If you're not familiar with C and pointers, you just need to know that it is idiomatic in C to preallocate a block of memory representing an array, then pass the *location* of that memory (and usually the number of elements it can hold), rather than passing the array itself. For our purposes, this is as complicated as pointers will get.\n",
+    "If you're not familiar with C and pointers, you just need to know that it is idiomatic in C to preallocate a block of memory representing an array, then pass the *location* of that memory (and usually the number of elements it can hold), rather than passing the array itself to/from a function. For our purposes, this is as complicated as pointers will get.\n",
     "\n",
-    "Just so we can compile this code and use it, we'll re-use the `codegen` call above with `to_files=True` so the `.c` and `.h` files are actually written to the filesystem."
+    "Just so we can compile this code and use it, we'll re-use the `codegen` call above with `to_files=True` so the `.c` and `.h` files are actually written to the filesystem, rather than having their contents returned in a string."
    ]
   },
   {
@@ -478,12 +462,12 @@
    "source": [
     "## 3. Wrapping the Generated Code with Cython\n",
     "\n",
-    "Now we want to wrap the function that was generated `c_odes` with a Cython function so we can generate an extension module and call that function from Python. Wrapping a set of C functions involves writing a fairly simple Cython script that specifies the Python interface to the C functions. This script must do two things:\n",
+    "Now we want to wrap the function that was generated `c_odes` with a Cython function so we can generate an extension module and call that function from Python. Wrapping a set of C functions involves writing a Cython script that specifies the Python interface to the C functions. This script must do two things:\n",
     "\n",
     "1. specify the function signatures as found in the C source\n",
-    "2. implement the Python interface to the functions by wrapping them\n",
+    "2. implement the Python interface to the C functions by wrapping them\n",
     "\n",
-    "We will write our wrapper code in a cell making use of the magic command `%%cython_pyximport`, which does a few things for us:\n",
+    "The build system of Cython is able to take the Cython wrapper source code as well as the C library source code and compile/link things together into a Python extension module. We will write our wrapper code in a cell making use of the magic command `%%cython_pyximport`, which does a few things for us:\n",
     "\n",
     "- writes the contents of the cell to a Cython source file (`modname.pyx`)\n",
     "- looks for a `modname.pyxbld` file for instructions on how to build things\n",
@@ -494,7 +478,7 @@
     "\n",
     "*Note: The `pyxbld` file contains code similar to what would be found in the `setup.py` file of a package making use of Cython code for wrapping C libraries.*\n",
     "\n",
-    "All that's needed is to tell setuptools/Cython:\n",
+    "In either case, all that's needed is to tell setuptools/Cython:\n",
     "\n",
     "- the name of the extension module we want to make\n",
     "- the location of the Cython and C source files to be built\n",
@@ -506,9 +490,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "%%writefile cy_odes.pyxbld\n",
@@ -536,14 +518,12 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "%%cython_pyximport cy_odes\n",
     "import numpy as np\n",
-    "cimport numpy as cnp\n",
+    "cimport numpy as cnp # cimport gives us access to NumPy's C API\n",
     "\n",
     "# here we just replicate the function signature from the header\n",
     "cdef extern from \"c_odes.h\":\n",
@@ -590,9 +570,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "random_vals = np.random.randn(14)\n",
@@ -646,9 +624,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "y_vals = odeint(cy_odes, y_init, t_vals)\n",
@@ -682,7 +658,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "So `autowrap` takes in a SymPy expression and gives us back a binary which evaluates the expression. Let's use the `Equality` formed earlier to generate a function we can call to evaluate the right hand side of our system of ODEs."
+    "So `autowrap` takes in a SymPy expression and gives us back a binary callable which evaluates the expression numerically. Let's use the `Equality` formed earlier to generate a function we can call to evaluate the right hand side of our system of ODEs."
    ]
   },
   {
@@ -750,9 +726,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "random_vals = np.random.randn(14, 1) # need a 2-dimensional vector\n",
@@ -763,7 +737,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "One advantage to wrapping the generated C code manually is that we get fine control over how the function is used from Python. That is, we were able to specify that from the Python side, the input to our wrapper function and its return value are both 1-dimensional `ndarray` objects. We were also able to add in the extra argument `t` for the current time, making the wrapper function fully compatible with `odeint`.\n",
+    "One advantage to wrapping the generated C code manually is that we get fine control over how the function is used from Python. That is, in our hand-written Cython wrapper we were able to specify that from the Python side, the input to our wrapper function and its return value are both 1-dimensional `ndarray` objects. We were also able to add in the extra argument `t` for the current time, making the wrapper function fully compatible with `odeint`.\n",
     "\n",
     "However, `autowrap` just sees that we have a matrix equation where each side is a 2-dimensional array with shape (14, 1). The function returned then expects the input array to be 2-dimensional and it returns a 2-dimensional array."
    ]
@@ -798,9 +772,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "random_vals = np.random.randn(14)\n",
@@ -846,9 +818,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "jac = rhs_of_odes_ind.jacobian(y)\n",
@@ -871,9 +841,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "y_vals = odeint(auto_odes_wrapper, y_init, t_vals, Dfun=auto_jac_wrapper)\n",
@@ -886,7 +854,7 @@
    "source": [
     "## 5. Using a Custom Printer and an External Library with `autowrap`\n",
     "\n",
-    "As of SymPy 1.1, `autowrap` accepts a custom `CodeGen` object, which is responsible for generating the code. The `CodeGen` object in turn accepts a custom `CodePrinter` object, meaning we can use these two points of flexibility to make use of customized code printing. The following example is somewhat contrived, but the concept in general is powerful.\n",
+    "As of SymPy 1.1, `autowrap` accepts a custom `CodeGen` object, which is responsible for generating the code. The `CodeGen` object in turn accepts a custom `CodePrinter` object, meaning we can use these two points of flexibility to make use of customized code printing in an autowrapped function. The following example is somewhat contrived, but the concept in general is powerful.\n",
     "\n",
     "In our set of ODEs, there are quite a few instances of $y_i^2$, where $y_i$ is one of the 14 state variables. As an example, here's the equation for $\\frac{dy_3(t)}{dt}$:"
    ]
@@ -894,9 +862,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "rhs_of_odes[3]"
@@ -906,9 +872,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "It turns out there is a library called [fastapprox](https://github.com/romeric/fastapprox) which provides computational routines things like powers, exponentials, logarithms, and a few others. These routines provide limited precision with respect to something like `math.h`'s equivalent functions, but they offer potentially faster computation.\n",
+    "There is a library called [fastapprox](https://github.com/romeric/fastapprox) that provides computational routines things like powers, exponentials, logarithms, and a few others. These routines provide limited precision with respect to something like `math.h`'s equivalent functions, but they offer potentially faster computation.\n",
     "\n",
-    "The fastapprox library provides a function called `fastpow`, which takes the base and the exponent -- i.e. it follows the interface of `pow` from `math.h`. In the previous notebook, we saw how to turn instances of $x^3$ into `x*x*x`, which is potentially quicker than `pow(x, 3)`. Here, let's just use `fastpow` instead."
+    "The fastapprox library provides a function called `fastpow`, with the signature `fastpow(float x, float p)`. It it follows the interface of `pow` from `math.h`. In the previous notebook, we saw how to turn instances of $x^3$ into `x*x*x`, which is potentially quicker than `pow(x, 3)`. Here, let's just use `fastpow` instead."
    ]
   },
   {
@@ -952,9 +918,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "from sympy.printing.ccode import C99CodePrinter\n",
@@ -1032,7 +996,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Finally we're ready to call `autowrap`. We'll just use the `ode_eq` `Equality` we created before, pass in the custom `CodeGen` object, and tell `autowrap` where the fastapprox headers are located."
+    "Finally we're ready to call `autowrap`. We'll just use `ode_eq`, the `Equality` we created before, pass in the custom `CodeGen` object, and tell `autowrap` where the fastapprox headers are located."
    ]
   },
   {
@@ -1043,11 +1007,11 @@
    },
    "outputs": [],
    "source": [
-    "auto_odes_custom = autowrap(ode_eq,\n",
-    "                            code_gen=gen,\n",
-    "                            backend='cython',\n",
-    "                            include_dirs=[fastapprox_dir],\n",
-    "                            tempdir='autowraptmp_custom')"
+    "auto_odes_fastpow = autowrap(ode_eq,\n",
+    "                             code_gen=gen,\n",
+    "                             backend='cython',\n",
+    "                             include_dirs=[fastapprox_dir],\n",
+    "                             tempdir='autowraptmp_custom')"
    ]
   },
   {
@@ -1062,16 +1026,14 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
-    "def auto_odes_custom_wrapper(y, t):\n",
-    "    dY = auto_odes_custom(y[:, np.newaxis])\n",
+    "def auto_odes_fastpow_wrapper(y, t):\n",
+    "    dY = auto_odes_fastpow(y[:, np.newaxis])\n",
     "    return dY.squeeze()\n",
     "\n",
-    "y_vals, info = odeint(auto_odes_custom_wrapper, y_init, t_vals, full_output=True)\n",
+    "y_vals, info = odeint(auto_odes_fastpow_wrapper, y_init, t_vals, full_output=True)\n",
     "watrad_plot(t_vals, y_vals)"
    ]
   },
@@ -1079,7 +1041,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "**Exercise**: use `%timeit` to compare performance of using `odeint` with the two `autowrap` implementations: `auto_odes_wrapper` and `auto_odes_custom_wrapper`."
+    "**Exercise**: generate an array of random state variable values, then use this array in the `auto_odes_wrapper` and `auto_odes_fastpow_wrapper` functions. Compare their outputs."
    ]
   },
   {
@@ -1101,30 +1063,20 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
-    "%timeit odeint(auto_odes_wrapper, y_init, t_vals)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
-   "outputs": [],
-   "source": [
-    "%timeit odeint(auto_odes_custom_wrapper, y_init, t_vals)"
+    "random_vals = np.random.randn(14)\n",
+    "dY1 = auto_odes_wrapper(random_vals, 0)\n",
+    "dY2 = auto_odes_fastpow_wrapper(random_vals, 0)\n",
+    "dY1 - dY2"
    ]
   }
  ],
  "metadata": {
   "anaconda-cloud": {},
   "kernelspec": {
-   "display_name": "Python [default]",
+   "display_name": "Python 3",
    "language": "python",
    "name": "python3"
   },
@@ -1138,7 +1090,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.5.3"
+   "version": "3.6.1"
   }
  },
  "nbformat": 4,

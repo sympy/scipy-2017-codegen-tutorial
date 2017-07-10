@@ -11864,23 +11864,40 @@ common subexpression elimination (CSE),</li>
 <li>[5 minutes] <strong>Bonus:</strong> Compile and execute the C code.</li>
 </ul>
 <h3 id="Cythonizing-Your-Code-(manually-and-autowrap)-[1-hour]"><a href="notebooks/08-cythonizing.html">Cythonizing Your Code (manually and autowrap)</a> [1 hour]<a class="anchor-link" href="#Cythonizing-Your-Code-(manually-and-autowrap)-[1-hour]">&#182;</a></h3><p><strong>Description</strong></p>
-<p>Generate C code to evaluate an ordinary differential equation and and its Jacobian and wrap it for use with SciPy’s integrators. Additionally, demonastrate how one might access external C libraries.</p>
+<p>Generate C code to evaluate an ordinary differential equation and and its Jacobian and wrap it for use with SciPy’s integrators. Additionally, demonstrate how one might access external C libraries.</p>
 <p><strong>Motivating Example</strong></p>
-<p>Chemical kinetic ODE.</p>
-<h4 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h4><ul>
-<li>[5 minutes] Explanation of Cython</li>
-<li>[5 minutes] Example: writing Cython and compiling in a notebook</li>
-<li>[5 minutes] Demonstrate Cython writing exercise notebook</li>
+<p>Integrating the water radiolysis system of ODEs.</p>
+<h4 id="Section-1:-Introduction-to-Cython">Section 1: Introduction to Cython<a class="anchor-link" href="#Section-1:-Introduction-to-Cython">&#182;</a></h4><ul>
+<li>[2 minutes] Explanation of Cython</li>
+<li>[3 minutes] Example: writing Cython and compiling in a notebook</li>
 </ul>
-<h4 id="Section-2">Section 2<a class="anchor-link" href="#Section-2">&#182;</a></h4><ul>
-<li>[5 minutes] Example: writing a Cython wrapper around existing C code</li>
-<li>[10 minutes] Demonstrate codegen generation of ODE and Jacobian functions</li>
-<li>[10 minutes] <strong>Exercise</strong>: wrap the generated C code with Cython</li>
+<h4 id="Section-2:-Generating-C-Code-with-SymPy's-codegen()">Section 2: Generating C Code with SymPy's <code>codegen()</code><a class="anchor-link" href="#Section-2:-Generating-C-Code-with-SymPy's-codegen()">&#182;</a></h4><ul>
+<li>[2 minutes] Review the water radiolysis system</li>
+<li>[2 minutes] First exposure to <code>codegen</code></li>
+<li>[3 minutes] <strong>Exercise</strong> generate code with a cleaner function signature</li>
+<li>[3 minutes] <strong>Exercise</strong> generate an even cleaner function signature</li>
 </ul>
-<h4 id="Section-3">Section 3<a class="anchor-link" href="#Section-3">&#182;</a></h4><ul>
-<li>[5 minutes] Demonstrate autowrap codegen + compilation</li>
-<li>[5 minutes] Explanation of custom printer and compile flags with autowrap</li>
-<li>[10 minutes] <strong>Exercise</strong>: use autowrap or codegen to evaluate an expression with exponentials</li>
+<h4 id="Section-3.-Wrapping-the-Generated-Code-with-Cython">Section 3. Wrapping the Generated Code with Cython<a class="anchor-link" href="#Section-3.-Wrapping-the-Generated-Code-with-Cython">&#182;</a></h4><ul>
+<li>[5 minutes] Overview of the wrapping process</li>
+<li>[3 minutes] Explanation of the build process</li>
+<li>[3 minutes] Explanation of the wrapper code</li>
+<li>[3 minutes] <strong>Exercise</strong>: use the wrapped function with some random inputs</li>
+<li>[3 minutes] Use <code>odeint</code> to integrate the ODEs using the wrapped function</li>
+</ul>
+<h4 id="Section-4.-Generating-and-Compiling-a-C-Extension-Module-Automatically">Section 4. Generating and Compiling a C Extension Module Automatically<a class="anchor-link" href="#Section-4.-Generating-and-Compiling-a-C-Extension-Module-Automatically">&#182;</a></h4><ul>
+<li>[3 minutes] Overview of the <code>autowrap</code> function</li>
+<li>[5 minutes] <strong>Exercise</strong>: explore the <code>autowrap</code> generated files</li>
+<li>[5 minutes] <strong>Exercise</strong>: use the wrapped function with some random inputs</li>
+<li>[2 minutes] Writing a wrapper around the wrapper</li>
+<li>[8 minutes] <strong>Exercise</strong>: generate a function to compute the Jacobian</li>
+</ul>
+<h4 id="Section-5.-Using-a-Custom-Printer-and-an-External-Library-with-autowrap">Section 5. Using a Custom Printer and an External Library with <code>autowrap</code><a class="anchor-link" href="#Section-5.-Using-a-Custom-Printer-and-an-External-Library-with-autowrap">&#182;</a></h4><ul>
+<li>[2 minutes] Overview of <code>CodeGen</code> and <code>CodePrinter</code></li>
+<li>[2 minutes] Explanation of fastapprox library</li>
+<li>[8 minutes] <strong>Exercise</strong>: implement a custom code printer to use <code>fastpow</code> instead of <code>pow</code></li>
+<li>[3 minutes] Including <code>fastpow.h</code></li>
+<li>[3 minutes] Using the new function and proving it worked</li>
+<li>[2 minutes] <strong>Exercise</strong>: compare outputs of the callables using <code>pow</code> and <code>fastpow</code> functions</li>
 </ul>
 <hr>
 <p>The attendees will come away with a powerful set of tools that will allow them
@@ -11902,6 +11919,19 @@ learn a new technique for expressing mathematical models in Python.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">

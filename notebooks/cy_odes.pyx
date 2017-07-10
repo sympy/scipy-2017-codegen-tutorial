@@ -1,5 +1,5 @@
 import numpy as np
-cimport numpy as cnp
+cimport numpy as cnp # cimport gives us access to NumPy's C API
 
 # here we just replicate the function signature from the header
 cdef extern from "c_odes.h":
