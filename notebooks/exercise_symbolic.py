@@ -2,11 +2,15 @@ from operator import mul
 from functools import reduce
 import sympy as sym
 
+
 def prod(seq):
     return reduce(mul, seq) if seq else 1
 
+
 def mk_exprs_symbs(rxns, names):
+    # create symbols for reactants
     symbs = sym.symbols(names, real=True, nonnegative=True)
+    # map between reactant symbols and keys in r_stoich, net_stoich
     c = dict(zip(names, symbs))
     f = {n: 0 for n in names}
     k = []
