@@ -11874,18 +11874,21 @@ $$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$<p>where the state vector 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">rhs_of_odes</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">)</span>
-<span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">shape</span>
-<span class="c1"># rhs_of_odes is a 14 x 1 SymPy matrix of expressions. The expressions are</span>
-<span class="c1"># long multivariate polynomials.</span>
-<span class="n">states</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
-<span class="n">states</span><span class="o">.</span><span class="n">shape</span>
-<span class="c1"># states is a 14 x 1 SymPy matrix of symbols</span>
-</pre></div>
-<p>The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers.</p>
+<h3 id="Double-Click-For-Solution">Double Click For Solution<a class="anchor-link" href="#Double-Click-For-Solution">&#182;</a></h3><!--
 
+rhs_of_odes
+type(rhs_of_odes)
+rhs_of_odes.shape
+# rhs_of_odes is a 14 x 1 SymPy matrix of expressions. The expressions are
+# long multivariate polynomials.
+states
+type(states)
+states.shape
+# states is a 14 x 1 SymPy matrix of symbols
+
+The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers.
+
+-->
 </div>
 </div>
 </div>
@@ -11894,7 +11897,7 @@ $$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$<p>where the state vector 
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your solution here</span>
 </pre></div>
 
 </div>
@@ -11926,22 +11929,25 @@ $$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">jac_of_odes</span> <span class="o">=</span> <span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">)</span>
-<span class="n">jac_of_odes</span><span class="o">.</span><span class="n">shape</span>
-<span class="n">jac_of_odes</span>
-</pre></div>
-<p>The Jacobian is a 14 x 14 SymPy matrix and contains 196 expressions which are linear functions of the state variables.</p>
+<h3 id="Double-Click-For-Solution">Double Click For Solution<a class="anchor-link" href="#Double-Click-For-Solution">&#182;</a></h3><!--
 
+jac_of_odes = rhs_of_odes.jacobian(states)
+type(jac_of_odes)
+jac_of_odes.shape
+jac_of_odes
+
+The Jacobian is a 14 x 14 SymPy matrix and contains 196 expressions which are linear functions of the state variables.
+
+-->
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>
@@ -11997,7 +12003,7 @@ $$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.printing.ccode</span> <span class="k">import</span> <span class="n">C99CodePrinter</span>
@@ -12019,7 +12025,7 @@ $$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">printer</span> <span class="o">=</span> <span class="n">C99CodePrinter</span><span class="p">()</span>
@@ -12032,7 +12038,7 @@ $$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">))</span>
@@ -12101,7 +12107,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rhs_result</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;rhs_result&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -12114,7 +12120,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rhs_result</span><span class="p">)</span>
@@ -12145,7 +12151,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rhs_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -12176,7 +12182,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
@@ -12240,22 +12246,22 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">jac_result</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;jac_result&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<h3 id="Double-Click-For-Solution">Double Click For Solution<a class="anchor-link" href="#Double-Click-For-Solution">&#182;</a></h3><!---
+jac_result = sym.MatrixSymbol('jac_result', 14, 14)
 
-<span class="k">print</span><span class="p">(</span><span class="n">jac_result</span><span class="p">)</span>
+print(jac_result)
 
-<span class="k">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">jac_result</span><span class="p">))</span>
-</pre></div>
-
+print(printer.doprint(jac_of_odes, assign_to=jac_result))
+-->
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>
@@ -12283,7 +12289,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>C99CodePrinter._print_Symbol<span class="o">??</span>
@@ -12305,7 +12311,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>C99CodePrinter._print_str<span class="o">??</span>
@@ -12318,7 +12324,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
@@ -12333,7 +12339,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
@@ -12346,7 +12352,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">)</span>
@@ -12363,7 +12369,7 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[16]:</div>
+<div class="prompt output_prompt">Out[19]:</div>
 
 
 
@@ -12380,7 +12386,7 @@ $$\theta$$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
@@ -12424,28 +12430,54 @@ Ni!
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution:-Subclassing">Solution: Subclassing<a class="anchor-link" href="#Solution:-Subclassing">&#182;</a></h3><p>The following solution examines the symbol and if it is a state variable it overrides the printer, otherwise it uses the parent class to print the symbol as a fall back.</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">states</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;state_vals[{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_Symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+<h3 id="Double-Click-For-Solution:-Subclassing">Double Click For Solution: Subclassing<a class="anchor-link" href="#Double-Click-For-Solution:-Subclassing">&#182;</a></h3><!--
 
-<span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
+The following solution examines the symbol and if it is a state variable it overrides the printer, otherwise it uses the parent class to print the symbol as a fall back.
 
-<span class="k">print</span><span class="p">(</span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
-</pre></div>
-<h3 id="Solution:-Exact-replacement">Solution: Exact replacement<a class="anchor-link" href="#Solution:-Exact-replacement">&#182;</a></h3><p>Another option is to replace the symbols with <code>MatrixSymbol</code> elements. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array.</p>
-<div class="highlight"><pre><span></span><span class="n">state_vals</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;state_vals&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">state_array_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">state_vals</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">),</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
+class MyCodePrinter(C99CodePrinter):
+    def _print_Symbol(self, symbol):
+        if symbol in states:
+            idx = list(states).index(symbol)
+            return self._print('state_vals[{}]'.format(idx))
+        else:
+            return super()._print_Symbol(symbol)
+
+my_printer = MyCodePrinter()
+
+print(my_printer.doprint(rhs_of_odes, assign_to=rhs_result))
+
+-->
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Double-Click-For-Solution:-Exact-replacement">Double Click For Solution: Exact replacement<a class="anchor-link" href="#Double-Click-For-Solution:-Exact-replacement">&#182;</a></h3><!--
+Another option is to replace the symbols with `MatrixSymbol` elements. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array.
+
+state_vals = sym.MatrixSymbol('state_vals', 14, 1)
+state_array_map = dict(zip(states, state_vals))
+print(state_array_map)
+print(printer.doprint(rhs_of_odes.xreplace(state_array_map), assign_to=rhs_result))
+
+-->
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>
 </div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12466,32 +12498,47 @@ Ni!
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">printer</span><span class="o">.</span><span class="n">_print_Pow</span><span class="err">??</span>
+<h3 id="Double-Click-for-Solution">Double Click for Solution<a class="anchor-link" href="#Double-Click-for-Solution">&#182;</a></h3><!--
 
-<span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_print_Pow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">is_integer</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;*&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">base</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">exp</span><span class="p">)])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_Pow</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+printer._print_Pow??
 
-<span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
+class MyCodePrinter(C99CodePrinter):
+    def _print_Pow(self, expr):
+        if expr.exp.is_integer and expr.exp > 0 and expr.exp <= 4:
+            return '*'.join([self._print(expr.base) for i in range(expr.exp)])
+        else:
+            return super()._print_Pow(expr)
 
-<span class="n">x</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+my_printer = MyCodePrinter()
 
-<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+x = sym.Symbol('x')
 
-<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+my_printer.doprint(x)
 
-<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+my_printer.doprint(x**2)
 
-<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+my_printer.doprint(x**4)
 
-<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mf">1.5</span><span class="p">)</span>
+my_printer.doprint(x**5)
+
+my_printer.doprint(x**1.5)
+
+-->
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>
 </div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12516,7 +12563,7 @@ Ni!
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>sm.cse<span class="o">?</span>
@@ -12547,7 +12594,7 @@ Ni!
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified_rhs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">)</span>
@@ -12560,7 +12607,7 @@ Ni!
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sub_exprs</span><span class="p">:</span>
@@ -12692,7 +12739,7 @@ x₈₇ = -x₆₉
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">simplified_rhs</span><span class="p">)</span>
@@ -12708,7 +12755,7 @@ x₈₇ = -x₆₉
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[21]:</div>
+<div class="prompt output_prompt">Out[26]:</div>
 
 
 
@@ -12725,7 +12772,7 @@ x₈₇ = -x₆₉
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">simplified_rhs</span><span class="p">)</span>
@@ -12741,7 +12788,7 @@ x₈₇ = -x₆₉
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[22]:</div>
+<div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -12758,7 +12805,7 @@ $$1$$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_rhs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -12774,7 +12821,7 @@ $$1$$
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[23]:</div>
+<div class="prompt output_prompt">Out[28]:</div>
 
 
 
@@ -12800,7 +12847,7 @@ $$\left[\begin{matrix}x_{1} + x_{10} + x_{12} + x_{14} + x_{16} + x_{19} + x_{21
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_of_odes</span> <span class="o">=</span> <span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
@@ -12815,7 +12862,7 @@ $$\left[\begin{matrix}x_{1} + x_{10} + x_{12} + x_{14} + x_{16} + x_{19} + x_{21
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sub_exprs</span><span class="p">:</span>
@@ -13070,7 +13117,7 @@ x₂₁₉ = -x₂₀₂
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_exprs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13086,7 +13133,7 @@ x₂₁₉ = -x₂₀₂
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[26]:</div>
+<div class="prompt output_prompt">Out[31]:</div>
 
 
 
@@ -13103,7 +13150,7 @@ $$\left[\begin{matrix}x_{10} + x_{11} + x_{14} + x_{17} + x_{2} + x_{20} + x_{23
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_exprs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -13119,7 +13166,7 @@ $$\left[\begin{matrix}x_{10} + x_{11} + x_{14} + x_{17} + x_{2} + x_{20} + x_{23
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[27]:</div>
+<div class="prompt output_prompt">Out[32]:</div>
 
 
 
@@ -13159,7 +13206,7 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.printing.codeprinter</span> <span class="k">import</span> <span class="n">Assignment</span>
@@ -13201,7 +13248,7 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
@@ -13221,7 +13268,7 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">CMatrixPrinter</span><span class="p">()</span>
@@ -13595,35 +13642,50 @@ M[195] = -2620.0;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
+<h3 id="Double-Click-For-Solution">Double Click For Solution<a class="anchor-link" href="#Double-Click-For-Solution">&#182;</a></h3><!--
 
-    <span class="k">def</span> <span class="nf">_print_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_of_exprs</span><span class="p">):</span>
-        <span class="c1"># NOTE : The MutableDenseMatrix is turned in an ImmutableMatrix inside here.</span>
-        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sym</span><span class="o">.</span><span class="n">ImmutableMatrix</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_of_exprs</span><span class="p">):</span>
-            <span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified_exprs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span><span class="n">list_of_exprs</span><span class="p">)</span>
-            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">sub_expr</span> <span class="ow">in</span> <span class="n">sub_exprs</span><span class="p">:</span>
-                <span class="n">ass</span> <span class="o">=</span> <span class="n">Assignment</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">sub_expr</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">))</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;double &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">ass</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">simplified_exprs</span><span class="p">:</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">)))</span>
-            <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_list</span><span class="p">(</span><span class="n">list_of_exprs</span><span class="p">)</span>
+class CMatrixPrinter(C99CodePrinter):
 
-    <span class="k">def</span> <span class="nf">_print_ImmutableDenseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">M</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;jac_result&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">M</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;rhs_result&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">Assignment</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">expr</span><span class="p">))</span>
+    def _print_list(self, list_of_exprs):
+        # NOTE : The MutableDenseMatrix is turned in an ImmutableMatrix inside here.
+        if all(isinstance(x, sym.ImmutableMatrix) for x in list_of_exprs):
+            sub_exprs, simplified_exprs = sym.cse(list_of_exprs)
+            lines = []
+            for var, sub_expr in sub_exprs:
+                ass = Assignment(var, sub_expr.xreplace(state_array_map))
+                lines.append('double ' + self._print(ass))
+            for mat in simplified_exprs:
+                lines.append(self._print(mat.xreplace(state_array_map)))
+            return '\n'.join(lines)
+        else:
+            return super()._print_list(list_of_exprs)
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">CMatrixPrinter</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
+    def _print_ImmutableDenseMatrix(self, expr):
+        if expr.shape[1] > 1:
+            M = sym.MatrixSymbol('jac_result', *expr.shape)
+        else:
+            M = sym.MatrixSymbol('rhs_result', *expr.shape)
+        return self._print(Assignment(M, expr))
+
+p = CMatrixPrinter()
+print(p.doprint([rhs_of_odes, jac_of_odes]))
+
+-->
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>
 </div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -13655,19 +13717,21 @@ M[195] = -2620.0;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">c_program</span> <span class="o">=</span> <span class="n">c_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
+<h3 id="Double-Click-For-Solution">Double Click For Solution<a class="anchor-link" href="#Double-Click-For-Solution">&#182;</a></h3><!--
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;run.c&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
-</pre></div>
+c_program = c_template.format(code=p.doprint([rhs_of_odes, jac_of_odes]))
+print(c_program)
 
+with open('run.c', 'w') as f:
+    f.write(c_program)
+
+-->
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">c_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -13714,10 +13778,10 @@ M[195] = -2620.0;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># write your answer here</span>
 </pre></div>
 
 </div>

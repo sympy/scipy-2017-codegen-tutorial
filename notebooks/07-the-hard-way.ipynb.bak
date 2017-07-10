@@ -101,8 +101,10 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Solution\n",
-    "```python\n",
+    "### Double Click For Solution\n",
+    "\n",
+    "<!--\n",
+    "\n",
     "rhs_of_odes\n",
     "type(rhs_of_odes)\n",
     "rhs_of_odes.shape\n",
@@ -112,9 +114,10 @@
     "type(states)\n",
     "states.shape\n",
     "# states is a 14 x 1 SymPy matrix of symbols\n",
-    "```\n",
     "\n",
-    "The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers."
+    "The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers.\n",
+    "\n",
+    "-->"
    ]
   },
   {
@@ -124,7 +127,9 @@
     "collapsed": true
    },
    "outputs": [],
-   "source": []
+   "source": [
+    "# write your solution here"
+   ]
   },
   {
    "cell_type": "markdown",
@@ -156,14 +161,18 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Solution\n",
-    "```python\n",
+    "### Double Click For Solution\n",
+    "\n",
+    "<!--\n",
+    "\n",
     "jac_of_odes = rhs_of_odes.jacobian(states)\n",
     "type(jac_of_odes)\n",
     "jac_of_odes.shape\n",
     "jac_of_odes\n",
-    "```\n",
-    "The Jacobian is a 14 x 14 SymPy matrix and contains 196 expressions which are linear functions of the state variables."
+    "\n",
+    "The Jacobian is a 14 x 14 SymPy matrix and contains 196 expressions which are linear functions of the state variables.\n",
+    "\n",
+    "-->"
    ]
   },
   {
@@ -173,7 +182,9 @@
     "collapsed": true
    },
    "outputs": [],
-   "source": []
+   "source": [
+    "# write your answer here"
+   ]
   },
   {
    "cell_type": "markdown",
@@ -353,15 +364,15 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Solution\n",
+    "### Double Click For Solution\n",
     "\n",
-    "```python\n",
+    "<!---\n",
     "jac_result = sym.MatrixSymbol('jac_result', 14, 14)\n",
     "\n",
     "print(jac_result)\n",
     "\n",
     "print(printer.doprint(jac_of_odes, assign_to=jac_result))\n",
-    "```"
+    "-->"
    ]
   },
   {
@@ -371,7 +382,9 @@
     "collapsed": true
    },
    "outputs": [],
-   "source": []
+   "source": [
+    "# write your answer here"
+   ]
   },
   {
    "cell_type": "markdown",
@@ -474,11 +487,11 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Solution: Subclassing\n",
+    "### Double Click For Solution: Subclassing\n",
+    "\n",
+    "<!--\n",
     "\n",
     "The following solution examines the symbol and if it is a state variable it overrides the printer, otherwise it uses the parent class to print the symbol as a fall back.\n",
-    "\n",
-    "```python\n",
     "\n",
     "class MyCodePrinter(C99CodePrinter):\n",
     "    def _print_Symbol(self, symbol):\n",
@@ -491,18 +504,36 @@
     "my_printer = MyCodePrinter()\n",
     "\n",
     "print(my_printer.doprint(rhs_of_odes, assign_to=rhs_result))\n",
-    "```\n",
     "\n",
-    "### Solution: Exact replacement\n",
+    "-->"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Double Click For Solution: Exact replacement\n",
     "\n",
+    "<!--\n",
     "Another option is to replace the symbols with `MatrixSymbol` elements. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array.\n",
     "\n",
-    "```python\n",
     "state_vals = sym.MatrixSymbol('state_vals', 14, 1)\n",
     "state_array_map = dict(zip(states, state_vals))\n",
     "print(state_array_map)\n",
     "print(printer.doprint(rhs_of_odes.xreplace(state_array_map), assign_to=rhs_result))\n",
-    "```"
+    "\n",
+    "-->"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# write your answer here"
    ]
   },
   {
@@ -530,9 +561,10 @@
     "collapsed": true
    },
    "source": [
-    "### Solution\n",
+    "### Double Click for Solution\n",
     "\n",
-    "```python\n",
+    "<!--\n",
+    "\n",
     "printer._print_Pow??\n",
     "\n",
     "class MyCodePrinter(C99CodePrinter):\n",
@@ -555,7 +587,19 @@
     "my_printer.doprint(x**5)\n",
     "\n",
     "my_printer.doprint(x**1.5)\n",
-    "```"
+    "\n",
+    "-->"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# write your answer here"
    ]
   },
   {
@@ -788,9 +832,10 @@
     "collapsed": true
    },
    "source": [
-    "### Solution\n",
+    "### Double Click For Solution\n",
     "\n",
-    "```python\n",
+    "<!--\n",
+    "\n",
     "class CMatrixPrinter(C99CodePrinter):\n",
     "    \n",
     "    def _print_list(self, list_of_exprs):\n",
@@ -816,7 +861,19 @@
     "\n",
     "p = CMatrixPrinter()\n",
     "print(p.doprint([rhs_of_odes, jac_of_odes]))\n",
-    "```"
+    "\n",
+    "-->"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# write your answer here"
    ]
   },
   {
@@ -867,15 +924,17 @@
     "collapsed": true
    },
    "source": [
-    "### Solution\n",
+    "### Double Click For Solution\n",
     "\n",
-    "```python\n",
+    "<!--\n",
+    "\n",
     "c_program = c_template.format(code=p.doprint([rhs_of_odes, jac_of_odes]))\n",
     "print(c_program)\n",
     "\n",
     "with open('run.c', 'w') as f:\n",
     "    f.write(c_program)\n",
-    "```"
+    "\n",
+    "-->"
    ]
   },
   {
@@ -930,7 +989,9 @@
     "collapsed": true
    },
    "outputs": [],
-   "source": []
+   "source": [
+    "# write your answer here"
+   ]
   }
  ],
  "metadata": {
