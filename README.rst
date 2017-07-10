@@ -13,7 +13,7 @@ The original proposal for this tutorial can be found on the `SymPy Wiki`_.
 .. _SymPy Wiki: https://github.com/sympy/sympy/wiki/SciPy-2017-Tutorial-Proposal:-Automatic-Code-Generation-with-SymPy
 
 The statically rendered Jupyter notebooks in this repository can be viewed at
-`http://www.sympy.org/scipy-2017-codegen-tutorial/ <http://www.sympy.org/scipy-2017-codegen-tutorial/>`_
+`sympy.org/scipy-2017-codegen-tutorial <http://www.sympy.org/scipy-2017-codegen-tutorial/>`_
  or on NBViewer_.
 
 .. _NBViewer: http://nbviewer.jupyter.org/github/sympy/scipy-2017-codegen-tutorial/blob/master/index.ipynb
