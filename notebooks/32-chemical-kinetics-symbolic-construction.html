@@ -11783,7 +11783,7 @@ $$
 A \overset{k_1}{\rightarrow} B \\
 B + C \overset{k_2}{\rightarrow} A + C \\
 2 B \overset{k_3}{\rightarrow} B + C
-$$<p>where A, B and C represent three different chemical species (e.g. reactive molecules dissolved in water). What is special about this system is that the numerical stepping needs to be performed using an implicit method (requiring the Jacobian) when solving for large time scales.</p>
+$$<p>where A, B and C represent three different chemical species (e.g. reactive molecules dissolved in water). The system is interesting from a numerical point of view because the stepping needs to be performed using an implicit method (requiring the Jacobian) when solving for large times.</p>
 <p>The rate of each process follows the <a href="https://en.wikipedia.org/wiki/Law_of_mass_action">law of mass action</a>, i.e. the rate is proportional to the concentration of each reacting species (to the power of their multiplicity). The proportionality constant is known as the rate constant of the reaction ($k_1,\ k_2\ \&amp;\ k_3$ in our case). If we denote the rate of each reaction:</p>
 $$
 r_1 = k_1[A] \\
@@ -11794,7 +11794,8 @@ $$
 \frac{d[A]}{dt} = r_2 - r_1 \\
 \frac{d[B]}{dt} = r_1 - r_2 - r_3 \\
 \frac{d[C]}{dt} = r_3
-$$<p>We will now express these differential equations (and their Jacobian) symbolically using SymPy. We saw in the previous notebook how we can use matrices with integer coefficients to describe the system of ODEs. In practice, those matrices, will consist of mostly zeros. So dictionaries are a better suited data structure (using dictionaries is one way to represent sparse matrices). Let us write a function creating SymPy expressions from dictionaries mapping strings (names) to integers (coefficients). One possible representation of Robertson's example:</p>
+$$<p>We will now express these differential equations (and their Jacobian) symbolically using SymPy. We saw in the previous notebook how we can use matrices with integer coefficients to describe the system of ODEs. In practice, those matrices, will consist of mostly zeros. So dictionaries are a better suited data structure (using dictionaries is one way to represent sparse matrices).</p>
+<p>Let us therefore write a function, which creactes SymPy expressions from dictionaries mapping strings (names) to integers (coefficients). Here is one possible representation of Robertson's example:</p>
 
 </div>
 </div>
@@ -11821,7 +11822,7 @@ $$<p>We will now express these differential equations (and their Jacobian) symbo
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exercise:-Create-SymPy-expressions-from-simple-data-structures">Exercise: Create SymPy expressions from simple data structures<a class="anchor-link" href="#Exercise:-Create-SymPy-expressions-from-simple-data-structures">&#182;</a></h2><p>You will need to complete <code>mk_exprs_symbs</code> which constructs symbolic expressions following the law of mass action.</p>
+<h2 id="Exercise:-Create-SymPy-expressions-from-simple-data-structures">Exercise: Create SymPy expressions from simple data structures<a class="anchor-link" href="#Exercise:-Create-SymPy-expressions-from-simple-data-structures">&#182;</a></h2><p>You will need to complete <code>mk_exprs_symbs</code> (replace <strong>???</strong> with valid expression) which constructs symbolic expressions following the law of mass action.</p>
 
 </div>
 </div>
@@ -11949,15 +11950,6 @@ $$\left [ - A k_{1} + B C k_{2}, \quad A k_{1} - B^{2} k_{3} - B C k_{2}, \quad 
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The lambda function is needed to give f the signature asked for by <code>odeint</code>. <code>full_output=True</code> makes odeint return a dictionary with information about the numerical integration.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12296,8 +12288,8 @@ EEKIcpIQhBBCAJIQhBBClJOEIIQQApCEIIQQotz/BzgvjvTeHPgkAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If we look closer at the info-dictionary we will see that odeint (or rather LSODA which is the underlying package) switched method from an explicit Adams method to an implicit Backward Differentiation Formula (BDF). It is common for chemical kinetics problems that the problem becomes stiff. The larger number of species, the bigger is the Jacobian matrix.</p>
-<p>By default the solver will approximate the elements in the Jacobian matrix by taking finite differences of $\mathbf{f}$. This is often works quite satisfactorily but for larger systems it sometimes fails. A more robust (and faster) approach is to provide a callback which evaluates an analytic Jacobian. Using SymPy we can do this quite effortlessly:</p>
+<p>If we look closer at the info-dictionary we will see that odeint (or rather LSODA which is the unerlying package) switched method from an explicit Adams method to an implicit Backward Differentiation Formula (BDF). It is common for chemical kinetics problems that the problem becomes stiff.</p>
+<p>By default, the solver will approximate the elements in the Jacobian matrix by taking finite differences of $\mathbf{f}$. This is often works quite satisfactorily, but for larger systems it sometimes fails. A more robust (and faster) approach is to provide a callback which evaluates an analytic Jacobian. Using SymPy we can do this quite effortlessly:</p>
 
 </div>
 </div>
@@ -12660,7 +12652,7 @@ JAQhhBDlJCEIIYQAJCEIIYQoJwlBCCEEIAlBCCFEuf8PZ0SO85misUkAAAAASUVORK5CYII=
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>87.3 ms ± 4.03 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<pre>83.3 ms ± 1.74 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre>
 </div>
 </div>
@@ -12691,7 +12683,7 @@ JAQhhBDlJCEIIYQAJCEIIYQoJwlBCCEEIAlBCCFEuf8PZ0SO85misUkAAAAASUVORK5CYII=
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>69 ms ± 728 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<pre>69.6 ms ± 2.77 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre>
 </div>
 </div>

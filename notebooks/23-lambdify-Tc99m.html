@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>55-C-calling-3rd-party-lib</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>23-lambdify-Tc99m</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11775,7 +11775,14 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Generating-C-code-calling-a-third-party-library">Generating C code calling a third-party library<a class="anchor-link" href="#Generating-C-code-calling-a-third-party-library">&#182;</a></h1><p>In this notebook we will look at how we can customize the <code>CCodePrinter</code> to generate C code which calls functions provided by a 3rd party library. For this example we will use <a href="https://github.com/pmineiro/fastapprox">fastapprox</a> which is an open source <a href="https://en.wikipedia.org/wiki/Header-only">header only</a> library containing fast approximate versions of transcendental functions. Will will look into using fastexp instead of exp.</p>
+<h2 id="Using-lambdify-for-plotting-expressions">Using lambdify for plotting expressions<a class="anchor-link" href="#Using-lambdify-for-plotting-expressions">&#182;</a></h2><p>The syntethic isotope Technetium-99m is used in medical diagnostics (<a href="https://en.wikipedia.org/wiki/Nuclear_medicine">scintigraphy</a>):
+$$
+^{99m}Tc \overset{\lambda_1}{\longrightarrow} \,^{99}Tc \overset{\lambda_2}{\longrightarrow} \,^{99}Ru \\
+\lambda_1 = 3.2\cdot 10^{-5}\,s^{-1} \\
+\lambda_2 = 1.04 \cdot 10^{-13}\,s^{-1} \\
+$$
+SymPy can solve the differential equations describing the amounts versus time analytically.
+Let's denote the concentrations of each isotope $x(t),\ y(t)\ \&amp;\ z(t)$ respectively.</p>
 
 </div>
 </div>
@@ -11799,9 +11806,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x y z&#39;</span><span class="p">)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">sym</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">sym</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
-<span class="n">expr</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbs</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;t lambda_1 lambda_2 x0 y0 z0&#39;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nonnegative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">funcs</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">sym</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">s</span><span class="p">)(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+<span class="n">inits</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">]</span>
+<span class="n">diffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">]</span>
+<span class="n">exprs</span> <span class="o">=</span> <span class="o">-</span><span class="n">l1</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">l1</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">l2</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">l2</span><span class="o">*</span><span class="n">y</span>
+<span class="n">eqs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sym</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span> <span class="k">for</span> <span class="n">diff</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">exprs</span><span class="p">)]</span>
+<span class="n">eqs</span>
 </pre></div>
 
 </div>
@@ -11820,7 +11831,41 @@ div#notebook {
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$x + e^{3 z} + e^{x + 2 y}$$
+$$\left [ \frac{d}{d t} x{\left (t \right )} = - \lambda_{1} x{\left (t \right )}, \quad \frac{d}{d t} y{\left (t \right )} = \lambda_{1} x{\left (t \right )} - \lambda_{2} y{\left (t \right )}, \quad \frac{d}{d t} z{\left (t \right )} = \lambda_{2} y{\left (t \right )}\right ]$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solutions</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">eqs</span><span class="p">)</span>
+<span class="n">solutions</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left [ x{\left (t \right )} = C_{1} e^{- \lambda_{1} t}, \quad y{\left (t \right )} = \frac{C_{1} \lambda_{1} e^{- \lambda_{1} t}}{- \lambda_{1} + \lambda_{2}} + C_{2} e^{- \lambda_{2} t}, \quad z{\left (t \right )} = - \frac{C_{1} \lambda_{2} e^{- \lambda_{1} t}}{- \lambda_{1} + \lambda_{2}} - C_{2} e^{- \lambda_{2} t} + C_{3}\right ]$$
 </div>
 
 </div>
@@ -11833,33 +11878,18 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>say that we need to evaluate this expression for vectors of values of x, y &amp; z:</p>
+<p>now we need to determine the integration constants from the intial conditions:</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">N</span> <span class="o">=</span> <span class="mi">4096</span>
-<span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;numpy&#39;</span><span class="p">])</span>
-<span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">inp</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">integration_constants</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">sol</span><span class="o">.</span><span class="n">free_symbols</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solutions</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">symbs</span><span class="p">)</span>
+<span class="n">integration_constants</span>
 </pre></div>
 
 </div>
@@ -11877,9 +11907,8 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre>array([ 10.        ,  10.002442  ,  10.004884  , ...,  19.99523832,
-        19.99768087,  20.00012341])</pre>
+<div class="output_latex output_subarea output_execute_result">
+$$\left\{C_{1}, C_{2}, C_{3}\right\}$$
 </div>
 
 </div>
@@ -11893,7 +11922,8 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> f(*inp)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">initial_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solutions</span><span class="p">]</span>
+<span class="n">initial_values</span>
 </pre></div>
 
 </div>
@@ -11906,13 +11936,15 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>283 µs ± 64.3 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
-</pre>
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left [ x{\left (0 \right )} = C_{1}, \quad y{\left (0 \right )} = \frac{C_{1} \lambda_{1}}{- \lambda_{1} + \lambda_{2}} + C_{2}, \quad z{\left (0 \right )} = - \frac{C_{1} \lambda_{2}}{- \lambda_{1} + \lambda_{2}} - C_{2} + C_{3}\right ]$$
 </div>
+
 </div>
 
 </div>
@@ -11924,10 +11956,31 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.utilities.autowrap</span> <span class="k">import</span> <span class="n">ufuncify</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">const_exprs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">initial_values</span><span class="p">,</span> <span class="n">integration_constants</span><span class="p">)</span>
+<span class="n">const_exprs</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left \{ C_{1} : x{\left (0 \right )}, \quad C_{2} : \frac{1}{\lambda_{1} - \lambda_{2}} \left(\lambda_{1} x{\left (0 \right )} + \lambda_{1} y{\left (0 \right )} - \lambda_{2} y{\left (0 \right )}\right), \quad C_{3} : x{\left (0 \right )} + y{\left (0 \right )} + z{\left (0 \right )}\right \}$$
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -11937,20 +11990,8 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">uf</span> <span class="o">=</span> <span class="n">ufuncify</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">uf</span><span class="p">(</span><span class="o">*</span><span class="n">inp</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">analytic</span> <span class="o">=</span> <span class="p">[</span><span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">const_exprs</span><span class="p">)</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solutions</span><span class="p">]</span>
+<span class="n">analytic</span>
 </pre></div>
 
 </div>
@@ -11963,47 +12004,15 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre>array([ 10.        ,  10.002442  ,  10.004884  , ...,  19.99523832,
-        19.99768087,  20.00012341])</pre>
+<div class="output_latex output_subarea output_execute_result">
+$$\left [ x{\left (t \right )} = x{\left (0 \right )} e^{- \lambda_{1} t}, \quad y{\left (t \right )} = \frac{\lambda_{1} x{\left (0 \right )} e^{- \lambda_{1} t}}{- \lambda_{1} + \lambda_{2}} + \frac{e^{- \lambda_{2} t}}{\lambda_{1} - \lambda_{2}} \left(\lambda_{1} x{\left (0 \right )} + \lambda_{1} y{\left (0 \right )} - \lambda_{2} y{\left (0 \right )}\right), \quad z{\left (t \right )} = - \frac{\lambda_{2} x{\left (0 \right )} e^{- \lambda_{1} t}}{- \lambda_{1} + \lambda_{2}} + x{\left (0 \right )} + y{\left (0 \right )} + z{\left (0 \right )} - \frac{e^{- \lambda_{2} t}}{\lambda_{1} - \lambda_{2}} \left(\lambda_{1} x{\left (0 \right )} + \lambda_{1} y{\left (0 \right )} - \lambda_{2} y{\left (0 \right )}\right)\right ]$$
 </div>
 
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> uf(*inp)
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>280 µs ± 46.5 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
-</pre>
-</div>
 </div>
 
 </div>
@@ -12014,7 +12023,46 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The fact that lambdify is about as fast as our ufuncify tells us that we are bound by the time to evaluate expensive transcendental <code>exp</code>. For those of you who know Cython you can see that in a Cython version as well:</p>
+<h2 id="Exercise:-Create-a-function-from-a-symbolic-expression">Exercise: Create a function from a symbolic expression<a class="anchor-link" href="#Exercise:-Create-a-function-from-a-symbolic-expression">&#182;</a></h2><p>We want to plot the time evolution of x, y &amp; z from the above analytic expression (called <code>analytic</code> above):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">log10</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">year_s</span> <span class="o">=</span> <span class="mf">365.25</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span>
+<span class="n">tout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">log10</span><span class="p">(</span><span class="mf">3e6</span><span class="o">*</span><span class="n">year_s</span><span class="p">),</span> <span class="mi">500</span><span class="p">)</span>  <span class="c1"># 1 s to 3 million years</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> scipy2017codegen.exercise
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>Use either the </em><code>%exercise</code><em> or </em><code>%load</code><em> magic to get the exercise / solution respecitvely:</em></p>
+<p>Replace <strong>???</strong> so that <code>f(t)</code> evaluates $x(t),\ y(t)\ \&amp;\ z(t)$. Hint: use the right hand side of the equations in <code>analytic</code> (use the attribute <code>rhs</code> of the items in <code>anayltic</code>):</p>
 
 </div>
 </div>
@@ -12024,7 +12072,9 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> cython
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %exercise exercise_Tc99.py</span>
+<span class="n">xyz_num</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">lambdify</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="o">*</span><span class="n">inits</span><span class="p">],</span> <span class="p">[</span><span class="n">eq</span><span class="o">.</span><span class="n">rhs</span> <span class="k">for</span> <span class="n">eq</span> <span class="ow">in</span> <span class="n">analytic</span><span class="p">])</span>
+<span class="n">yout</span> <span class="o">=</span> <span class="n">xyz_num</span><span class="p">(</span><span class="n">tout</span><span class="p">,</span> <span class="mf">3.2e-5</span><span class="p">,</span> <span class="mf">1.04e-13</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12037,89 +12087,14 @@ $$x + e^{3 z} + e^{x + 2 y}$$
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy2017codegen.templates</span> <span class="k">import</span> <span class="n">render_pyxbld</span>
-<span class="n">render_pyxbld</span><span class="p">(</span><span class="s1">&#39;cy_f_mod&#39;</span><span class="p">,</span> <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">get_include</span><span class="p">()])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">cython_pyximport</span> cy_f_mod
-from libc.math cimport exp
-cimport numpy as cnp
-import numpy as np
-import cython
-
-def cy_f(
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] x,
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] y,
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] z,
-):
-    cdef cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] out = np.empty(x.size)
-    cdef double * _x = &amp;x[0]
-    cdef double * _y = &amp;y[0]
-    cdef double * _z = &amp;z[0]
-    cdef double * _out = &amp;out[0]
-    cdef int i
-    if x.size != y.size or x.size != z.size:
-        raise ValueError(&quot;Inconsistent length&quot;)
-    for i in range(x.size):
-        _out[i] = _x[i] + exp(2*_y[i] + _x[i]) + exp(3*_z[i])
-    return out
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cy_f</span><span class="p">(</span><span class="o">*</span><span class="n">inp</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([ 10.        ,  10.002442  ,  10.004884  , ...,  19.99523832,
-        19.99768087,  20.00012341])</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> cy_f(*inp)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tout</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">tout</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yout</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$^</span><span class="si">{99m}</span><span class="s1">Tc$&#39;</span><span class="p">,</span> <span class="s1">&#39;$^</span><span class="si">{99}</span><span class="s1">Tc$&#39;</span><span class="p">,</span> <span class="s1">&#39;$^</span><span class="si">{99}</span><span class="s1">Ru$&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time / s&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration / a.u.&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-11</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -12135,213 +12110,405 @@ def cy_f(
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>233 µs ± 41 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>So let's try to use <code>fastexp</code> from <code>fastapprox</code>:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">scipy2017codegen</span>
-<span class="n">fastapprox_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">scipy2017codegen</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;fastapprox&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fastapprox_dir</span><span class="p">,</span> <span class="s1">&#39;fastexp.h&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">62</span><span class="p">:</span><span class="mi">67</span><span class="p">]))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
 
 
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>static inline float
-fastexp (float p)
-{
-  return fastpow2 (1.442695040f * p);
-}
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sym</span><span class="o">.</span><span class="n">ccode</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">user_functions</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;exp&#39;</span><span class="p">:</span> <span class="s1">&#39;fastexp&#39;</span><span class="p">})</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;x + fastexp(3*z) + fastexp(x + 2*y)&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">render_pyxbld</span><span class="p">(</span><span class="s1">&#39;cy_f_fastexp_mod&#39;</span><span class="p">,</span> <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">get_include</span><span class="p">()])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">cython_pyximport</span> cy_f_fastexp_mod
-from libc.math cimport exp
-cimport numpy as cnp
-import numpy as np
-import cython
-
-cdef extern from &quot;fastapprox/fastexp.h&quot;:
-    float fastexp(float)
-
-def cy_f_fastexp(
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] x,
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] y,
-    cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] z,
-):
-    cdef cnp.ndarray[cnp.float64_t, ndim=1, mode=&#39;c&#39;] out = np.empty(x.size)
-    cdef double * _x = &amp;x[0]
-    cdef double * _y = &amp;y[0]
-    cdef double * _z = &amp;z[0]
-    cdef double * _out = &amp;out[0]
-    cdef int i
-    if x.size != y.size or x.size != z.size:
-        raise ValueError(&quot;Inconsistent length&quot;)
-    for i in range(x.size):
-        _out[i] = _x[i] + fastexp(2*_y[i] + _x[i]) + fastexp(3*_z[i])
-    return out
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> cy_f_fastexp
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>52.5 ns ± 6.09 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>So that's a 10x speedup, of course at the cost of lost precision, but we are already assuming that was acceptable:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cy_f_fastexp</span><span class="p">(</span><span class="o">*</span><span class="n">inp</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">inp</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[20]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([  0.00000000e+00,   0.00000000e+00,   0.00000000e+00, ...,
-        -4.17497148e-10,  -1.00926201e-09,  -1.18104637e-09])</pre>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+P9RjApq1lvNRAAAAAElFTkSuQmCC
+"
+>
 </div>
 
 </div>

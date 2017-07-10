@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Chemical-kinetics">Chemical kinetics<a class="anchor-link" href="#Chemical-kinetics">&#182;</a></h2><p>In chemistry one is often interested in how fast a chemical process proceeds. Chemical reactions (when viewed as single events on a molecular scale) are probabilistic. However, most reactive systems of interest involve very large number of molecules (a few grams of a simple substance contains on the order of $10^{23}$ molecules. The sheer number allows us to describe this inherently stochastic process deterministically.</p>
+<h2 id="Chemical-kinetics">Chemical kinetics<a class="anchor-link" href="#Chemical-kinetics">&#182;</a></h2><p>In chemistry one is often interested in how fast a chemical process proceeds. Chemical reactions (when viewed as single events on a molecular scale) are probabilitic. However, most reactive systems of interest involve very large numbers of molecules (a few grams of a simple substance containts on the order of $10^{23}$ molecules. The sheer number allows us to describe this inherently stochastic process deterministically.</p>
 <h3 id="Law-of-mass-action">Law of mass action<a class="anchor-link" href="#Law-of-mass-action">&#182;</a></h3><p>In order to describe chemical reactions as as system of ODEs in terms of concentrations ($c_i$) and time ($t$), one can use the <a href="https://en.wikipedia.org/wiki/Law_of_mass_action">law of mass action</a>:</p>
 $$
 \frac{dc_i}{dt} = \sum_j S_{ij} r_j
@@ -11783,11 +11783,11 @@ $$<p>where $r_j$ is given by:
 $$
 r_j = k_j\prod_l c_l^{R_{jl}}
 $$</p>
-<p>and $S$ is a matrix with the overall net stoichiometric ("multiplicity") coefficients (positive for net production, negative for net consumption), and $R$ is a matrix with the multiplicities of each reactant for each equation.</p>
+<p>and $S$ is a matrix with the overall net stoichiometric coefficients (positive for net production, negative for net consumption), and $R$ is a matrix with the multiplicities of each reactant for each equation.</p>
 <h3 id="Example:-Nitrosylbromide">Example: Nitrosylbromide<a class="anchor-link" href="#Example:-Nitrosylbromide">&#182;</a></h3><p>We will now look at the following (bi-directional) chemical reaction:</p>
 $$
 \mathrm{2\,NO + Br_2 \leftrightarrow 2\,NOBr}
-$$<p>which describes the equilibrium between nitrogen monoxide (NO) and bromine (Br$_2$) and nitrosyl bromide (NOBr), can be expressed as a set of two reactions (<strong>f</strong>orward and <strong>b</strong>ackward):</p>
+$$<p>which describes the equilibrium between nitrogen monoxide (NO) and bromine (Br$_2$) and nitrosyl bromide (NOBr). It can be represented as a set of two uni-directional reactions (<strong>f</strong>orward and <strong>b</strong>ackward):</p>
 $$
 \mathrm{2\,NO + Br_2 \overset{k_f}{\rightarrow} 2\,NOBr} \\ 
 \mathrm{2\,NOBr \overset{k_b}{\rightarrow} 2\,NO + Br_2}
@@ -11840,7 +11840,7 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By looking at the <a href="https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.integrate.odeint.html">documentation</a> of odeint we see that we need to provide a callback which computes a vector of derivatives ($\dot{\mathbf{y}} = [\frac{dy_1}{dt}, \frac{dy_2}{dt}, \frac{dy_3}{dt}]$). The expected signature of this callback is:</p>
+<p>By looking at the <a href="https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.integrate.odeint.html">documentation</a> of odeint we see that we need to provide a function which computes a vector of derivatives ($\dot{\mathbf{y}} = [\frac{dy_1}{dt}, \frac{dy_2}{dt}, \frac{dy_3}{dt}]$). The expected signature of this function is:</p>
 
 <pre><code>f(y: array[float64], t: float64, *args: arbitrary constants) -&gt; dydt: array[float64]
 
@@ -11878,6 +11878,15 @@ $$
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Replace <strong>???</strong> by the proper arguments for <code>odeint</code>, you can write <code>odeint?</code> to read its documentaiton.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12159,8 +12168,8 @@ mntcSgAAAABJRU5ErkJggg==
 <p>Writing the <code>rhs</code> function by hand for larger reaction systems quickly becomes tedious. Ideally we would like to construct it from a symbolic representation (having a symbolic representation of the problem opens up many possibilities as we will soon see). But at the same time, we need the <code>rhs</code> function to be fast. Which means that we want to produce a fast function from our symbolic representation. Generating a function from our symbolic representation is achieved through <em>code generation</em>.</p>
 <p>In summary we will need to:</p>
 <ol>
-<li>Construct a symbolic representation from the domain specific data structure using SymPy.</li>
-<li>Have SymPy generate a function with an appropriate signature, which we pass on to the solver.</li>
+<li>Construct a symbolic representation from some domain specific representation using SymPy.</li>
+<li>Have SymPy generate a function with an appropriate signature (or multiple thereof), which we pass on to the solver.</li>
 </ol>
 <p>We will achieve (1) by using SymPy symbols (and functions if needed). For (2) we will use a function in SymPy called <code>lambdify</code>―it takes a symbolic expressions and returns a function. In a later notebook, we will look at (1), for now we will just use <code>rhs</code> which we've already written:</p>
 
@@ -12486,7 +12495,7 @@ mntcSgAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this example the gains of using a symbolic representation are arguably limited. However, it is quite common that the numerical solver will need another function which calculates the <a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> of $\dot{\mathbf{y}}$ (given as Dfun in the case of <code>odeint</code>). Writing that by hand is both tedious and error prone. But SymPy makes solves both of those issues:</p>
+<p>In this example the gains of using a symbolic representation are arguably limited. However, it is quite common that the numerical solver will need another function which calculates the <a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> of $\dot{\mathbf{y}}$ (given as Dfun in the case of <code>odeint</code>). Writing that by hand is both tedious and error prone. But SymPy solves both of those issues:</p>
 
 </div>
 </div>
