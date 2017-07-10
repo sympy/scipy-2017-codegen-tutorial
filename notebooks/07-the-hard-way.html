@@ -11788,6 +11788,15 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Import SymPy and enable mathematical printing in the Jupyter notebook.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -11800,15 +11809,6 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Enable mathematical printing in the Jupyter notebook.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -11865,8 +11865,26 @@ $$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$<p>where the state vector 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exercise-[2-min]">Exercise [2 min]<a class="anchor-link" href="#Exercise-[2-min]">&#182;</a></h2><p>Display the expressions (<code>rhs_of_odes</code> and <code>states</code>), inspect them, and find out their types and dimensions. What are some of the characetistics of the equations?</p>
-<p>characteristics: what exrpessions, how long, what type of equations: lin, non-lin, poly, et</p>
+<h2 id="Exercise-[2-min]">Exercise [2 min]<a class="anchor-link" href="#Exercise-[2-min]">&#182;</a></h2><p>Display the expressions (<code>rhs_of_odes</code> and <code>states</code>), inspect them, and find out their types and dimensions. What are some of the characteristics of the equations (type of mathematical expressions, linear or non-linear, etc)?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">rhs_of_odes</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">)</span>
+<span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># rhs_of_odes is a 14 x 1 SymPy matrix of expressions. The expressions are</span>
+<span class="c1"># long multivariate polynomials.</span>
+<span class="n">states</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<span class="n">states</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># states is a 14 x 1 SymPy matrix of symbols</span>
+</pre></div>
+<p>The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers.</p>
 
 </div>
 </div>
@@ -11876,207 +11894,13 @@ $$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$<p>where the state vector 
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">states</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left[\begin{matrix}y_{0}\\y_{1}\\y_{2}\\y_{3}\\y_{4}\\y_{5}\\y_{6}\\y_{7}\\y_{8}\\y_{9}\\y_{10}\\y_{11}\\y_{12}\\y_{13}\end{matrix}\right]$$
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rhs_of_odes</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left[\begin{matrix}- 14520000.0 y_{0}^{2} - 0.0158 y_{0} y_{1} - 20900000.0 y_{0} y_{11} - 27600000.0 y_{0} y_{4} - 35500000.0 y_{0} y_{5} - 13600000.0 y_{0} y_{6} - 22900000.0 y_{0} y_{7} - 13000000.0 y_{0} y_{8} - 13000000.0 y_{0} y_{9} + 24400.0 y_{2} y_{4} + 5.83 y_{4} + 0.0854\\- 14520000.0 y_{0}^{2} - 0.0158 y_{0} y_{1} - 27600000.0 y_{0} y_{4} - 26000000.0 y_{0} y_{8} - 1270.0 y_{1} y_{10} - 1270.0 y_{1} y_{12} - 4.58 \cdot 10^{-8} y_{1} y_{4} - 0.000155 y_{1} y_{8} - 2.12 \cdot 10^{-5} y_{1} + 4070000.0 y_{10} y_{5} + 118000000.0 y_{11} y_{2} + 24400.0 y_{2} y_{4} + 13300000.0 y_{2} y_{5} + 13300000.0 y_{2} y_{6} + 13300000.0 y_{2} y_{9} + 39500.0 y_{3} y_{5} + 10900000.0 y_{4} y_{5} + 36500.0 y_{4} y_{6} + 29200.0 y_{5} y_{6} + 8840000.0 y_{5} y_{9} + 2.6 \cdot 10^{-7} y_{6} - 101000.0 y_{8} y_{9} - 0.131\\14520000.0 y_{0}^{2} + 0.0158 y_{0} y_{1} + 27600000.0 y_{0} y_{4} + 35500000.0 y_{0} y_{5} + 13600000.0 y_{0} y_{6} + 26000000.0 y_{0} y_{8} + 1270.0 y_{1} y_{10} + 1270.0 y_{1} y_{12} + 0.000155 y_{1} y_{8} + 2.12 \cdot 10^{-5} y_{1} + 786000.0 y_{10} y_{12} - 118000000.0 y_{11} y_{2} + 128000.0 y_{12} y_{3} + 4070000.0 y_{12} y_{6} - 24400.0 y_{2} y_{4} - 13300000.0 y_{2} y_{5} - 13300000.0 y_{2} y_{6} - 13300000.0 y_{2} y_{9} + 11000000.0 y_{5} y_{8} + 101000.0 y_{8} y_{9}\\7260000.0 y_{0}^{2} + 27600000.0 y_{0} y_{4} + 4.58 \cdot 10^{-8} y_{1} y_{4} - 128000.0 y_{12} y_{3} - 39500.0 y_{3} y_{5} + 5140000.0 y_{4}^{2} + 0.0136\\0.0158 y_{0} y_{1} + 20900000.0 y_{0} y_{11} - 27600000.0 y_{0} y_{4} - 4.58 \cdot 10^{-8} y_{1} y_{4} + 128000.0 y_{12} y_{3} - 24400.0 y_{2} y_{4} + 39500.0 y_{3} y_{5} - 10280000.0 y_{4}^{2} - 10900000.0 y_{4} y_{5} - 36500.0 y_{4} y_{6} - 13100000.0 y_{4} y_{7} - 11400000.0 y_{4} y_{8} - 11400000.0 y_{4} y_{9} - 5.83 y_{4} + 0.0188\\- 35500000.0 y_{0} y_{5} + 13600000.0 y_{0} y_{6} + 1270.0 y_{1} y_{12} + 4.58 \cdot 10^{-8} y_{1} y_{4} - 4070000.0 y_{10} y_{5} + 50200000.0 y_{11} y_{12} - 13300000.0 y_{2} y_{5} - 39500.0 y_{3} y_{5} - 10900000.0 y_{4} y_{5} + 36500.0 y_{4} y_{6} + 22800000.0 y_{4} y_{9} - 9620000.0 y_{5}^{2} - 29200.0 y_{5} y_{6} - 11000000.0 y_{5} y_{8} - 8840000.0 y_{5} y_{9} - 0.0943 y_{5} + 0.0871\\- 13600000.0 y_{0} y_{6} + 13000000.0 y_{0} y_{8} + 1270.0 y_{1} y_{10} + 50200000.0 y_{10} y_{11} - 4070000.0 y_{12} y_{6} - 13300000.0 y_{2} y_{6} - 36500.0 y_{4} y_{6} + 4810000.0 y_{5}^{2} - 29200.0 y_{5} y_{6} - 0.09430026 y_{6} + 101000.0 y_{8} y_{9} + 840.0 y_{9}^{2} + 0.0221\\- 22900000.0 y_{0} y_{7} - 3750000.0 y_{12} y_{7} + 2620.0 y_{13} - 13100000.0 y_{4} y_{7} + 11000000.0 y_{5} y_{8} + 8840000.0 y_{5} y_{9} + 1.3 \cdot 10^{-7} y_{6} + 101000.0 y_{8} y_{9} + 840.0 y_{9}^{2} + 8.19 \cdot 10^{-7}\\22900000.0 y_{0} y_{7} - 13000000.0 y_{0} y_{8} - 0.000155 y_{1} y_{8} + 786000.0 y_{10} y_{12} + 4070000.0 y_{10} y_{5} - 50200000.0 y_{11} y_{8} + 13300000.0 y_{2} y_{9} - 11400000.0 y_{4} y_{8} - 11000000.0 y_{5} y_{8} - 101000.0 y_{8} y_{9} + 773000.0 y_{9}\\- 13000000.0 y_{0} y_{9} + 0.000155 y_{1} y_{8} + 50200000.0 y_{11} y_{8} + 4070000.0 y_{12} y_{6} - 13300000.0 y_{2} y_{9} + 13100000.0 y_{4} y_{7} - 11400000.0 y_{4} y_{9} + 29200.0 y_{5} y_{6} - 8840000.0 y_{5} y_{9} - 101000.0 y_{8} y_{9} - 1680.0 y_{9}^{2} - 773000.0 y_{9}\\13000000.0 y_{0} y_{9} - 1270.0 y_{1} y_{10} - 50200000.0 y_{10} y_{11} - 786000.0 y_{10} y_{12} - 4070000.0 y_{10} y_{5} + 13300000.0 y_{2} y_{6} + 11400000.0 y_{4} y_{8} + 0.0943 y_{6}\\- 20900000.0 y_{0} y_{11} + 2.12 \cdot 10^{-5} y_{1} - 50200000.0 y_{10} y_{11} - 50200000.0 y_{11} y_{12} - 118000000.0 y_{11} y_{2} - 50200000.0 y_{11} y_{8} + 5.83 y_{4} + 0.0943 y_{5} + 0.0943 y_{6} + 773000.0 y_{9} + 0.0854\\- 1270.0 y_{1} y_{12} - 786000.0 y_{10} y_{12} - 50200000.0 y_{11} y_{12} - 128000.0 y_{12} y_{3} - 4070000.0 y_{12} y_{6} - 3750000.0 y_{12} y_{7} + 2620.0 y_{13} + 13300000.0 y_{2} y_{5} + 0.0943 y_{5}\\3750000.0 y_{12} y_{7} - 2620.0 y_{13}\end{matrix}\right]$$
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>sympy.matrices.dense.MutableDenseMatrix</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left ( 14, \quad 1\right )$$
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>sympy.matrices.dense.MutableDenseMatrix</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">states</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left ( 14, \quad 1\right )$$
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The equations are nonlinear equations of the states. There are 14 equations and 14 states. The coefficients in the equations are various floating point numbers.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12084,121 +11908,43 @@ $$\left ( 14, \quad 1\right )$$
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Compute-the-Jacobian">Compute the Jacobian<a class="anchor-link" href="#Compute-the-Jacobian">&#182;</a></h1><p>As has been shown in the previous lesson the Jacobian of the right hand side of the differential equations is often very useful for computations, such as integration and optimization. With:</p>
 $$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y})$$<p>the Jacobian is defined as:</p>
-$$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf{y}}$$<p>SymPy can easily compute the Jacobian of matrix objects with the <code>Matrix.jacobian()</code> method.</p>
-<h2 id="Exercise-[3-or-4-min]">Exercise [3 or 4 min]<a class="anchor-link" href="#Exercise-[3-or-4-min]">&#182;</a></h2><p>Look up the Jacobian in the SymPy documentation then compute the Jacobian and store the result in the variable <code>jac_of_odes</code>. Inspect the resulting Jacobian for dimensionality, type, and the symbolic form.</p>
-<p>remind to do rhs_of_odes.jacobian?</p>
+$$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf{y}}$$<p>SymPy can compute the Jacobian of matrix objects with the <code>Matrix.jacobian()</code> method.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exercise-[3-min]">Exercise [3 min]<a class="anchor-link" href="#Exercise-[3-min]">&#182;</a></h2><p>Look up the Jacobian in the SymPy documentation then compute the Jacobian and store the result in the variable <code>jac_of_odes</code>. Inspect the resulting Jacobian for dimensionality, type, and the symbolic form.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">jac_of_odes</span> <span class="o">=</span> <span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">)</span>
+<span class="n">jac_of_odes</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">jac_of_odes</span>
+</pre></div>
+<p>The Jacobian is a 14 x 14 SymPy matrix and contains 196 expressions which are linear functions of the state variables.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_of_odes</span> <span class="o">=</span> <span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>sympy.matrices.dense.MutableDenseMatrix</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_of_odes</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left ( 14, \quad 14\right )$$
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_of_odes</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
-<div class="output_latex output_subarea output_execute_result">
-$$\left[\begin{array}{cccccccccccccc}- 29040000.0 y_{0} - 0.0158 y_{1} - 20900000.0 y_{11} - 27600000.0 y_{4} - 35500000.0 y_{5} - 13600000.0 y_{6} - 22900000.0 y_{7} - 13000000.0 y_{8} - 13000000.0 y_{9} & - 0.0158 y_{0} & 24400.0 y_{4} & 0 & - 27600000.0 y_{0} + 24400.0 y_{2} + 5.83 & - 35500000.0 y_{0} & - 13600000.0 y_{0} & - 22900000.0 y_{0} & - 13000000.0 y_{0} & - 13000000.0 y_{0} & 0 & - 20900000.0 y_{0} & 0 & 0\\- 29040000.0 y_{0} - 0.0158 y_{1} - 27600000.0 y_{4} - 26000000.0 y_{8} & - 0.0158 y_{0} - 1270.0 y_{10} - 1270.0 y_{12} - 4.58 \cdot 10^{-8} y_{4} - 0.000155 y_{8} - 2.12 \cdot 10^{-5} & 118000000.0 y_{11} + 24400.0 y_{4} + 13300000.0 y_{5} + 13300000.0 y_{6} + 13300000.0 y_{9} & 39500.0 y_{5} & - 27600000.0 y_{0} - 4.58 \cdot 10^{-8} y_{1} + 24400.0 y_{2} + 10900000.0 y_{5} + 36500.0 y_{6} & 4070000.0 y_{10} + 13300000.0 y_{2} + 39500.0 y_{3} + 10900000.0 y_{4} + 29200.0 y_{6} + 8840000.0 y_{9} & 13300000.0 y_{2} + 36500.0 y_{4} + 29200.0 y_{5} + 2.6 \cdot 10^{-7} & 0 & - 26000000.0 y_{0} - 0.000155 y_{1} - 101000.0 y_{9} & 13300000.0 y_{2} + 8840000.0 y_{5} - 101000.0 y_{8} & - 1270.0 y_{1} + 4070000.0 y_{5} & 118000000.0 y_{2} & - 1270.0 y_{1} & 0\\29040000.0 y_{0} + 0.0158 y_{1} + 27600000.0 y_{4} + 35500000.0 y_{5} + 13600000.0 y_{6} + 26000000.0 y_{8} & 0.0158 y_{0} + 1270.0 y_{10} + 1270.0 y_{12} + 0.000155 y_{8} + 2.12 \cdot 10^{-5} & - 118000000.0 y_{11} - 24400.0 y_{4} - 13300000.0 y_{5} - 13300000.0 y_{6} - 13300000.0 y_{9} & 128000.0 y_{12} & 27600000.0 y_{0} - 24400.0 y_{2} & 35500000.0 y_{0} - 13300000.0 y_{2} + 11000000.0 y_{8} & 13600000.0 y_{0} + 4070000.0 y_{12} - 13300000.0 y_{2} & 0 & 26000000.0 y_{0} + 0.000155 y_{1} + 11000000.0 y_{5} + 101000.0 y_{9} & - 13300000.0 y_{2} + 101000.0 y_{8} & 1270.0 y_{1} + 786000.0 y_{12} & - 118000000.0 y_{2} & 1270.0 y_{1} + 786000.0 y_{10} + 128000.0 y_{3} + 4070000.0 y_{6} & 0\\14520000.0 y_{0} + 27600000.0 y_{4} & 4.58 \cdot 10^{-8} y_{4} & 0 & - 128000.0 y_{12} - 39500.0 y_{5} & 27600000.0 y_{0} + 4.58 \cdot 10^{-8} y_{1} + 10280000.0 y_{4} & - 39500.0 y_{3} & 0 & 0 & 0 & 0 & 0 & 0 & - 128000.0 y_{3} & 0\\0.0158 y_{1} + 20900000.0 y_{11} - 27600000.0 y_{4} & 0.0158 y_{0} - 4.58 \cdot 10^{-8} y_{4} & - 24400.0 y_{4} & 128000.0 y_{12} + 39500.0 y_{5} & - 27600000.0 y_{0} - 4.58 \cdot 10^{-8} y_{1} - 24400.0 y_{2} - 20560000.0 y_{4} - 10900000.0 y_{5} - 36500.0 y_{6} - 13100000.0 y_{7} - 11400000.0 y_{8} - 11400000.0 y_{9} - 5.83 & 39500.0 y_{3} - 10900000.0 y_{4} & - 36500.0 y_{4} & - 13100000.0 y_{4} & - 11400000.0 y_{4} & - 11400000.0 y_{4} & 0 & 20900000.0 y_{0} & 128000.0 y_{3} & 0\\- 35500000.0 y_{5} + 13600000.0 y_{6} & 1270.0 y_{12} + 4.58 \cdot 10^{-8} y_{4} & - 13300000.0 y_{5} & - 39500.0 y_{5} & 4.58 \cdot 10^{-8} y_{1} - 10900000.0 y_{5} + 36500.0 y_{6} + 22800000.0 y_{9} & - 35500000.0 y_{0} - 4070000.0 y_{10} - 13300000.0 y_{2} - 39500.0 y_{3} - 10900000.0 y_{4} - 19240000.0 y_{5} - 29200.0 y_{6} - 11000000.0 y_{8} - 8840000.0 y_{9} - 0.0943 & 13600000.0 y_{0} + 36500.0 y_{4} - 29200.0 y_{5} & 0 & - 11000000.0 y_{5} & 22800000.0 y_{4} - 8840000.0 y_{5} & - 4070000.0 y_{5} & 50200000.0 y_{12} & 1270.0 y_{1} + 50200000.0 y_{11} & 0\\- 13600000.0 y_{6} + 13000000.0 y_{8} & 1270.0 y_{10} & - 13300000.0 y_{6} & 0 & - 36500.0 y_{6} & 9620000.0 y_{5} - 29200.0 y_{6} & - 13600000.0 y_{0} - 4070000.0 y_{12} - 13300000.0 y_{2} - 36500.0 y_{4} - 29200.0 y_{5} - 0.09430026 & 0 & 13000000.0 y_{0} + 101000.0 y_{9} & 101000.0 y_{8} + 1680.0 y_{9} & 1270.0 y_{1} + 50200000.0 y_{11} & 50200000.0 y_{10} & - 4070000.0 y_{6} & 0\\- 22900000.0 y_{7} & 0 & 0 & 0 & - 13100000.0 y_{7} & 11000000.0 y_{8} + 8840000.0 y_{9} & 1.3 \cdot 10^{-7} & - 22900000.0 y_{0} - 3750000.0 y_{12} - 13100000.0 y_{4} & 11000000.0 y_{5} + 101000.0 y_{9} & 8840000.0 y_{5} + 101000.0 y_{8} + 1680.0 y_{9} & 0 & 0 & - 3750000.0 y_{7} & 2620.0\\22900000.0 y_{7} - 13000000.0 y_{8} & - 0.000155 y_{8} & 13300000.0 y_{9} & 0 & - 11400000.0 y_{8} & 4070000.0 y_{10} - 11000000.0 y_{8} & 0 & 22900000.0 y_{0} & - 13000000.0 y_{0} - 0.000155 y_{1} - 50200000.0 y_{11} - 11400000.0 y_{4} - 11000000.0 y_{5} - 101000.0 y_{9} & 13300000.0 y_{2} - 101000.0 y_{8} + 773000.0 & 786000.0 y_{12} + 4070000.0 y_{5} & - 50200000.0 y_{8} & 786000.0 y_{10} & 0\\- 13000000.0 y_{9} & 0.000155 y_{8} & - 13300000.0 y_{9} & 0 & 13100000.0 y_{7} - 11400000.0 y_{9} & 29200.0 y_{6} - 8840000.0 y_{9} & 4070000.0 y_{12} + 29200.0 y_{5} & 13100000.0 y_{4} & 0.000155 y_{1} + 50200000.0 y_{11} - 101000.0 y_{9} & - 13000000.0 y_{0} - 13300000.0 y_{2} - 11400000.0 y_{4} - 8840000.0 y_{5} - 101000.0 y_{8} - 3360.0 y_{9} - 773000.0 & 0 & 50200000.0 y_{8} & 4070000.0 y_{6} & 0\\13000000.0 y_{9} & - 1270.0 y_{10} & 13300000.0 y_{6} & 0 & 11400000.0 y_{8} & - 4070000.0 y_{10} & 13300000.0 y_{2} + 0.0943 & 0 & 11400000.0 y_{4} & 13000000.0 y_{0} & - 1270.0 y_{1} - 50200000.0 y_{11} - 786000.0 y_{12} - 4070000.0 y_{5} & - 50200000.0 y_{10} & - 786000.0 y_{10} & 0\\- 20900000.0 y_{11} & 2.12 \cdot 10^{-5} & - 118000000.0 y_{11} & 0 & 5.83 & 0.0943 & 0.0943 & 0 & - 50200000.0 y_{11} & 773000.0 & - 50200000.0 y_{11} & - 20900000.0 y_{0} - 50200000.0 y_{10} - 50200000.0 y_{12} - 118000000.0 y_{2} - 50200000.0 y_{8} & - 50200000.0 y_{11} & 0\\0 & - 1270.0 y_{12} & 13300000.0 y_{5} & - 128000.0 y_{12} & 0 & 13300000.0 y_{2} + 0.0943 & - 4070000.0 y_{12} & - 3750000.0 y_{12} & 0 & 0 & - 786000.0 y_{12} & - 50200000.0 y_{12} & - 1270.0 y_{1} - 786000.0 y_{10} - 50200000.0 y_{11} - 128000.0 y_{3} - 4070000.0 y_{6} - 3750000.0 y_{7} & 2620.0\\0 & 0 & 0 & 0 & 0 & 0 & 0 & 3750000.0 y_{12} & 0 & 0 & 0 & 0 & 3750000.0 y_{7} & -2620.0\end{array}\right]$$
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -12208,7 +11954,7 @@ $$\left[\begin{array}{cccccccccccccc}- 29040000.0 y_{0} - 0.0158 y_{1} - 2090000
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="C-Code-Printing">C Code Printing<a class="anchor-link" href="#C-Code-Printing">&#182;</a></h1><p>The two expressions are large and will likely have to be excuted many thousands of times to compute the desired numerical values, so we want them to execute as fast as possible. We can use SymPy to print these expressions as C code.</p>
-<p>We will design a double precision C function that evaluates both $\mathbf{f}(\mathbf{y})$ and $\mathbf{J}(\mathbf{y})$ simultaneously given the values of the states $y$. Below is a basic template for a C program that can includes such a function. Our job is to populate the function with the SymPy expressions represented a C code.</p>
+<p>We will design a double precision C function that evaluates both $\mathbf{f}(\mathbf{y})$ and $\mathbf{J}(\mathbf{y})$ simultaneously given the values of the states $\mathbf{y}$. Below is a basic template for a C program that includes such a function, <code>evaluate_odes()</code>. Our job is to populate the function with the C version of the SymPy expressions.</p>
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
@@ -12244,14 +11990,14 @@ $$\left[\begin{array}{cccccccccccccc}- 29040000.0 y_{0} - 0.0158 y_{1} - 2090000
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
-<p>Instead of using the <code>ccode</code> convenience function let's use the underlying code printer class to do the printing. This will allow us to modify the class to for custom printing further down.</p>
+<p>Instead of using the <code>ccode</code> convenience function you learned earlier let's use the underlying code printer class to do the printing. This will allow us to modify the class to for custom printing further down.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.printing.ccode</span> <span class="k">import</span> <span class="n">C99CodePrinter</span>
@@ -12273,7 +12019,7 @@ $$\left[\begin{array}{cccccccccccccc}- 29040000.0 y_{0} - 0.0158 y_{1} - 2090000
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">printer</span> <span class="o">=</span> <span class="n">C99CodePrinter</span><span class="p">()</span>
@@ -12286,7 +12032,7 @@ $$\left[\begin{array}{cccccccccccccc}- 29040000.0 y_{0} - 0.0158 y_{1} - 2090000
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">))</span>
@@ -12335,7 +12081,7 @@ Matrix([
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this case the C code printer does not do what we desire. It does not support printing a SymPy Matrix (see the first line of the output). In C, on possible representation of a matrix is an array type. The array type in C stores contigous values, e.g. doubles, in a chunk of memory. You can declare an array of doubles in C like:</p>
+<p>In this case, the C code printer does not do what we desire. It does not support printing a SymPy Matrix (see the first line of the output). In C, on possible representation of a matrix is an array type. The array type in C stores contigous values, e.g. doubles, in a chunk of memory. You can declare an array of doubles in C like:</p>
 <div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">my_array</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
 </pre></div>
 <p>The word <code>double</code> is the data type of the individual values in the array which must all be the same. The word <code>my_array</code> is the variable name we choose to name the array and the <code>[10]</code> is the syntax to declare that this array will have 10 values.</p>
@@ -12355,7 +12101,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rhs_result</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;rhs_result&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -12368,7 +12114,7 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rhs_result</span><span class="p">)</span>
@@ -12399,7 +12145,38 @@ Matrix([
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rhs_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>rhs_result[0, 0]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
@@ -12454,278 +12231,34 @@ rhs_result[13] = 3750000.0*y12*y7 - 2620.0*y13;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Excercise-[5-min]">Excercise [5 min]<a class="anchor-link" href="#Excercise-[5-min]">&#182;</a></h2><p>Print out valid C code from the Jacobian.</p>
-<p>5 minutes may be too much</p>
+<h2 id="Excercise-[5-min]">Excercise [5 min]<a class="anchor-link" href="#Excercise-[5-min]">&#182;</a></h2><p>Print out valid C code for the Jacobian matrix.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">jac_result</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;jac_result&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">jac_result</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">jac_result</span><span class="p">))</span>
+</pre></div>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_result</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;jac_result&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">jac_result</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>jac_result
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">jac_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">jac_result</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>jac_result[0] = -29040000.0*y0 - 0.0158*y1 - 20900000.0*y11 - 27600000.0*y4 - 35500000.0*y5 - 13600000.0*y6 - 22900000.0*y7 - 13000000.0*y8 - 13000000.0*y9;
-jac_result[1] = -0.0158*y0;
-jac_result[2] = 24400.0*y4;
-jac_result[3] = 0;
-jac_result[4] = -27600000.0*y0 + 24400.0*y2 + 5.83;
-jac_result[5] = -35500000.0*y0;
-jac_result[6] = -13600000.0*y0;
-jac_result[7] = -22900000.0*y0;
-jac_result[8] = -13000000.0*y0;
-jac_result[9] = -13000000.0*y0;
-jac_result[10] = 0;
-jac_result[11] = -20900000.0*y0;
-jac_result[12] = 0;
-jac_result[13] = 0;
-jac_result[14] = -29040000.0*y0 - 0.0158*y1 - 27600000.0*y4 - 26000000.0*y8;
-jac_result[15] = -0.0158*y0 - 1270.0*y10 - 1270.0*y12 - 4.58e-8*y4 - 0.000155*y8 - 2.12e-5;
-jac_result[16] = 118000000.0*y11 + 24400.0*y4 + 13300000.0*y5 + 13300000.0*y6 + 13300000.0*y9;
-jac_result[17] = 39500.0*y5;
-jac_result[18] = -27600000.0*y0 - 4.58e-8*y1 + 24400.0*y2 + 10900000.0*y5 + 36500.0*y6;
-jac_result[19] = 4070000.0*y10 + 13300000.0*y2 + 39500.0*y3 + 10900000.0*y4 + 29200.0*y6 + 8840000.0*y9;
-jac_result[20] = 13300000.0*y2 + 36500.0*y4 + 29200.0*y5 + 2.6e-7;
-jac_result[21] = 0;
-jac_result[22] = -26000000.0*y0 - 0.000155*y1 - 101000.0*y9;
-jac_result[23] = 13300000.0*y2 + 8840000.0*y5 - 101000.0*y8;
-jac_result[24] = -1270.0*y1 + 4070000.0*y5;
-jac_result[25] = 118000000.0*y2;
-jac_result[26] = -1270.0*y1;
-jac_result[27] = 0;
-jac_result[28] = 29040000.0*y0 + 0.0158*y1 + 27600000.0*y4 + 35500000.0*y5 + 13600000.0*y6 + 26000000.0*y8;
-jac_result[29] = 0.0158*y0 + 1270.0*y10 + 1270.0*y12 + 0.000155*y8 + 2.12e-5;
-jac_result[30] = -118000000.0*y11 - 24400.0*y4 - 13300000.0*y5 - 13300000.0*y6 - 13300000.0*y9;
-jac_result[31] = 128000.0*y12;
-jac_result[32] = 27600000.0*y0 - 24400.0*y2;
-jac_result[33] = 35500000.0*y0 - 13300000.0*y2 + 11000000.0*y8;
-jac_result[34] = 13600000.0*y0 + 4070000.0*y12 - 13300000.0*y2;
-jac_result[35] = 0;
-jac_result[36] = 26000000.0*y0 + 0.000155*y1 + 11000000.0*y5 + 101000.0*y9;
-jac_result[37] = -13300000.0*y2 + 101000.0*y8;
-jac_result[38] = 1270.0*y1 + 786000.0*y12;
-jac_result[39] = -118000000.0*y2;
-jac_result[40] = 1270.0*y1 + 786000.0*y10 + 128000.0*y3 + 4070000.0*y6;
-jac_result[41] = 0;
-jac_result[42] = 14520000.0*y0 + 27600000.0*y4;
-jac_result[43] = 4.58e-8*y4;
-jac_result[44] = 0;
-jac_result[45] = -128000.0*y12 - 39500.0*y5;
-jac_result[46] = 27600000.0*y0 + 4.58e-8*y1 + 10280000.0*y4;
-jac_result[47] = -39500.0*y3;
-jac_result[48] = 0;
-jac_result[49] = 0;
-jac_result[50] = 0;
-jac_result[51] = 0;
-jac_result[52] = 0;
-jac_result[53] = 0;
-jac_result[54] = -128000.0*y3;
-jac_result[55] = 0;
-jac_result[56] = 0.0158*y1 + 20900000.0*y11 - 27600000.0*y4;
-jac_result[57] = 0.0158*y0 - 4.58e-8*y4;
-jac_result[58] = -24400.0*y4;
-jac_result[59] = 128000.0*y12 + 39500.0*y5;
-jac_result[60] = -27600000.0*y0 - 4.58e-8*y1 - 24400.0*y2 - 20560000.0*y4 - 10900000.0*y5 - 36500.0*y6 - 13100000.0*y7 - 11400000.0*y8 - 11400000.0*y9 - 5.83;
-jac_result[61] = 39500.0*y3 - 10900000.0*y4;
-jac_result[62] = -36500.0*y4;
-jac_result[63] = -13100000.0*y4;
-jac_result[64] = -11400000.0*y4;
-jac_result[65] = -11400000.0*y4;
-jac_result[66] = 0;
-jac_result[67] = 20900000.0*y0;
-jac_result[68] = 128000.0*y3;
-jac_result[69] = 0;
-jac_result[70] = -35500000.0*y5 + 13600000.0*y6;
-jac_result[71] = 1270.0*y12 + 4.58e-8*y4;
-jac_result[72] = -13300000.0*y5;
-jac_result[73] = -39500.0*y5;
-jac_result[74] = 4.58e-8*y1 - 10900000.0*y5 + 36500.0*y6 + 22800000.0*y9;
-jac_result[75] = -35500000.0*y0 - 4070000.0*y10 - 13300000.0*y2 - 39500.0*y3 - 10900000.0*y4 - 19240000.0*y5 - 29200.0*y6 - 11000000.0*y8 - 8840000.0*y9 - 0.0943;
-jac_result[76] = 13600000.0*y0 + 36500.0*y4 - 29200.0*y5;
-jac_result[77] = 0;
-jac_result[78] = -11000000.0*y5;
-jac_result[79] = 22800000.0*y4 - 8840000.0*y5;
-jac_result[80] = -4070000.0*y5;
-jac_result[81] = 50200000.0*y12;
-jac_result[82] = 1270.0*y1 + 50200000.0*y11;
-jac_result[83] = 0;
-jac_result[84] = -13600000.0*y6 + 13000000.0*y8;
-jac_result[85] = 1270.0*y10;
-jac_result[86] = -13300000.0*y6;
-jac_result[87] = 0;
-jac_result[88] = -36500.0*y6;
-jac_result[89] = 9620000.0*y5 - 29200.0*y6;
-jac_result[90] = -13600000.0*y0 - 4070000.0*y12 - 13300000.0*y2 - 36500.0*y4 - 29200.0*y5 - 0.09430026;
-jac_result[91] = 0;
-jac_result[92] = 13000000.0*y0 + 101000.0*y9;
-jac_result[93] = 101000.0*y8 + 1680.0*y9;
-jac_result[94] = 1270.0*y1 + 50200000.0*y11;
-jac_result[95] = 50200000.0*y10;
-jac_result[96] = -4070000.0*y6;
-jac_result[97] = 0;
-jac_result[98] = -22900000.0*y7;
-jac_result[99] = 0;
-jac_result[100] = 0;
-jac_result[101] = 0;
-jac_result[102] = -13100000.0*y7;
-jac_result[103] = 11000000.0*y8 + 8840000.0*y9;
-jac_result[104] = 1.3e-7;
-jac_result[105] = -22900000.0*y0 - 3750000.0*y12 - 13100000.0*y4;
-jac_result[106] = 11000000.0*y5 + 101000.0*y9;
-jac_result[107] = 8840000.0*y5 + 101000.0*y8 + 1680.0*y9;
-jac_result[108] = 0;
-jac_result[109] = 0;
-jac_result[110] = -3750000.0*y7;
-jac_result[111] = 2620.0;
-jac_result[112] = 22900000.0*y7 - 13000000.0*y8;
-jac_result[113] = -0.000155*y8;
-jac_result[114] = 13300000.0*y9;
-jac_result[115] = 0;
-jac_result[116] = -11400000.0*y8;
-jac_result[117] = 4070000.0*y10 - 11000000.0*y8;
-jac_result[118] = 0;
-jac_result[119] = 22900000.0*y0;
-jac_result[120] = -13000000.0*y0 - 0.000155*y1 - 50200000.0*y11 - 11400000.0*y4 - 11000000.0*y5 - 101000.0*y9;
-jac_result[121] = 13300000.0*y2 - 101000.0*y8 + 773000.0;
-jac_result[122] = 786000.0*y12 + 4070000.0*y5;
-jac_result[123] = -50200000.0*y8;
-jac_result[124] = 786000.0*y10;
-jac_result[125] = 0;
-jac_result[126] = -13000000.0*y9;
-jac_result[127] = 0.000155*y8;
-jac_result[128] = -13300000.0*y9;
-jac_result[129] = 0;
-jac_result[130] = 13100000.0*y7 - 11400000.0*y9;
-jac_result[131] = 29200.0*y6 - 8840000.0*y9;
-jac_result[132] = 4070000.0*y12 + 29200.0*y5;
-jac_result[133] = 13100000.0*y4;
-jac_result[134] = 0.000155*y1 + 50200000.0*y11 - 101000.0*y9;
-jac_result[135] = -13000000.0*y0 - 13300000.0*y2 - 11400000.0*y4 - 8840000.0*y5 - 101000.0*y8 - 3360.0*y9 - 773000.0;
-jac_result[136] = 0;
-jac_result[137] = 50200000.0*y8;
-jac_result[138] = 4070000.0*y6;
-jac_result[139] = 0;
-jac_result[140] = 13000000.0*y9;
-jac_result[141] = -1270.0*y10;
-jac_result[142] = 13300000.0*y6;
-jac_result[143] = 0;
-jac_result[144] = 11400000.0*y8;
-jac_result[145] = -4070000.0*y10;
-jac_result[146] = 13300000.0*y2 + 0.0943;
-jac_result[147] = 0;
-jac_result[148] = 11400000.0*y4;
-jac_result[149] = 13000000.0*y0;
-jac_result[150] = -1270.0*y1 - 50200000.0*y11 - 786000.0*y12 - 4070000.0*y5;
-jac_result[151] = -50200000.0*y10;
-jac_result[152] = -786000.0*y10;
-jac_result[153] = 0;
-jac_result[154] = -20900000.0*y11;
-jac_result[155] = 2.12e-5;
-jac_result[156] = -118000000.0*y11;
-jac_result[157] = 0;
-jac_result[158] = 5.83;
-jac_result[159] = 0.0943;
-jac_result[160] = 0.0943;
-jac_result[161] = 0;
-jac_result[162] = -50200000.0*y11;
-jac_result[163] = 773000.0;
-jac_result[164] = -50200000.0*y11;
-jac_result[165] = -20900000.0*y0 - 50200000.0*y10 - 50200000.0*y12 - 118000000.0*y2 - 50200000.0*y8;
-jac_result[166] = -50200000.0*y11;
-jac_result[167] = 0;
-jac_result[168] = 0;
-jac_result[169] = -1270.0*y12;
-jac_result[170] = 13300000.0*y5;
-jac_result[171] = -128000.0*y12;
-jac_result[172] = 0;
-jac_result[173] = 13300000.0*y2 + 0.0943;
-jac_result[174] = -4070000.0*y12;
-jac_result[175] = -3750000.0*y12;
-jac_result[176] = 0;
-jac_result[177] = 0;
-jac_result[178] = -786000.0*y12;
-jac_result[179] = -50200000.0*y12;
-jac_result[180] = -1270.0*y1 - 786000.0*y10 - 50200000.0*y11 - 128000.0*y3 - 4070000.0*y6 - 3750000.0*y7;
-jac_result[181] = 2620.0;
-jac_result[182] = 0;
-jac_result[183] = 0;
-jac_result[184] = 0;
-jac_result[185] = 0;
-jac_result[186] = 0;
-jac_result[187] = 0;
-jac_result[188] = 0;
-jac_result[189] = 3750000.0*y12;
-jac_result[190] = 0;
-jac_result[191] = 0;
-jac_result[192] = 0;
-jac_result[193] = 0;
-jac_result[194] = 3750000.0*y7;
-jac_result[195] = -2620.0;
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -12734,14 +12267,23 @@ jac_result[195] = -2620.0;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Changing-the-Behavior-of-the-Printer">Changing the Behavior of the Printer<a class="anchor-link" href="#Changing-the-Behavior-of-the-Printer">&#182;</a></h1><p>The SymPy code printers are relatively easy to extend. They are designed such that if you want to change how a particularly SymPy object prints, for example a <code>Symbol</code>, then you only need to modify the <code>_print_Symbol</code> method.</p>
+<h1 id="Changing-the-Behavior-of-the-Printer">Changing the Behavior of the Printer<a class="anchor-link" href="#Changing-the-Behavior-of-the-Printer">&#182;</a></h1><p>The SymPy code printers are relatively easy to extend. They are designed such that if you want to change how a particularly SymPy object prints, for example a <code>Symbol</code>, then you only need to modify the <code>_print_Symbol</code> method of the printer. In general, the code printers have a method for every SymPy object and also many builtin types. Use tab completion with <code>C99CodePrinter._print_</code> to see all of the options.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once you find the method you want to modify, it is often useful to look at the existing impelementation of the print method to see how the code is written.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>C99CodePrinter._print_Symbol<span class="o">??</span>
@@ -12756,17 +12298,17 @@ jac_result[195] = -2620.0;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Tab through all things you can print</p>
+<p>Below is a simple example of overiding the <code>Symbol</code> printer method. Note that you should use the <code>self._print()</code> method instead of simply returning the string so that the proper printer, <code>self._print_str()</code>, is dispatched. This is most important if you are printing non-singletons, i.e. expressions that are made up of multiple singletons.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#C99CodePrinter._print_</span>
+<div class=" highlight hl-ipython3"><pre><span></span>C99CodePrinter._print_str<span class="o">??</span>
 </pre></div>
 
 </div>
@@ -12776,12 +12318,12 @@ jac_result[195] = -2620.0;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;No matter what symbol you pass in I will always print:</span><span class="se">\n\n</span><span class="s2">Ni!&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;No matter what symbol you pass in I will always print:</span><span class="se">\n\n</span><span class="s2">Ni!&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12791,7 +12333,7 @@ jac_result[195] = -2620.0;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
@@ -12804,7 +12346,7 @@ jac_result[195] = -2620.0;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">)</span>
@@ -12821,7 +12363,7 @@ jac_result[195] = -2620.0;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[16]:</div>
 
 
 
@@ -12838,7 +12380,7 @@ $$\theta$$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
@@ -12873,7 +12415,44 @@ Ni!
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Exercise-[10-min]">Exercise [10 min]<a class="anchor-link" href="#Exercise-[10-min]">&#182;</a></h1><p>It turns out that in C calling <code>pow()</code> for low exponents executes slower than simply expanding the multiplication. For example <code>pow(x, 2)</code> should be printed as <code>x*x</code>. Modify the CCodePrinter <code>._print_Pow</code> method to expand the multiplication if the exponent is less than or equal to 4. You may want to have a look at the source code with <code>printer._print_Pow??</code></p>
+<h2 id="Exercise-[10-min]">Exercise [10 min]<a class="anchor-link" href="#Exercise-[10-min]">&#182;</a></h2><p>One issue with our current code printer is that the expressions use the symbols <code>y0, y1, ..., y13</code> instead of accessing the values directly from the arrays with <code>state_vals[0], state_vals[1], ..., state_vals[13]</code>. We could go back and rename our SymPy symbols to use brackets, but another way would be to override the <code>_print_Symbol()</code> method to print these symbols as we desire. Modify the code printer so that it prints with the proper array access in the expression.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution:-Subclassing">Solution: Subclassing<a class="anchor-link" href="#Solution:-Subclassing">&#182;</a></h3><p>The following solution examines the symbol and if it is a state variable it overrides the printer, otherwise it uses the parent class to print the symbol as a fall back.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">states</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;state_vals[{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_Symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+
+<span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
+</pre></div>
+<h3 id="Solution:-Exact-replacement">Solution: Exact replacement<a class="anchor-link" href="#Solution:-Exact-replacement">&#182;</a></h3><p>Another option is to replace the symbols with <code>MatrixSymbol</code> elements. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array.</p>
+<div class="highlight"><pre><span></span><span class="n">state_vals</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;state_vals&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">state_array_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">state_vals</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">),</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Bonus-Exercise">Bonus Exercise<a class="anchor-link" href="#Bonus-Exercise">&#182;</a></h2><p><em>Do this exercise if you finish the previous one quickly.</em></p>
+<p>It turns out that calling <code>pow()</code> for low value integer exponents executes slower than simply expanding the multiplication. For example <code>pow(x, 2)</code> could be printed as <code>x*x</code>. Modify the CCodePrinter <code>._print_Pow</code> method to expand the multiplication if the exponent is less than or equal to 4. You may want to have a look at the source code with <code>printer._print_Pow??</code></p>
 <p>Note that a <code>Pow</code> expression has an <code>.exp</code> for exponent and <code>.base</code> for the item being raised. For example $x^2$ would have:</p>
 <div class="highlight"><pre><span></span><span class="n">expr</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="n">expr</span><span class="o">.</span><span class="n">base</span> <span class="o">==</span> <span class="n">x</span>
@@ -12883,422 +12462,42 @@ Ni!
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>printer._print_Pow<span class="o">??</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">printer</span><span class="o">.</span><span class="n">_print_Pow</span><span class="err">??</span>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_print_Pow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">is_integer</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">exp</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;*&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">base</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">exp</span><span class="p">)])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_Pow</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-</pre></div>
 
-</div>
-</div>
-</div>
+<span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
-</pre></div>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[33]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;x&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[34]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;x*x&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[35]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;x*x*x*x&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[36]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;pow(x, 5)&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mf">1.5</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[37]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;pow(x, 1.5)&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">&#182;</a></h2><p>One issue with our current code printer is that the expressions use the symbols <code>y0, y1, ..., y13</code> instead of accessing the values directly from the arrays with <code>state_vals[0], state_vals[1], ..., state_vals[13]</code>. We could go back and rename our SymPy symbols to use brackets, but another way would be to override the <code>_print_Symbol()</code> method to print these symbols as we desire. Modify the code printer so that it prints with the proper array access in the expression.</p>
-<p>10 minutes not enough for both</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_vals</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;state_vals&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">state_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>state_vals[0, 0]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MyCodePrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">states</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">state_vals</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_printer</span> <span class="o">=</span> <span class="n">MyCodePrinter</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">my_printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>rhs_result[0] = -14520000.0*pow(state_vals[0], 2) - 0.0158*state_vals[0]*state_vals[1] - 20900000.0*state_vals[0]*state_vals[11] - 27600000.0*state_vals[0]*state_vals[4] - 35500000.0*state_vals[0]*state_vals[5] - 13600000.0*state_vals[0]*state_vals[6] - 22900000.0*state_vals[0]*state_vals[7] - 13000000.0*state_vals[0]*state_vals[8] - 13000000.0*state_vals[0]*state_vals[9] + 24400.0*state_vals[2]*state_vals[4] + 5.83*state_vals[4] + 0.0854;
-rhs_result[1] = -14520000.0*pow(state_vals[0], 2) - 0.0158*state_vals[0]*state_vals[1] - 27600000.0*state_vals[0]*state_vals[4] - 26000000.0*state_vals[0]*state_vals[8] - 1270.0*state_vals[1]*state_vals[10] - 1270.0*state_vals[1]*state_vals[12] - 4.58e-8*state_vals[1]*state_vals[4] - 0.000155*state_vals[1]*state_vals[8] - 2.12e-5*state_vals[1] + 4070000.0*state_vals[10]*state_vals[5] + 118000000.0*state_vals[11]*state_vals[2] + 24400.0*state_vals[2]*state_vals[4] + 13300000.0*state_vals[2]*state_vals[5] + 13300000.0*state_vals[2]*state_vals[6] + 13300000.0*state_vals[2]*state_vals[9] + 39500.0*state_vals[3]*state_vals[5] + 10900000.0*state_vals[4]*state_vals[5] + 36500.0*state_vals[4]*state_vals[6] + 29200.0*state_vals[5]*state_vals[6] + 8840000.0*state_vals[5]*state_vals[9] + 2.6e-7*state_vals[6] - 101000.0*state_vals[8]*state_vals[9] - 0.131;
-rhs_result[2] = 14520000.0*pow(state_vals[0], 2) + 0.0158*state_vals[0]*state_vals[1] + 27600000.0*state_vals[0]*state_vals[4] + 35500000.0*state_vals[0]*state_vals[5] + 13600000.0*state_vals[0]*state_vals[6] + 26000000.0*state_vals[0]*state_vals[8] + 1270.0*state_vals[1]*state_vals[10] + 1270.0*state_vals[1]*state_vals[12] + 0.000155*state_vals[1]*state_vals[8] + 2.12e-5*state_vals[1] + 786000.0*state_vals[10]*state_vals[12] - 118000000.0*state_vals[11]*state_vals[2] + 128000.0*state_vals[12]*state_vals[3] + 4070000.0*state_vals[12]*state_vals[6] - 24400.0*state_vals[2]*state_vals[4] - 13300000.0*state_vals[2]*state_vals[5] - 13300000.0*state_vals[2]*state_vals[6] - 13300000.0*state_vals[2]*state_vals[9] + 11000000.0*state_vals[5]*state_vals[8] + 101000.0*state_vals[8]*state_vals[9];
-rhs_result[3] = 7260000.0*pow(state_vals[0], 2) + 27600000.0*state_vals[0]*state_vals[4] + 4.58e-8*state_vals[1]*state_vals[4] - 128000.0*state_vals[12]*state_vals[3] - 39500.0*state_vals[3]*state_vals[5] + 5140000.0*pow(state_vals[4], 2) + 0.0136;
-rhs_result[4] = 0.0158*state_vals[0]*state_vals[1] + 20900000.0*state_vals[0]*state_vals[11] - 27600000.0*state_vals[0]*state_vals[4] - 4.58e-8*state_vals[1]*state_vals[4] + 128000.0*state_vals[12]*state_vals[3] - 24400.0*state_vals[2]*state_vals[4] + 39500.0*state_vals[3]*state_vals[5] - 10280000.0*pow(state_vals[4], 2) - 10900000.0*state_vals[4]*state_vals[5] - 36500.0*state_vals[4]*state_vals[6] - 13100000.0*state_vals[4]*state_vals[7] - 11400000.0*state_vals[4]*state_vals[8] - 11400000.0*state_vals[4]*state_vals[9] - 5.83*state_vals[4] + 0.0188;
-rhs_result[5] = -35500000.0*state_vals[0]*state_vals[5] + 13600000.0*state_vals[0]*state_vals[6] + 1270.0*state_vals[1]*state_vals[12] + 4.58e-8*state_vals[1]*state_vals[4] - 4070000.0*state_vals[10]*state_vals[5] + 50200000.0*state_vals[11]*state_vals[12] - 13300000.0*state_vals[2]*state_vals[5] - 39500.0*state_vals[3]*state_vals[5] - 10900000.0*state_vals[4]*state_vals[5] + 36500.0*state_vals[4]*state_vals[6] + 22800000.0*state_vals[4]*state_vals[9] - 9620000.0*pow(state_vals[5], 2) - 29200.0*state_vals[5]*state_vals[6] - 11000000.0*state_vals[5]*state_vals[8] - 8840000.0*state_vals[5]*state_vals[9] - 0.0943*state_vals[5] + 0.0871;
-rhs_result[6] = -13600000.0*state_vals[0]*state_vals[6] + 13000000.0*state_vals[0]*state_vals[8] + 1270.0*state_vals[1]*state_vals[10] + 50200000.0*state_vals[10]*state_vals[11] - 4070000.0*state_vals[12]*state_vals[6] - 13300000.0*state_vals[2]*state_vals[6] - 36500.0*state_vals[4]*state_vals[6] + 4810000.0*pow(state_vals[5], 2) - 29200.0*state_vals[5]*state_vals[6] - 0.09430026*state_vals[6] + 101000.0*state_vals[8]*state_vals[9] + 840.0*pow(state_vals[9], 2) + 0.0221;
-rhs_result[7] = -22900000.0*state_vals[0]*state_vals[7] - 3750000.0*state_vals[12]*state_vals[7] + 2620.0*state_vals[13] - 13100000.0*state_vals[4]*state_vals[7] + 11000000.0*state_vals[5]*state_vals[8] + 8840000.0*state_vals[5]*state_vals[9] + 1.3e-7*state_vals[6] + 101000.0*state_vals[8]*state_vals[9] + 840.0*pow(state_vals[9], 2) + 8.19e-7;
-rhs_result[8] = 22900000.0*state_vals[0]*state_vals[7] - 13000000.0*state_vals[0]*state_vals[8] - 0.000155*state_vals[1]*state_vals[8] + 786000.0*state_vals[10]*state_vals[12] + 4070000.0*state_vals[10]*state_vals[5] - 50200000.0*state_vals[11]*state_vals[8] + 13300000.0*state_vals[2]*state_vals[9] - 11400000.0*state_vals[4]*state_vals[8] - 11000000.0*state_vals[5]*state_vals[8] - 101000.0*state_vals[8]*state_vals[9] + 773000.0*state_vals[9];
-rhs_result[9] = -13000000.0*state_vals[0]*state_vals[9] + 0.000155*state_vals[1]*state_vals[8] + 50200000.0*state_vals[11]*state_vals[8] + 4070000.0*state_vals[12]*state_vals[6] - 13300000.0*state_vals[2]*state_vals[9] + 13100000.0*state_vals[4]*state_vals[7] - 11400000.0*state_vals[4]*state_vals[9] + 29200.0*state_vals[5]*state_vals[6] - 8840000.0*state_vals[5]*state_vals[9] - 101000.0*state_vals[8]*state_vals[9] - 1680.0*pow(state_vals[9], 2) - 773000.0*state_vals[9];
-rhs_result[10] = 13000000.0*state_vals[0]*state_vals[9] - 1270.0*state_vals[1]*state_vals[10] - 50200000.0*state_vals[10]*state_vals[11] - 786000.0*state_vals[10]*state_vals[12] - 4070000.0*state_vals[10]*state_vals[5] + 13300000.0*state_vals[2]*state_vals[6] + 11400000.0*state_vals[4]*state_vals[8] + 0.0943*state_vals[6];
-rhs_result[11] = -20900000.0*state_vals[0]*state_vals[11] + 2.12e-5*state_vals[1] - 50200000.0*state_vals[10]*state_vals[11] - 50200000.0*state_vals[11]*state_vals[12] - 118000000.0*state_vals[11]*state_vals[2] - 50200000.0*state_vals[11]*state_vals[8] + 5.83*state_vals[4] + 0.0943*state_vals[5] + 0.0943*state_vals[6] + 773000.0*state_vals[9] + 0.0854;
-rhs_result[12] = -1270.0*state_vals[1]*state_vals[12] - 786000.0*state_vals[10]*state_vals[12] - 50200000.0*state_vals[11]*state_vals[12] - 128000.0*state_vals[12]*state_vals[3] - 4070000.0*state_vals[12]*state_vals[6] - 3750000.0*state_vals[12]*state_vals[7] + 2620.0*state_vals[13] + 13300000.0*state_vals[2]*state_vals[5] + 0.0943*state_vals[5];
-rhs_result[13] = 3750000.0*state_vals[12]*state_vals[7] - 2620.0*state_vals[13];
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Or as mentioned you can replace the symbols up front. Notice that the C printer assumes that a 2D matrix will get mapped to a 1D C array.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_array_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">state_vals</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{y0: state_vals[0, 0], y1: state_vals[1, 0], y2: state_vals[2, 0], y3: state_vals[3, 0], y4: state_vals[4, 0], y5: state_vals[5, 0], y6: state_vals[6, 0], y7: state_vals[7, 0], y8: state_vals[8, 0], y9: state_vals[9, 0], y10: state_vals[10, 0], y11: state_vals[11, 0], y12: state_vals[12, 0], y13: state_vals[13, 0]}
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">state_array_map</span><span class="p">),</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">rhs_result</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>rhs_result[0] = -14520000.0*pow(state_vals[0], 2) - 0.0158*state_vals[0]*state_vals[1] - 27600000.0*state_vals[0]*state_vals[4] - 35500000.0*state_vals[0]*state_vals[5] - 13600000.0*state_vals[0]*state_vals[6] - 22900000.0*state_vals[0]*state_vals[7] - 13000000.0*state_vals[0]*state_vals[8] - 13000000.0*state_vals[0]*state_vals[9] - 20900000.0*state_vals[0]*state_vals[11] + 24400.0*state_vals[2]*state_vals[4] + 5.83*state_vals[4] + 0.0854;
-rhs_result[1] = -14520000.0*pow(state_vals[0], 2) - 0.0158*state_vals[0]*state_vals[1] - 27600000.0*state_vals[0]*state_vals[4] - 26000000.0*state_vals[0]*state_vals[8] - 4.58e-8*state_vals[1]*state_vals[4] - 0.000155*state_vals[1]*state_vals[8] - 1270.0*state_vals[1]*state_vals[10] - 1270.0*state_vals[1]*state_vals[12] - 2.12e-5*state_vals[1] + 24400.0*state_vals[2]*state_vals[4] + 13300000.0*state_vals[2]*state_vals[5] + 13300000.0*state_vals[2]*state_vals[6] + 13300000.0*state_vals[2]*state_vals[9] + 118000000.0*state_vals[2]*state_vals[11] + 39500.0*state_vals[3]*state_vals[5] + 10900000.0*state_vals[4]*state_vals[5] + 36500.0*state_vals[4]*state_vals[6] + 29200.0*state_vals[5]*state_vals[6] + 8840000.0*state_vals[5]*state_vals[9] + 4070000.0*state_vals[5]*state_vals[10] + 2.6e-7*state_vals[6] - 101000.0*state_vals[8]*state_vals[9] - 0.131;
-rhs_result[2] = 14520000.0*pow(state_vals[0], 2) + 0.0158*state_vals[0]*state_vals[1] + 27600000.0*state_vals[0]*state_vals[4] + 35500000.0*state_vals[0]*state_vals[5] + 13600000.0*state_vals[0]*state_vals[6] + 26000000.0*state_vals[0]*state_vals[8] + 0.000155*state_vals[1]*state_vals[8] + 1270.0*state_vals[1]*state_vals[10] + 1270.0*state_vals[1]*state_vals[12] + 2.12e-5*state_vals[1] - 24400.0*state_vals[2]*state_vals[4] - 13300000.0*state_vals[2]*state_vals[5] - 13300000.0*state_vals[2]*state_vals[6] - 13300000.0*state_vals[2]*state_vals[9] - 118000000.0*state_vals[2]*state_vals[11] + 128000.0*state_vals[3]*state_vals[12] + 11000000.0*state_vals[5]*state_vals[8] + 4070000.0*state_vals[6]*state_vals[12] + 101000.0*state_vals[8]*state_vals[9] + 786000.0*state_vals[10]*state_vals[12];
-rhs_result[3] = 7260000.0*pow(state_vals[0], 2) + 27600000.0*state_vals[0]*state_vals[4] + 4.58e-8*state_vals[1]*state_vals[4] - 39500.0*state_vals[3]*state_vals[5] - 128000.0*state_vals[3]*state_vals[12] + 5140000.0*pow(state_vals[4], 2) + 0.0136;
-rhs_result[4] = 0.0158*state_vals[0]*state_vals[1] - 27600000.0*state_vals[0]*state_vals[4] + 20900000.0*state_vals[0]*state_vals[11] - 4.58e-8*state_vals[1]*state_vals[4] - 24400.0*state_vals[2]*state_vals[4] + 39500.0*state_vals[3]*state_vals[5] + 128000.0*state_vals[3]*state_vals[12] - 10280000.0*pow(state_vals[4], 2) - 10900000.0*state_vals[4]*state_vals[5] - 36500.0*state_vals[4]*state_vals[6] - 13100000.0*state_vals[4]*state_vals[7] - 11400000.0*state_vals[4]*state_vals[8] - 11400000.0*state_vals[4]*state_vals[9] - 5.83*state_vals[4] + 0.0188;
-rhs_result[5] = -35500000.0*state_vals[0]*state_vals[5] + 13600000.0*state_vals[0]*state_vals[6] + 4.58e-8*state_vals[1]*state_vals[4] + 1270.0*state_vals[1]*state_vals[12] - 13300000.0*state_vals[2]*state_vals[5] - 39500.0*state_vals[3]*state_vals[5] - 10900000.0*state_vals[4]*state_vals[5] + 36500.0*state_vals[4]*state_vals[6] + 22800000.0*state_vals[4]*state_vals[9] - 9620000.0*pow(state_vals[5], 2) - 29200.0*state_vals[5]*state_vals[6] - 11000000.0*state_vals[5]*state_vals[8] - 8840000.0*state_vals[5]*state_vals[9] - 4070000.0*state_vals[5]*state_vals[10] - 0.0943*state_vals[5] + 50200000.0*state_vals[11]*state_vals[12] + 0.0871;
-rhs_result[6] = -13600000.0*state_vals[0]*state_vals[6] + 13000000.0*state_vals[0]*state_vals[8] + 1270.0*state_vals[1]*state_vals[10] - 13300000.0*state_vals[2]*state_vals[6] - 36500.0*state_vals[4]*state_vals[6] + 4810000.0*pow(state_vals[5], 2) - 29200.0*state_vals[5]*state_vals[6] - 4070000.0*state_vals[6]*state_vals[12] - 0.09430026*state_vals[6] + 101000.0*state_vals[8]*state_vals[9] + 840.0*pow(state_vals[9], 2) + 50200000.0*state_vals[10]*state_vals[11] + 0.0221;
-rhs_result[7] = -22900000.0*state_vals[0]*state_vals[7] - 13100000.0*state_vals[4]*state_vals[7] + 11000000.0*state_vals[5]*state_vals[8] + 8840000.0*state_vals[5]*state_vals[9] + 1.3e-7*state_vals[6] - 3750000.0*state_vals[7]*state_vals[12] + 101000.0*state_vals[8]*state_vals[9] + 840.0*pow(state_vals[9], 2) + 2620.0*state_vals[13] + 8.19e-7;
-rhs_result[8] = 22900000.0*state_vals[0]*state_vals[7] - 13000000.0*state_vals[0]*state_vals[8] - 0.000155*state_vals[1]*state_vals[8] + 13300000.0*state_vals[2]*state_vals[9] - 11400000.0*state_vals[4]*state_vals[8] - 11000000.0*state_vals[5]*state_vals[8] + 4070000.0*state_vals[5]*state_vals[10] - 101000.0*state_vals[8]*state_vals[9] - 50200000.0*state_vals[8]*state_vals[11] + 773000.0*state_vals[9] + 786000.0*state_vals[10]*state_vals[12];
-rhs_result[9] = -13000000.0*state_vals[0]*state_vals[9] + 0.000155*state_vals[1]*state_vals[8] - 13300000.0*state_vals[2]*state_vals[9] + 13100000.0*state_vals[4]*state_vals[7] - 11400000.0*state_vals[4]*state_vals[9] + 29200.0*state_vals[5]*state_vals[6] - 8840000.0*state_vals[5]*state_vals[9] + 4070000.0*state_vals[6]*state_vals[12] - 101000.0*state_vals[8]*state_vals[9] + 50200000.0*state_vals[8]*state_vals[11] - 1680.0*pow(state_vals[9], 2) - 773000.0*state_vals[9];
-rhs_result[10] = 13000000.0*state_vals[0]*state_vals[9] - 1270.0*state_vals[1]*state_vals[10] + 13300000.0*state_vals[2]*state_vals[6] + 11400000.0*state_vals[4]*state_vals[8] - 4070000.0*state_vals[5]*state_vals[10] + 0.0943*state_vals[6] - 50200000.0*state_vals[10]*state_vals[11] - 786000.0*state_vals[10]*state_vals[12];
-rhs_result[11] = -20900000.0*state_vals[0]*state_vals[11] + 2.12e-5*state_vals[1] - 118000000.0*state_vals[2]*state_vals[11] + 5.83*state_vals[4] + 0.0943*state_vals[5] + 0.0943*state_vals[6] - 50200000.0*state_vals[8]*state_vals[11] + 773000.0*state_vals[9] - 50200000.0*state_vals[10]*state_vals[11] - 50200000.0*state_vals[11]*state_vals[12] + 0.0854;
-rhs_result[12] = -1270.0*state_vals[1]*state_vals[12] + 13300000.0*state_vals[2]*state_vals[5] - 128000.0*state_vals[3]*state_vals[12] + 0.0943*state_vals[5] - 4070000.0*state_vals[6]*state_vals[12] - 3750000.0*state_vals[7]*state_vals[12] - 786000.0*state_vals[10]*state_vals[12] - 50200000.0*state_vals[11]*state_vals[12] + 2620.0*state_vals[13];
-rhs_result[13] = 3750000.0*state_vals[7]*state_vals[12] - 2620.0*state_vals[13];
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Common-Subexpression-Elimination">Common Subexpression Elimination<a class="anchor-link" href="#Common-Subexpression-Elimination">&#182;</a></h1><p>If you look carefully at the expressions in the two matrices you'll see repeated expressions. These are not ideal in the sense that the computer has to repeat the exact same calculation multiple times. For large expressions this can be a major issue. Compilers, such as gcc, can often eliminate common subexpressions on their own when different optimization flags are invoked but for complex expressions the algorithms in some compilers do not do a thorough job or compilation can take an extremely long time. SymPy has tools to perform common subexpression elimination which is both thorough and reasonably efficient. In particular if gcc is run with the lowest optimization setting <code>-O0</code> cse can give large speedups.</p>
+<h1 id="Common-Subexpression-Elimination">Common Subexpression Elimination<a class="anchor-link" href="#Common-Subexpression-Elimination">&#182;</a></h1><p>If you look carefully at the expressions in the two matrices you'll see repeated expressions. These are not ideal in the sense that the computer has to repeat the exact same calculation multiple times. For large expressions this can be a major issue. Compilers, such as gcc, can often eliminate common subexpressions on their own when different optimization flags are invoked but for complex expressions the algorithms in some compilers do not do a thorough job or compilation can take an extremely long time. SymPy has tools to perform common subexpression elimination which is both thorough and reasonably efficient. In particular if gcc is run with the lowest optimization setting <code>-O0</code> <code>cse</code> can give large speedups.</p>
 <p>For example if you have two expressions:</p>
 <div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">5</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">6</span>
@@ -13317,20 +12516,38 @@ rhs_result[13] = 3750000.0*state_vals[7]*state_vals[12] - 2620.0*state_vals[13];
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>sym.cse<span class="o">?</span>
+<div class=" highlight hl-ipython3"><pre><span></span>sm.cse<span class="o">?</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Object `sm.cse` not found.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified_rhs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span><span class="n">rhs_of_odes</span><span class="p">)</span>
@@ -13343,7 +12560,7 @@ rhs_result[13] = 3750000.0*state_vals[7]*state_vals[12] - 2620.0*state_vals[13];
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sub_exprs</span><span class="p">:</span>
@@ -13475,7 +12692,7 @@ x₈₇ = -x₆₉
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">simplified_rhs</span><span class="p">)</span>
@@ -13491,7 +12708,7 @@ x₈₇ = -x₆₉
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[47]:</div>
+<div class="prompt output_prompt">Out[21]:</div>
 
 
 
@@ -13508,7 +12725,7 @@ x₈₇ = -x₆₉
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">simplified_rhs</span><span class="p">)</span>
@@ -13524,7 +12741,7 @@ x₈₇ = -x₆₉
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[48]:</div>
+<div class="prompt output_prompt">Out[22]:</div>
 
 
 
@@ -13541,7 +12758,7 @@ $$1$$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_rhs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13557,7 +12774,7 @@ $$1$$
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[49]:</div>
+<div class="prompt output_prompt">Out[23]:</div>
 
 
 
@@ -13583,10 +12800,12 @@ $$\left[\begin{matrix}x_{1} + x_{10} + x_{12} + x_{14} + x_{16} + x_{19} + x_{21
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified_exprs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">((</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jac_of_odes</span> <span class="o">=</span> <span class="n">rhs_of_odes</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+
+<span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified_exprs</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">((</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -13596,7 +12815,7 @@ $$\left[\begin{matrix}x_{1} + x_{10} + x_{12} + x_{14} + x_{16} + x_{19} + x_{21
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sub_exprs</span><span class="p">:</span>
@@ -13851,7 +13070,7 @@ x₂₁₉ = -x₂₀₂
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_exprs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13867,7 +13086,7 @@ x₂₁₉ = -x₂₀₂
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[52]:</div>
+<div class="prompt output_prompt">Out[26]:</div>
 
 
 
@@ -13884,7 +13103,7 @@ $$\left[\begin{matrix}x_{10} + x_{11} + x_{14} + x_{17} + x_{2} + x_{20} + x_{23
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simplified_exprs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -13900,7 +13119,7 @@ $$\left[\begin{matrix}x_{10} + x_{11} + x_{14} + x_{17} + x_{2} + x_{20} + x_{23
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[53]:</div>
+<div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -13920,9 +13139,9 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Exercise-[15min]">Exercise [15min]<a class="anchor-link" href="#Exercise-[15min]">&#182;</a></h1><p>Use common subexpression elimination to print out C code for your two arrays such that:</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">some_sub_expression</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">first_sub_expression</span><span class="p">;</span>
 <span class="p">...</span>
-<span class="kt">double</span> <span class="n">xN</span> <span class="o">=</span> <span class="n">the_last_sub_expression</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">xN</span> <span class="o">=</span> <span class="n">last_sub_expression</span><span class="p">;</span>
 
 <span class="n">rhs_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">expressions_containing_the_subexpressions</span><span class="p">;</span>
 <span class="p">...</span>
@@ -13932,29 +13151,60 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 <span class="p">...</span>
 <span class="n">jac_result</span><span class="p">[</span><span class="mi">195</span><span class="p">]</span> <span class="o">=</span> <span class="p">...;</span>
 </pre></div>
-<p>This code can be copied and pasted into the provided template above to make a C program.</p>
-<p>explain Assignment, self._print, and ImmutableDenseMatrix</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>You can add in cse fairly easily for printing a single matrix:</p>
+<p>The code you create can be copied and pasted into the provided template above to make a C program. <em>Refer back to the introduction to C code printing above.</em></p>
+<p>To give you a bit of help we will first introduce the <code>Assignment</code> class. The printers know how to print variable assignments that are defined by an <code>Assignment</code> instance.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.printing.codeprinter</span> <span class="k">import</span> <span class="n">Assignment</span>
 
-<span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">Assignment</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>theta = 5;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following code demonstrates a way to use <code>cse()</code> to simplify single matrix objects. Note that we use <code>ImmutableDenseMatrix</code> because all dense matrics are internally converted to this type in the printers. Check the type of your matrices to see.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_print_ImmutableDenseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
         <span class="n">sub_exprs</span><span class="p">,</span> <span class="n">simplified</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13971,7 +13221,7 @@ $$\left[\begin{array}{cccccccccccccc}x_{118} + x_{120} + x_{122} + x_{124} + x_{
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">CMatrixPrinter</span><span class="p">()</span>
@@ -14336,18 +13586,17 @@ M[195] = -2620.0;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>_print_list(self, list_of_exprs)</p>
+<p>Now create a custom printer that uses <code>cse()</code> on the two matrices simulatneously so that subexpressions are not repeated. <em>Hint: think about how the list printer method, <code>_print_list(self, list_of_exprs)</code>, might help here.</em></p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
-    
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CMatrixPrinter</span><span class="p">(</span><span class="n">C99CodePrinter</span><span class="p">):</span>
+
     <span class="k">def</span> <span class="nf">_print_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_of_exprs</span><span class="p">):</span>
         <span class="c1"># NOTE : The MutableDenseMatrix is turned in an ImmutableMatrix inside here.</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sym</span><span class="o">.</span><span class="n">ImmutableMatrix</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_of_exprs</span><span class="p">):</span>
@@ -14361,492 +13610,64 @@ M[195] = -2620.0;
             <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_print_list</span><span class="p">(</span><span class="n">list_of_exprs</span><span class="p">)</span>
-            
+
     <span class="k">def</span> <span class="nf">_print_ImmutableDenseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">M</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;jac_result&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">M</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">MatrixSymbol</span><span class="p">(</span><span class="s1">&#39;rhs_result&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">expr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">Assignment</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">expr</span><span class="p">))</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">CMatrixPrinter</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
 </pre></div>
 
 </div>
 </div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">CMatrixPrinter</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>double x0 = 0.0158*state_vals[0];
-double x1 = x0*state_vals[1];
-double x2 = -x1;
-double x3 = 27600000.0*state_vals[0];
-double x4 = x3*state_vals[4];
-double x5 = -x4;
-double x6 = 24400.0*state_vals[2];
-double x7 = x6*state_vals[4];
-double x8 = pow(state_vals[0], 2);
-double x9 = 14520000.0*x8;
-double x10 = -x9;
-double x11 = 5.83*state_vals[4];
-double x12 = 20900000.0*state_vals[0];
-double x13 = x12*state_vals[11];
-double x14 = -x13;
-double x15 = 35500000.0*state_vals[0];
-double x16 = x15*state_vals[5];
-double x17 = -x16;
-double x18 = 13600000.0*state_vals[0];
-double x19 = x18*state_vals[6];
-double x20 = -x19;
-double x21 = 22900000.0*state_vals[0];
-double x22 = x21*state_vals[7];
-double x23 = -x22;
-double x24 = 13000000.0*state_vals[0];
-double x25 = x24*state_vals[8];
-double x26 = -x25;
-double x27 = x24*state_vals[9];
-double x28 = -x27;
-double x29 = 4.58e-8*state_vals[1];
-double x30 = x29*state_vals[4];
-double x31 = 39500.0*state_vals[3];
-double x32 = x31*state_vals[5];
-double x33 = -x30 + x32;
-double x34 = 2.12e-5*state_vals[1];
-double x35 = 26000000.0*state_vals[0];
-double x36 = x35*state_vals[8];
-double x37 = 1270.0*state_vals[1];
-double x38 = x37*state_vals[10];
-double x39 = -x38;
-double x40 = x37*state_vals[12];
-double x41 = -x40;
-double x42 = 0.000155*state_vals[1];
-double x43 = x42*state_vals[8];
-double x44 = -x43;
-double x45 = 4070000.0*state_vals[10];
-double x46 = x45*state_vals[5];
-double x47 = 118000000.0*state_vals[11];
-double x48 = x47*state_vals[2];
-double x49 = 13300000.0*state_vals[2];
-double x50 = x49*state_vals[5];
-double x51 = x49*state_vals[6];
-double x52 = x49*state_vals[9];
-double x53 = 10900000.0*state_vals[4];
-double x54 = x53*state_vals[5];
-double x55 = 36500.0*state_vals[4];
-double x56 = x55*state_vals[6];
-double x57 = 29200.0*state_vals[5];
-double x58 = x57*state_vals[6];
-double x59 = 8840000.0*state_vals[5];
-double x60 = x59*state_vals[9];
-double x61 = 101000.0*state_vals[8];
-double x62 = x61*state_vals[9];
-double x63 = -x62;
-double x64 = x19 + x40 - x50;
-double x65 = 786000.0*state_vals[10];
-double x66 = x65*state_vals[12];
-double x67 = -x48;
-double x68 = 128000.0*state_vals[12];
-double x69 = x68*state_vals[3];
-double x70 = 4070000.0*state_vals[12];
-double x71 = x70*state_vals[6];
-double x72 = -x7;
-double x73 = -x51;
-double x74 = -x52;
-double x75 = 11000000.0*state_vals[5];
-double x76 = x75*state_vals[8];
-double x77 = -x32;
-double x78 = -x69;
-double x79 = pow(state_vals[4], 2);
-double x80 = -x54;
-double x81 = -x56;
-double x82 = 13100000.0*state_vals[4];
-double x83 = x82*state_vals[7];
-double x84 = -x83;
-double x85 = 11400000.0*state_vals[4];
-double x86 = x85*state_vals[8];
-double x87 = -x86;
-double x88 = -x85*state_vals[9];
-double x89 = 0.0943*state_vals[5];
-double x90 = -x46;
-double x91 = 50200000.0*state_vals[11];
-double x92 = x91*state_vals[12];
-double x93 = 22800000.0*state_vals[4];
-double x94 = -x58;
-double x95 = -x76;
-double x96 = -x60;
-double x97 = pow(state_vals[5], 2);
-double x98 = 50200000.0*state_vals[10];
-double x99 = x98*state_vals[11];
-double x100 = -x71;
-double x101 = pow(state_vals[9], 2);
-double x102 = 840.0*x101;
-double x103 = 2620.0*state_vals[13];
-double x104 = 3750000.0*state_vals[12];
-double x105 = x104*state_vals[7];
-double x106 = -x105;
-double x107 = 773000.0*state_vals[9];
-double x108 = x91*state_vals[8];
-double x109 = -x108;
-double x110 = 0.0943*state_vals[6];
-double x111 = -x99;
-double x112 = -x66;
-double x113 = -x92;
-double x114 = 29040000.0*state_vals[0];
-double x115 = 0.0158*state_vals[1];
-double x116 = 27600000.0*state_vals[4];
-double x117 = -x116;
-double x118 = -x114 - x115 + x117;
-double x119 = 20900000.0*state_vals[11];
-double x120 = -x119;
-double x121 = 35500000.0*state_vals[5];
-double x122 = -x121;
-double x123 = 13600000.0*state_vals[6];
-double x124 = -x123;
-double x125 = 22900000.0*state_vals[7];
-double x126 = -x125;
-double x127 = 13000000.0*state_vals[8];
-double x128 = -x127;
-double x129 = 13000000.0*state_vals[9];
-double x130 = -x129;
-double x131 = -x0;
-double x132 = 24400.0*state_vals[4];
-double x133 = -x3;
-double x134 = x133 + x6;
-double x135 = -x15;
-double x136 = -x18;
-double x137 = -x21;
-double x138 = -x24;
-double x139 = -x12;
-double x140 = 26000000.0*state_vals[8];
-double x141 = 1270.0*state_vals[10];
-double x142 = -x141;
-double x143 = 1270.0*state_vals[12];
-double x144 = -x143;
-double x145 = 4.58e-8*state_vals[4];
-double x146 = -x145;
-double x147 = 0.000155*state_vals[8];
-double x148 = -x147;
-double x149 = 13300000.0*state_vals[5];
-double x150 = 13300000.0*state_vals[6];
-double x151 = 13300000.0*state_vals[9];
-double x152 = 39500.0*state_vals[5];
-double x153 = -x29;
-double x154 = 10900000.0*state_vals[5];
-double x155 = 36500.0*state_vals[6];
-double x156 = 29200.0*state_vals[6];
-double x157 = 8840000.0*state_vals[9];
-double x158 = -x42;
-double x159 = 101000.0*state_vals[9];
-double x160 = -x159;
-double x161 = -x61;
-double x162 = x161 + x49;
-double x163 = -x37;
-double x164 = 4070000.0*state_vals[5];
-double x165 = 118000000.0*state_vals[2];
-double x166 = -x47;
-double x167 = -x132;
-double x168 = -x149;
-double x169 = -x150;
-double x170 = -x151;
-double x171 = -x6;
-double x172 = -x49;
-double x173 = 11000000.0*state_vals[8];
-double x174 = x159 + x75;
-double x175 = 786000.0*state_vals[12];
-double x176 = -x165;
-double x177 = 128000.0*state_vals[3];
-double x178 = 4070000.0*state_vals[6];
-double x179 = -x68;
-double x180 = -x152;
-double x181 = -x31;
-double x182 = -x177;
-double x183 = -x154;
-double x184 = -x155;
-double x185 = 13100000.0*state_vals[7];
-double x186 = -x185;
-double x187 = 11400000.0*state_vals[8];
-double x188 = -x187;
-double x189 = -11400000.0*state_vals[9];
-double x190 = -x53;
-double x191 = -x55;
-double x192 = -x82;
-double x193 = -x85;
-double x194 = -x45;
-double x195 = -x156;
-double x196 = -x173;
-double x197 = -x157;
-double x198 = -x57;
-double x199 = -x75;
-double x200 = -x59;
-double x201 = -x164;
-double x202 = 50200000.0*state_vals[12];
-double x203 = x37 + x91;
-double x204 = -x70;
-double x205 = x61 + 1680.0*state_vals[9];
-double x206 = -x178;
-double x207 = -x104;
-double x208 = 3750000.0*state_vals[7];
-double x209 = -x208;
-double x210 = x138 + x193;
-double x211 = -x91;
-double x212 = 50200000.0*state_vals[8];
-double x213 = -x212;
-double x214 = x49 + 0.0943;
-double x215 = x163 + x211;
-double x216 = -x175;
-double x217 = -x98;
-double x218 = -x65;
-double x219 = -x202;
-rhs_result[0] = x10 + x11 + x14 + x17 + x2 + x20 + x23 + x26 + x28 + x5 + x7 + 0.0854;
-rhs_result[1] = x10 + x2 + x33 - x34 - x36 + x39 + x41 + x44 + x46 + x48 + x5 + x50 + x51 + x52 + x54 + x56 + x58 + x60 + x63 + x7 + 2.6e-7*state_vals[6] - 0.131;
-rhs_result[2] = x1 + x16 + x34 + x36 + x38 + x4 + x43 + x62 + x64 + x66 + x67 + x69 + x71 + x72 + x73 + x74 + x76 + x9;
-rhs_result[3] = x30 + x4 + x77 + x78 + 5140000.0*x79 + 7260000.0*x8 + 0.0136;
-rhs_result[4] = x1 - x11 + x13 + x33 + x5 + x69 + x72 - 10280000.0*x79 + x80 + x81 + x84 + x87 + x88 + 0.0188;
-rhs_result[5] = x17 + x30 + x56 + x64 + x77 + x80 - x89 + x90 + x92 + x93*state_vals[9] + x94 + x95 + x96 - 9620000.0*x97 + 0.0871;
-rhs_result[6] = x100 + x102 + x20 + x25 + x38 + x62 + x73 + x81 + x94 + 4810000.0*x97 + x99 - 0.09430026*state_vals[6] + 0.0221;
-rhs_result[7] = x102 + x103 + x106 + x23 + x60 + x62 + x76 + x84 + 1.3e-7*state_vals[6] + 8.19e-7;
-rhs_result[8] = x107 + x109 + x22 + x26 + x44 + x46 + x52 + x63 + x66 + x87 + x95;
-rhs_result[9] = -1680.0*x101 - x107 + x108 + x28 + x43 + x58 + x63 + x71 + x74 + x83 + x88 + x96;
-rhs_result[10] = x110 + x111 + x112 + x27 + x39 + x51 + x86 + x90;
-rhs_result[11] = x107 + x109 + x11 + x110 + x111 + x113 + x14 + x34 + x67 + x89 + 0.0854;
-rhs_result[12] = x100 + x103 + x106 + x112 + x113 + x41 + x50 + x78 + x89;
-rhs_result[13] = -x103 + x105;
-jac_result[0] = x118 + x120 + x122 + x124 + x126 + x128 + x130;
-jac_result[1] = x131;
-jac_result[2] = x132;
-jac_result[3] = 0;
-jac_result[4] = x134 + 5.83;
-jac_result[5] = x135;
-jac_result[6] = x136;
-jac_result[7] = x137;
-jac_result[8] = x138;
-jac_result[9] = x138;
-jac_result[10] = 0;
-jac_result[11] = x139;
-jac_result[12] = 0;
-jac_result[13] = 0;
-jac_result[14] = x118 - x140;
-jac_result[15] = x131 + x142 + x144 + x146 + x148 - 2.12e-5;
-jac_result[16] = x132 + x149 + x150 + x151 + x47;
-jac_result[17] = x152;
-jac_result[18] = x134 + x153 + x154 + x155;
-jac_result[19] = x156 + x157 + x31 + x45 + x49 + x53;
-jac_result[20] = x49 + x55 + x57 + 2.6e-7;
-jac_result[21] = 0;
-jac_result[22] = x158 + x160 - x35;
-jac_result[23] = x162 + x59;
-jac_result[24] = x163 + x164;
-jac_result[25] = x165;
-jac_result[26] = x163;
-jac_result[27] = 0;
-jac_result[28] = x114 + x115 + x116 + x121 + x123 + x140;
-jac_result[29] = x0 + x141 + x143 + x147 + 2.12e-5;
-jac_result[30] = x166 + x167 + x168 + x169 + x170;
-jac_result[31] = x68;
-jac_result[32] = x171 + x3;
-jac_result[33] = x15 + x172 + x173;
-jac_result[34] = x172 + x18 + x70;
-jac_result[35] = 0;
-jac_result[36] = x174 + x35 + x42;
-jac_result[37] = x172 + x61;
-jac_result[38] = x175 + x37;
-jac_result[39] = x176;
-jac_result[40] = x177 + x178 + x37 + x65;
-jac_result[41] = 0;
-jac_result[42] = x116 + 14520000.0*state_vals[0];
-jac_result[43] = x145;
-jac_result[44] = 0;
-jac_result[45] = x179 + x180;
-jac_result[46] = x29 + x3 + 10280000.0*state_vals[4];
-jac_result[47] = x181;
-jac_result[48] = 0;
-jac_result[49] = 0;
-jac_result[50] = 0;
-jac_result[51] = 0;
-jac_result[52] = 0;
-jac_result[53] = 0;
-jac_result[54] = x182;
-jac_result[55] = 0;
-jac_result[56] = x115 + x117 + x119;
-jac_result[57] = x0 + x146;
-jac_result[58] = x167;
-jac_result[59] = x152 + x68;
-jac_result[60] = x133 + x153 + x171 + x183 + x184 + x186 + x188 + x189 - 20560000.0*state_vals[4] - 5.83;
-jac_result[61] = x190 + x31;
-jac_result[62] = x191;
-jac_result[63] = x192;
-jac_result[64] = x193;
-jac_result[65] = x193;
-jac_result[66] = 0;
-jac_result[67] = x12;
-jac_result[68] = x177;
-jac_result[69] = 0;
-jac_result[70] = x122 + x123;
-jac_result[71] = x143 + x145;
-jac_result[72] = x168;
-jac_result[73] = x180;
-jac_result[74] = x155 + x183 + x29 + 22800000.0*state_vals[9];
-jac_result[75] = x135 + x172 + x181 + x190 + x194 + x195 + x196 + x197 - 19240000.0*state_vals[5] - 0.0943;
-jac_result[76] = x18 + x198 + x55;
-jac_result[77] = 0;
-jac_result[78] = x199;
-jac_result[79] = x200 + x93;
-jac_result[80] = x201;
-jac_result[81] = x202;
-jac_result[82] = x203;
-jac_result[83] = 0;
-jac_result[84] = x124 + x127;
-jac_result[85] = x141;
-jac_result[86] = x169;
-jac_result[87] = 0;
-jac_result[88] = x184;
-jac_result[89] = x195 + 9620000.0*state_vals[5];
-jac_result[90] = x136 + x172 + x191 + x198 + x204 - 0.09430026;
-jac_result[91] = 0;
-jac_result[92] = x159 + x24;
-jac_result[93] = x205;
-jac_result[94] = x203;
-jac_result[95] = x98;
-jac_result[96] = x206;
-jac_result[97] = 0;
-jac_result[98] = x126;
-jac_result[99] = 0;
-jac_result[100] = 0;
-jac_result[101] = 0;
-jac_result[102] = x186;
-jac_result[103] = x157 + x173;
-jac_result[104] = 1.3e-7;
-jac_result[105] = x137 + x192 + x207;
-jac_result[106] = x174;
-jac_result[107] = x205 + x59;
-jac_result[108] = 0;
-jac_result[109] = 0;
-jac_result[110] = x209;
-jac_result[111] = 2620.0;
-jac_result[112] = x125 + x128;
-jac_result[113] = x148;
-jac_result[114] = x151;
-jac_result[115] = 0;
-jac_result[116] = x188;
-jac_result[117] = x196 + x45;
-jac_result[118] = 0;
-jac_result[119] = x21;
-jac_result[120] = x158 + x160 + x199 + x210 + x211;
-jac_result[121] = x162 + 773000.0;
-jac_result[122] = x164 + x175;
-jac_result[123] = x213;
-jac_result[124] = x65;
-jac_result[125] = 0;
-jac_result[126] = x130;
-jac_result[127] = x147;
-jac_result[128] = x170;
-jac_result[129] = 0;
-jac_result[130] = x185 + x189;
-jac_result[131] = x156 + x197;
-jac_result[132] = x57 + x70;
-jac_result[133] = x82;
-jac_result[134] = x160 + x42 + x91;
-jac_result[135] = x161 + x172 + x200 + x210 - 3360.0*state_vals[9] - 773000.0;
-jac_result[136] = 0;
-jac_result[137] = x212;
-jac_result[138] = x178;
-jac_result[139] = 0;
-jac_result[140] = x129;
-jac_result[141] = x142;
-jac_result[142] = x150;
-jac_result[143] = 0;
-jac_result[144] = x187;
-jac_result[145] = x194;
-jac_result[146] = x214;
-jac_result[147] = 0;
-jac_result[148] = x85;
-jac_result[149] = x24;
-jac_result[150] = x201 + x215 + x216;
-jac_result[151] = x217;
-jac_result[152] = x218;
-jac_result[153] = 0;
-jac_result[154] = x120;
-jac_result[155] = 2.12e-5;
-jac_result[156] = x166;
-jac_result[157] = 0;
-jac_result[158] = 5.83;
-jac_result[159] = 0.0943;
-jac_result[160] = 0.0943;
-jac_result[161] = 0;
-jac_result[162] = x211;
-jac_result[163] = 773000.0;
-jac_result[164] = x211;
-jac_result[165] = x139 + x176 + x213 + x217 + x219;
-jac_result[166] = x211;
-jac_result[167] = 0;
-jac_result[168] = 0;
-jac_result[169] = x144;
-jac_result[170] = x149;
-jac_result[171] = x179;
-jac_result[172] = 0;
-jac_result[173] = x214;
-jac_result[174] = x204;
-jac_result[175] = x207;
-jac_result[176] = 0;
-jac_result[177] = 0;
-jac_result[178] = x216;
-jac_result[179] = x219;
-jac_result[180] = x182 + x206 + x209 + x215 + x218;
-jac_result[181] = 2620.0;
-jac_result[182] = 0;
-jac_result[183] = 0;
-jac_result[184] = 0;
-jac_result[185] = 0;
-jac_result[186] = 0;
-jac_result[187] = 0;
-jac_result[188] = 0;
-jac_result[189] = x104;
-jac_result[190] = 0;
-jac_result[191] = 0;
-jac_result[192] = 0;
-jac_result[193] = 0;
-jac_result[194] = x208;
-jac_result[195] = -2620.0;
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Bonus:-Compile-and-Run-the-C-Program">Bonus: Compile and Run the C Program<a class="anchor-link" href="#Bonus:-Compile-and-Run-the-C-Program">&#182;</a></h1>
+<h2 id="Bonus-Exercise:-Compile-and-Run-the-C-Program">Bonus Exercise: Compile and Run the C Program<a class="anchor-link" href="#Bonus-Exercise:-Compile-and-Run-the-C-Program">&#182;</a></h2><p>Below we provide you with a template for the C program described above. You can use it by passing in a string like:</p>
+<div class="highlight"><pre><span></span><span class="n">c_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;the holy grail&#39;</span><span class="p">)</span>
+</pre></div>
+<p>Use this template and your code printer to create a file called <code>run.c</code> in the working directory.</p>
+<p>To compile the code there are several options. The first is gcc (the GNU C Compiler). If you have Linux, Mac, or Windows (w/ mingw installed) you can use the Jupyter notebook <code>!</code> command to send your command to the terminal. For example:</p>
+<div class="highlight"><pre><span></span><span class="o">!</span>gcc run.c -lm -o run
+</pre></div>
+<p>This will compile <code>run.c</code>, link against the C math library with <code>-lm</code> and output, <code>-o</code>, to a file <code>run</code> (Mac/Linux) or <code>run.exe</code> (Windows).</p>
+<p>On Mac and Linux the program can be executed with:</p>
+<div class="highlight"><pre><span></span><span class="o">!</span>./run
+</pre></div>
+<p>and on Windows:</p>
+<div class="highlight"><pre><span></span><span class="o">!</span>run.exe
+</pre></div>
+<p>Other options are using the clang compiler or Windows <code>cl</code> compiler command:</p>
+<div class="highlight"><pre><span></span><span class="o">!</span>clang run.c -lm -o run
+<span class="o">!</span>cl run.c -lm
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Solution">Solution<a class="anchor-link" href="#Solution">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">c_program</span> <span class="o">=</span> <span class="n">c_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;run.c&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
+</pre></div>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">c_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -14893,536 +13714,7 @@ jac_result[195] = -2620.0;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c_program</span> <span class="o">=</span> <span class="n">c_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">doprint</span><span class="p">([</span><span class="n">rhs_of_odes</span><span class="p">,</span> <span class="n">jac_of_odes</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>#include &lt;math.h&gt;
-#include &lt;stdio.h&gt;
-
-void evaluate_odes(const double state_vals[14], double rhs_result[14], double jac_result[196])
-{
-    // We need to fill in the code here using SymPy.
-double x0 = 0.0158*state_vals[0];
-double x1 = x0*state_vals[1];
-double x2 = -x1;
-double x3 = 27600000.0*state_vals[0];
-double x4 = x3*state_vals[4];
-double x5 = -x4;
-double x6 = 24400.0*state_vals[2];
-double x7 = x6*state_vals[4];
-double x8 = pow(state_vals[0], 2);
-double x9 = 14520000.0*x8;
-double x10 = -x9;
-double x11 = 5.83*state_vals[4];
-double x12 = 20900000.0*state_vals[0];
-double x13 = x12*state_vals[11];
-double x14 = -x13;
-double x15 = 35500000.0*state_vals[0];
-double x16 = x15*state_vals[5];
-double x17 = -x16;
-double x18 = 13600000.0*state_vals[0];
-double x19 = x18*state_vals[6];
-double x20 = -x19;
-double x21 = 22900000.0*state_vals[0];
-double x22 = x21*state_vals[7];
-double x23 = -x22;
-double x24 = 13000000.0*state_vals[0];
-double x25 = x24*state_vals[8];
-double x26 = -x25;
-double x27 = x24*state_vals[9];
-double x28 = -x27;
-double x29 = 4.58e-8*state_vals[1];
-double x30 = x29*state_vals[4];
-double x31 = 39500.0*state_vals[3];
-double x32 = x31*state_vals[5];
-double x33 = -x30 + x32;
-double x34 = 2.12e-5*state_vals[1];
-double x35 = 26000000.0*state_vals[0];
-double x36 = x35*state_vals[8];
-double x37 = 1270.0*state_vals[1];
-double x38 = x37*state_vals[10];
-double x39 = -x38;
-double x40 = x37*state_vals[12];
-double x41 = -x40;
-double x42 = 0.000155*state_vals[1];
-double x43 = x42*state_vals[8];
-double x44 = -x43;
-double x45 = 4070000.0*state_vals[10];
-double x46 = x45*state_vals[5];
-double x47 = 118000000.0*state_vals[11];
-double x48 = x47*state_vals[2];
-double x49 = 13300000.0*state_vals[2];
-double x50 = x49*state_vals[5];
-double x51 = x49*state_vals[6];
-double x52 = x49*state_vals[9];
-double x53 = 10900000.0*state_vals[4];
-double x54 = x53*state_vals[5];
-double x55 = 36500.0*state_vals[4];
-double x56 = x55*state_vals[6];
-double x57 = 29200.0*state_vals[5];
-double x58 = x57*state_vals[6];
-double x59 = 8840000.0*state_vals[5];
-double x60 = x59*state_vals[9];
-double x61 = 101000.0*state_vals[8];
-double x62 = x61*state_vals[9];
-double x63 = -x62;
-double x64 = x19 + x40 - x50;
-double x65 = 786000.0*state_vals[10];
-double x66 = x65*state_vals[12];
-double x67 = -x48;
-double x68 = 128000.0*state_vals[12];
-double x69 = x68*state_vals[3];
-double x70 = 4070000.0*state_vals[12];
-double x71 = x70*state_vals[6];
-double x72 = -x7;
-double x73 = -x51;
-double x74 = -x52;
-double x75 = 11000000.0*state_vals[5];
-double x76 = x75*state_vals[8];
-double x77 = -x32;
-double x78 = -x69;
-double x79 = pow(state_vals[4], 2);
-double x80 = -x54;
-double x81 = -x56;
-double x82 = 13100000.0*state_vals[4];
-double x83 = x82*state_vals[7];
-double x84 = -x83;
-double x85 = 11400000.0*state_vals[4];
-double x86 = x85*state_vals[8];
-double x87 = -x86;
-double x88 = -x85*state_vals[9];
-double x89 = 0.0943*state_vals[5];
-double x90 = -x46;
-double x91 = 50200000.0*state_vals[11];
-double x92 = x91*state_vals[12];
-double x93 = 22800000.0*state_vals[4];
-double x94 = -x58;
-double x95 = -x76;
-double x96 = -x60;
-double x97 = pow(state_vals[5], 2);
-double x98 = 50200000.0*state_vals[10];
-double x99 = x98*state_vals[11];
-double x100 = -x71;
-double x101 = pow(state_vals[9], 2);
-double x102 = 840.0*x101;
-double x103 = 2620.0*state_vals[13];
-double x104 = 3750000.0*state_vals[12];
-double x105 = x104*state_vals[7];
-double x106 = -x105;
-double x107 = 773000.0*state_vals[9];
-double x108 = x91*state_vals[8];
-double x109 = -x108;
-double x110 = 0.0943*state_vals[6];
-double x111 = -x99;
-double x112 = -x66;
-double x113 = -x92;
-double x114 = 29040000.0*state_vals[0];
-double x115 = 0.0158*state_vals[1];
-double x116 = 27600000.0*state_vals[4];
-double x117 = -x116;
-double x118 = -x114 - x115 + x117;
-double x119 = 20900000.0*state_vals[11];
-double x120 = -x119;
-double x121 = 35500000.0*state_vals[5];
-double x122 = -x121;
-double x123 = 13600000.0*state_vals[6];
-double x124 = -x123;
-double x125 = 22900000.0*state_vals[7];
-double x126 = -x125;
-double x127 = 13000000.0*state_vals[8];
-double x128 = -x127;
-double x129 = 13000000.0*state_vals[9];
-double x130 = -x129;
-double x131 = -x0;
-double x132 = 24400.0*state_vals[4];
-double x133 = -x3;
-double x134 = x133 + x6;
-double x135 = -x15;
-double x136 = -x18;
-double x137 = -x21;
-double x138 = -x24;
-double x139 = -x12;
-double x140 = 26000000.0*state_vals[8];
-double x141 = 1270.0*state_vals[10];
-double x142 = -x141;
-double x143 = 1270.0*state_vals[12];
-double x144 = -x143;
-double x145 = 4.58e-8*state_vals[4];
-double x146 = -x145;
-double x147 = 0.000155*state_vals[8];
-double x148 = -x147;
-double x149 = 13300000.0*state_vals[5];
-double x150 = 13300000.0*state_vals[6];
-double x151 = 13300000.0*state_vals[9];
-double x152 = 39500.0*state_vals[5];
-double x153 = -x29;
-double x154 = 10900000.0*state_vals[5];
-double x155 = 36500.0*state_vals[6];
-double x156 = 29200.0*state_vals[6];
-double x157 = 8840000.0*state_vals[9];
-double x158 = -x42;
-double x159 = 101000.0*state_vals[9];
-double x160 = -x159;
-double x161 = -x61;
-double x162 = x161 + x49;
-double x163 = -x37;
-double x164 = 4070000.0*state_vals[5];
-double x165 = 118000000.0*state_vals[2];
-double x166 = -x47;
-double x167 = -x132;
-double x168 = -x149;
-double x169 = -x150;
-double x170 = -x151;
-double x171 = -x6;
-double x172 = -x49;
-double x173 = 11000000.0*state_vals[8];
-double x174 = x159 + x75;
-double x175 = 786000.0*state_vals[12];
-double x176 = -x165;
-double x177 = 128000.0*state_vals[3];
-double x178 = 4070000.0*state_vals[6];
-double x179 = -x68;
-double x180 = -x152;
-double x181 = -x31;
-double x182 = -x177;
-double x183 = -x154;
-double x184 = -x155;
-double x185 = 13100000.0*state_vals[7];
-double x186 = -x185;
-double x187 = 11400000.0*state_vals[8];
-double x188 = -x187;
-double x189 = -11400000.0*state_vals[9];
-double x190 = -x53;
-double x191 = -x55;
-double x192 = -x82;
-double x193 = -x85;
-double x194 = -x45;
-double x195 = -x156;
-double x196 = -x173;
-double x197 = -x157;
-double x198 = -x57;
-double x199 = -x75;
-double x200 = -x59;
-double x201 = -x164;
-double x202 = 50200000.0*state_vals[12];
-double x203 = x37 + x91;
-double x204 = -x70;
-double x205 = x61 + 1680.0*state_vals[9];
-double x206 = -x178;
-double x207 = -x104;
-double x208 = 3750000.0*state_vals[7];
-double x209 = -x208;
-double x210 = x138 + x193;
-double x211 = -x91;
-double x212 = 50200000.0*state_vals[8];
-double x213 = -x212;
-double x214 = x49 + 0.0943;
-double x215 = x163 + x211;
-double x216 = -x175;
-double x217 = -x98;
-double x218 = -x65;
-double x219 = -x202;
-rhs_result[0] = x10 + x11 + x14 + x17 + x2 + x20 + x23 + x26 + x28 + x5 + x7 + 0.0854;
-rhs_result[1] = x10 + x2 + x33 - x34 - x36 + x39 + x41 + x44 + x46 + x48 + x5 + x50 + x51 + x52 + x54 + x56 + x58 + x60 + x63 + x7 + 2.6e-7*state_vals[6] - 0.131;
-rhs_result[2] = x1 + x16 + x34 + x36 + x38 + x4 + x43 + x62 + x64 + x66 + x67 + x69 + x71 + x72 + x73 + x74 + x76 + x9;
-rhs_result[3] = x30 + x4 + x77 + x78 + 5140000.0*x79 + 7260000.0*x8 + 0.0136;
-rhs_result[4] = x1 - x11 + x13 + x33 + x5 + x69 + x72 - 10280000.0*x79 + x80 + x81 + x84 + x87 + x88 + 0.0188;
-rhs_result[5] = x17 + x30 + x56 + x64 + x77 + x80 - x89 + x90 + x92 + x93*state_vals[9] + x94 + x95 + x96 - 9620000.0*x97 + 0.0871;
-rhs_result[6] = x100 + x102 + x20 + x25 + x38 + x62 + x73 + x81 + x94 + 4810000.0*x97 + x99 - 0.09430026*state_vals[6] + 0.0221;
-rhs_result[7] = x102 + x103 + x106 + x23 + x60 + x62 + x76 + x84 + 1.3e-7*state_vals[6] + 8.19e-7;
-rhs_result[8] = x107 + x109 + x22 + x26 + x44 + x46 + x52 + x63 + x66 + x87 + x95;
-rhs_result[9] = -1680.0*x101 - x107 + x108 + x28 + x43 + x58 + x63 + x71 + x74 + x83 + x88 + x96;
-rhs_result[10] = x110 + x111 + x112 + x27 + x39 + x51 + x86 + x90;
-rhs_result[11] = x107 + x109 + x11 + x110 + x111 + x113 + x14 + x34 + x67 + x89 + 0.0854;
-rhs_result[12] = x100 + x103 + x106 + x112 + x113 + x41 + x50 + x78 + x89;
-rhs_result[13] = -x103 + x105;
-jac_result[0] = x118 + x120 + x122 + x124 + x126 + x128 + x130;
-jac_result[1] = x131;
-jac_result[2] = x132;
-jac_result[3] = 0;
-jac_result[4] = x134 + 5.83;
-jac_result[5] = x135;
-jac_result[6] = x136;
-jac_result[7] = x137;
-jac_result[8] = x138;
-jac_result[9] = x138;
-jac_result[10] = 0;
-jac_result[11] = x139;
-jac_result[12] = 0;
-jac_result[13] = 0;
-jac_result[14] = x118 - x140;
-jac_result[15] = x131 + x142 + x144 + x146 + x148 - 2.12e-5;
-jac_result[16] = x132 + x149 + x150 + x151 + x47;
-jac_result[17] = x152;
-jac_result[18] = x134 + x153 + x154 + x155;
-jac_result[19] = x156 + x157 + x31 + x45 + x49 + x53;
-jac_result[20] = x49 + x55 + x57 + 2.6e-7;
-jac_result[21] = 0;
-jac_result[22] = x158 + x160 - x35;
-jac_result[23] = x162 + x59;
-jac_result[24] = x163 + x164;
-jac_result[25] = x165;
-jac_result[26] = x163;
-jac_result[27] = 0;
-jac_result[28] = x114 + x115 + x116 + x121 + x123 + x140;
-jac_result[29] = x0 + x141 + x143 + x147 + 2.12e-5;
-jac_result[30] = x166 + x167 + x168 + x169 + x170;
-jac_result[31] = x68;
-jac_result[32] = x171 + x3;
-jac_result[33] = x15 + x172 + x173;
-jac_result[34] = x172 + x18 + x70;
-jac_result[35] = 0;
-jac_result[36] = x174 + x35 + x42;
-jac_result[37] = x172 + x61;
-jac_result[38] = x175 + x37;
-jac_result[39] = x176;
-jac_result[40] = x177 + x178 + x37 + x65;
-jac_result[41] = 0;
-jac_result[42] = x116 + 14520000.0*state_vals[0];
-jac_result[43] = x145;
-jac_result[44] = 0;
-jac_result[45] = x179 + x180;
-jac_result[46] = x29 + x3 + 10280000.0*state_vals[4];
-jac_result[47] = x181;
-jac_result[48] = 0;
-jac_result[49] = 0;
-jac_result[50] = 0;
-jac_result[51] = 0;
-jac_result[52] = 0;
-jac_result[53] = 0;
-jac_result[54] = x182;
-jac_result[55] = 0;
-jac_result[56] = x115 + x117 + x119;
-jac_result[57] = x0 + x146;
-jac_result[58] = x167;
-jac_result[59] = x152 + x68;
-jac_result[60] = x133 + x153 + x171 + x183 + x184 + x186 + x188 + x189 - 20560000.0*state_vals[4] - 5.83;
-jac_result[61] = x190 + x31;
-jac_result[62] = x191;
-jac_result[63] = x192;
-jac_result[64] = x193;
-jac_result[65] = x193;
-jac_result[66] = 0;
-jac_result[67] = x12;
-jac_result[68] = x177;
-jac_result[69] = 0;
-jac_result[70] = x122 + x123;
-jac_result[71] = x143 + x145;
-jac_result[72] = x168;
-jac_result[73] = x180;
-jac_result[74] = x155 + x183 + x29 + 22800000.0*state_vals[9];
-jac_result[75] = x135 + x172 + x181 + x190 + x194 + x195 + x196 + x197 - 19240000.0*state_vals[5] - 0.0943;
-jac_result[76] = x18 + x198 + x55;
-jac_result[77] = 0;
-jac_result[78] = x199;
-jac_result[79] = x200 + x93;
-jac_result[80] = x201;
-jac_result[81] = x202;
-jac_result[82] = x203;
-jac_result[83] = 0;
-jac_result[84] = x124 + x127;
-jac_result[85] = x141;
-jac_result[86] = x169;
-jac_result[87] = 0;
-jac_result[88] = x184;
-jac_result[89] = x195 + 9620000.0*state_vals[5];
-jac_result[90] = x136 + x172 + x191 + x198 + x204 - 0.09430026;
-jac_result[91] = 0;
-jac_result[92] = x159 + x24;
-jac_result[93] = x205;
-jac_result[94] = x203;
-jac_result[95] = x98;
-jac_result[96] = x206;
-jac_result[97] = 0;
-jac_result[98] = x126;
-jac_result[99] = 0;
-jac_result[100] = 0;
-jac_result[101] = 0;
-jac_result[102] = x186;
-jac_result[103] = x157 + x173;
-jac_result[104] = 1.3e-7;
-jac_result[105] = x137 + x192 + x207;
-jac_result[106] = x174;
-jac_result[107] = x205 + x59;
-jac_result[108] = 0;
-jac_result[109] = 0;
-jac_result[110] = x209;
-jac_result[111] = 2620.0;
-jac_result[112] = x125 + x128;
-jac_result[113] = x148;
-jac_result[114] = x151;
-jac_result[115] = 0;
-jac_result[116] = x188;
-jac_result[117] = x196 + x45;
-jac_result[118] = 0;
-jac_result[119] = x21;
-jac_result[120] = x158 + x160 + x199 + x210 + x211;
-jac_result[121] = x162 + 773000.0;
-jac_result[122] = x164 + x175;
-jac_result[123] = x213;
-jac_result[124] = x65;
-jac_result[125] = 0;
-jac_result[126] = x130;
-jac_result[127] = x147;
-jac_result[128] = x170;
-jac_result[129] = 0;
-jac_result[130] = x185 + x189;
-jac_result[131] = x156 + x197;
-jac_result[132] = x57 + x70;
-jac_result[133] = x82;
-jac_result[134] = x160 + x42 + x91;
-jac_result[135] = x161 + x172 + x200 + x210 - 3360.0*state_vals[9] - 773000.0;
-jac_result[136] = 0;
-jac_result[137] = x212;
-jac_result[138] = x178;
-jac_result[139] = 0;
-jac_result[140] = x129;
-jac_result[141] = x142;
-jac_result[142] = x150;
-jac_result[143] = 0;
-jac_result[144] = x187;
-jac_result[145] = x194;
-jac_result[146] = x214;
-jac_result[147] = 0;
-jac_result[148] = x85;
-jac_result[149] = x24;
-jac_result[150] = x201 + x215 + x216;
-jac_result[151] = x217;
-jac_result[152] = x218;
-jac_result[153] = 0;
-jac_result[154] = x120;
-jac_result[155] = 2.12e-5;
-jac_result[156] = x166;
-jac_result[157] = 0;
-jac_result[158] = 5.83;
-jac_result[159] = 0.0943;
-jac_result[160] = 0.0943;
-jac_result[161] = 0;
-jac_result[162] = x211;
-jac_result[163] = 773000.0;
-jac_result[164] = x211;
-jac_result[165] = x139 + x176 + x213 + x217 + x219;
-jac_result[166] = x211;
-jac_result[167] = 0;
-jac_result[168] = 0;
-jac_result[169] = x144;
-jac_result[170] = x149;
-jac_result[171] = x179;
-jac_result[172] = 0;
-jac_result[173] = x214;
-jac_result[174] = x204;
-jac_result[175] = x207;
-jac_result[176] = 0;
-jac_result[177] = 0;
-jac_result[178] = x216;
-jac_result[179] = x219;
-jac_result[180] = x182 + x206 + x209 + x215 + x218;
-jac_result[181] = 2620.0;
-jac_result[182] = 0;
-jac_result[183] = 0;
-jac_result[184] = 0;
-jac_result[185] = 0;
-jac_result[186] = 0;
-jac_result[187] = 0;
-jac_result[188] = 0;
-jac_result[189] = x104;
-jac_result[190] = 0;
-jac_result[191] = 0;
-jac_result[192] = 0;
-jac_result[193] = 0;
-jac_result[194] = x208;
-jac_result[195] = -2620.0;
-}
-
-int main() {
-
-    // initialize the state vector with some values
-    double state_vals[14] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-    // create &#34;empty&#34; 1D arrays to hold the results of the computation
-    double rhs_result[14];
-    double jac_result[196];
-
-    // call the function
-    evaluate_odes(state_vals, rhs_result, jac_result);
-
-    // print the computed values to the terminal
-    int i;
-    printf(&#34;The right hand side of the equations evaluates to:\n&#34;);
-    for (i=0; i &lt; 14; i++) {
-        printf(&#34;%lf\n&#34;, rhs_result[i]);
-    }
-    printf(&#34;\nThe Jacobian evaluates to:\n&#34;);
-    for (i=0; i &lt; 196; i++) {
-        printf(&#34;%lf\n&#34;, jac_result[i]);
-    }
-
-    return 0;
-}
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;run.c&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">c_program</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To compile the code there are several options. The first is gcc (the GNU C Compiler). If you have Linux, Mac, or Windows (w/ mingw installed) you can use the Jupyter notebook <code>!</code> command to send your command to the terminal. For example:</p>
-<div class="highlight"><pre><span></span><span class="o">!</span>gcc run.c -lm -o run
-</pre></div>
-<p>This will compile <code>run.c</code>, link against the C math library with <code>-lm</code> and output, <code>-o</code>, to a file <code>run</code> (Mac/Linux) or <code>run.exe</code> (Windows).</p>
-<p>On Mac and Linux the program can be executed with:</p>
-<div class="highlight"><pre><span></span><span class="o">!</span>./run
-</pre></div>
-<p>and on Windows:</p>
-<div class="highlight"><pre><span></span><span class="o">!</span>run.exe
-</pre></div>
-<p>Other options are using the clang compiler or Windows cl:</p>
-<div class="highlight"><pre><span></span><span class="o">!</span>clang run.c -lm -o run
-<span class="o">!</span>cl run.c -lm
-</pre></div>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span> 
