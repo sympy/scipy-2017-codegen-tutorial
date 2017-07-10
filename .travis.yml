@@ -47,6 +47,7 @@ script:
     - git reset --hard
     - rm index.html
     - git clean -Xdf notebooks/
+    - git clean -xdf notebooks/
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
         doctr deploy . --built-docs deploy/;
       fi
