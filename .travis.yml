@@ -45,6 +45,8 @@ script:
     - bin/prepare_deploy.sh
     # Clear changes to tracked files so doctr can checkout gh-pages
     - git reset --hard
+    - rm index.html
+    - git clean -Xdf notebooks/
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
         doctr deploy . --built-docs deploy/;
       fi
