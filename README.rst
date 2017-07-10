@@ -14,7 +14,7 @@ The original proposal for this tutorial can be found on the `SymPy Wiki`_.
 
 The statically rendered Jupyter notebooks in this repository can be viewed at
 `sympy.org/scipy-2017-codegen-tutorial <http://www.sympy.org/scipy-2017-codegen-tutorial/>`_
- or on NBViewer_.
+or on NBViewer_.
 
 .. _NBViewer: http://nbviewer.jupyter.org/github/sympy/scipy-2017-codegen-tutorial/blob/master/index.ipynb
 
