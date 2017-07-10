@@ -51,7 +51,7 @@ except ImportError:
     error = True
 
 try:
-    s = check_output(['conda', '--version'])
+    s = check_output('conda --version', shell=True)
 except FileNotFoundError:
     print("conda is needed (either anaconda or miniconda from https://www.continuum.io/downloads)")
     print("(try rerunning this script under conda if you are using for system's python distribution)")
