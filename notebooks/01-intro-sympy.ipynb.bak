@@ -120,7 +120,7 @@
     "editable": true
    },
    "source": [
-    "Write a symbolic expression for $$\\frac{1}{\\sqrt{2\\pi\\sigma^2} } \\; e^{ -\\frac{(x-\\mu)^2}{2\\sigma^2} }.$$ Remember that the function for $e^x$ is `exp(x)`. You will need to create symbols for `sigma` and `mu`."
+    "Write a symbolic expression for $$\\frac{1}{\\sqrt{2\\pi\\sigma^2} } \\; e^{ -\\frac{(x-\\mu)^2}{2\\sigma^2} }.$$ Remember that the function for $e^x$ is `exp(x)`. You will need to create symbols for `sigma` and `mu`. Square root is `sqrt`."
    ]
   },
   {
