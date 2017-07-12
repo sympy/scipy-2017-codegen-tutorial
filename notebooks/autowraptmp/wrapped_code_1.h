@@ -10,7 +10,7 @@
 #ifndef AUTOWRAP__WRAPPED_CODE_1__H
 #define AUTOWRAP__WRAPPED_CODE_1__H
 
-void autofunc(double *y, double *out_1456838086207738750);
+void autofunc(double *y, double *out_8541272850793590444);
 
 #endif
 
