@@ -14,7 +14,7 @@ dependencies:
   - scipy
   - cython
   - sympy
-  - sundials
+  - sundials <3.0.0
   - python-symengine
   - numba
   - gcc
