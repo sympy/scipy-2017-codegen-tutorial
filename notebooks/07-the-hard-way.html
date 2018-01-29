@@ -11828,7 +11828,8 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Ordinary-Differential-Equations">Ordinary Differential Equations<a class="anchor-link" href="#Ordinary-Differential-Equations">&#182;</a></h1><p>The previously generated ordinary differential equations that describe chemical kinetic reactions are loaded below. These expressions describe the right hand side of this mathematical equation:</p>
-$$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$<p>where the state vector $\mathbf{y}(t)$ is made up of 14 states, i.e. $\mathbf{y}(t) \in \mathbb{R}^{14}$.</p>
+<p>$$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t))$$</p>
+<p>where the state vector $\mathbf{y}(t)$ is made up of 14 states, i.e. $\mathbf{y}(t) \in \mathbb{R}^{14}$.</p>
 <p>Below the variable <code>rhs_of_odes</code> represents $\mathbf{f}(\mathbf{y}(t))$ and <code>states</code> represents $\mathbf{y}(t)$.</p>
 <p>From now own we will simply use $\mathbf{y}$ instead of $\mathbf{y}(t)$ and assume an implicit function of $t$.</p>
 
@@ -11910,8 +11911,10 @@ The equations are nonlinear equations of the states. There are 14 equations and 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Compute-the-Jacobian">Compute the Jacobian<a class="anchor-link" href="#Compute-the-Jacobian">&#182;</a></h1><p>As has been shown in the previous lesson the Jacobian of the right hand side of the differential equations is often very useful for computations, such as integration and optimization. With:</p>
-$$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y})$$<p>the Jacobian is defined as:</p>
-$$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf{y}}$$<p>SymPy can compute the Jacobian of matrix objects with the <code>Matrix.jacobian()</code> method.</p>
+<p>$$\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y})$$</p>
+<p>the Jacobian is defined as:</p>
+<p>$$\mathbf{J}(\mathbf{y}) = \frac{\partial\mathbf{f}(\mathbf{y})}{\partial\mathbf{y}}$$</p>
+<p>SymPy can compute the Jacobian of matrix objects with the <code>Matrix.jacobian()</code> method.</p>
 
 </div>
 </div>
