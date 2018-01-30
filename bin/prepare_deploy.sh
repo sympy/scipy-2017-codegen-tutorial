@@ -2,7 +2,8 @@
 set -x
 source activate codegen17
 mkdir -p deploy/notebooks
-sed -i.bak 's/ipynb/html/' index.ipynb
+sed -i.bak0 's/ipynb/html/' index.ipynb
+sed -i.bak1 's/filepath=index.html/filepath=index.ipynb/' index.ipynb
 jupyter nbconvert --to=html index.ipynb
 mv index.ipynb.bak index.ipynb
 cp -R index.* intro-slides notebooks deploy/
